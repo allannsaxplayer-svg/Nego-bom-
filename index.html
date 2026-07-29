@@ -43,6 +43,9 @@
             align-items: center;
             border-bottom: 1px solid var(--card-border);
             background: #0d1527;
+            position: sticky;
+            top: 0;
+            z-index: 90;
         }
 
         .brand-title {
@@ -69,7 +72,7 @@
             gap: 6px;
         }
 
-        /* Main Container */
+        /* Container */
         .container {
             padding: 16px;
             max-width: 600px;
@@ -77,7 +80,7 @@
             width: 100%;
         }
 
-        /* Views */
+        /* App Views */
         .app-view {
             display: none;
         }
@@ -85,21 +88,73 @@
             display: block;
         }
 
-        /* Pattern Selector */
-        .select-box {
+        /* Search & Filter Header */
+        .search-box {
             width: 100%;
-            padding: 14px;
+            padding: 14px 16px;
             background-color: var(--card-bg);
             border: 1px solid var(--card-border);
             border-radius: 12px;
             color: var(--text-main);
-            font-size: 1rem;
-            font-weight: 700;
+            font-size: 0.95rem;
             margin-bottom: 16px;
             outline: none;
         }
+        .search-box:focus {
+            border-color: #38bdf8;
+        }
 
-        /* Card Component */
+        /* Pattern List Cards */
+        .pattern-item-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: transform 0.15s ease, border-color 0.15s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .pattern-item-card:hover {
+            border-color: #38bdf8;
+            transform: translateY(-2px);
+        }
+
+        .pattern-item-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #60a5fa;
+            margin-bottom: 4px;
+        }
+
+        .pattern-item-sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .arrow-icon {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        /* Back Button */
+        .btn-back {
+            background: none;
+            border: none;
+            color: #38bdf8;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 16px;
+            padding: 6px 0;
+        }
+
+        /* Cards & Components */
         .card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -137,7 +192,6 @@
             padding-top: 10px;
         }
 
-        /* Main Button */
         .btn-primary {
             width: 100%;
             background: var(--accent-blue);
@@ -156,7 +210,7 @@
             box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
         }
 
-        /* Matrix Section / Drawer */
+        /* Matrix Box */
         .matrix-box {
             background: #0d1527;
             border: 1px solid var(--card-border);
@@ -191,7 +245,7 @@
             border-color: var(--accent-blue);
         }
 
-        /* Native Warning Box */
+        /* Warnings & Recommendations */
         .warning-card {
             border: 2px dashed var(--warning-amber);
             background: var(--warning-bg);
@@ -216,7 +270,6 @@
             color: #fef3c7;
         }
 
-        /* Recommended Equivalent Box */
         .rec-card {
             background: var(--success-bg);
             border: 1px solid var(--success-green);
@@ -287,7 +340,6 @@
             gap: 4px;
         }
 
-        /* Examples Section */
         .section-title {
             font-size: 1.1rem;
             font-weight: 700;
@@ -361,40 +413,41 @@
     <!-- App Container -->
     <div class="container">
 
-        <!-- VIEW 1: PADRÕES -->
-        <div id="view-padroes" class="app-view active">
-            <!-- Selector -->
-            <select id="patternSelect" class="select-box" onchange="loadPattern(this.value)"></select>
-
-            <!-- Main Pattern Header Card -->
-            <div class="card" id="mainPatternCard">
-                <!-- Injetado dinamicamente -->
+        <!-- SUB-VIEW 1.1: LISTA DE PADRÕES (SELEÇÃO) -->
+        <div id="view-padroes-lista" class="app-view active">
+            <input type="text" id="searchPattern" class="search-box" placeholder="🔎 Digite para pesquisar entre os padrões..." oninput="filterPatterns()">
+            
+            <div id="patternsGrid">
+                <!-- Cards de padrões inseridos via JS -->
             </div>
+        </div>
 
-            <!-- Matrix Toggle Button -->
+        <!-- SUB-VIEW 1.2: DETALHES DO PADRÃO SELECIONADO -->
+        <div id="view-padroes-detalhe" class="app-view">
+            <button class="btn-back" onclick="showPatternList()">
+                <span>←</span> Voltar para Lista de Padrões
+            </button>
+
+            <!-- Card Principal do Padrão -->
+            <div class="card" id="mainPatternCard"></div>
+
+            <!-- Botão da Matriz -->
             <button class="btn-primary" onclick="toggleMatrix()">
                 <span>🎛️</span>
                 <span id="matrixBtnText">Abrir Matriz Temporal & Pronomes</span>
             </button>
 
-            <!-- Matrix Container -->
+            <!-- Gaveta da Matriz -->
             <div id="matrixContainer" class="matrix-box" style="display: none;">
-                <div class="pronoun-tabs" id="pronounTabs">
-                    <!-- Abas de pronomes injetadas dinamicamente -->
-                </div>
-
-                <div id="matrixContent">
-                    <!-- Conteúdo dinâmico da matriz -->
-                </div>
+                <div class="pronoun-tabs" id="pronounTabs"></div>
+                <div id="matrixContent"></div>
             </div>
 
-            <!-- Context Examples -->
+            <!-- Exemplos Práticos por Contexto -->
             <div class="section-title">
                 🧩 Exemplos Práticos por Contexto
             </div>
-            <div id="contextExamples">
-                <!-- Exemplos injetados dinamicamente -->
-            </div>
+            <div id="contextExamples"></div>
         </div>
 
         <!-- VIEW 2: HISTÓRIAS -->
@@ -402,7 +455,7 @@
             <div class="card">
                 <h2>📚 Histórias Interativas</h2>
                 <p style="margin-top: 10px; color: var(--text-muted);">
-                    Em breve: Textos curtos aplicando os padrões aprendidos com áudio nativo sincronizado!
+                    Textos curtos aplicados ao dia a dia em breve disponíveis para estudo imersivo.
                 </p>
             </div>
         </div>
@@ -412,7 +465,7 @@
             <div class="card">
                 <h2>🧠 Sistema de Repetição Espaçada (SRS)</h2>
                 <p style="margin-top: 10px; color: var(--text-muted);">
-                    Seus cards agendados para revisão hoje aparecerão aqui.
+                    Seus cards agendados para revisão hoje aparecerão nesta área.
                 </p>
             </div>
         </div>
@@ -422,14 +475,14 @@
             <div class="card">
                 <h2>⚙️ Configurações & Backup</h2>
                 <p style="margin-top: 10px; color: var(--text-muted);">
-                    Exporte seu progresso ou restaure dados salvos.
+                    Exporte, importe seu progresso ou restaure configurações nativas.
                 </p>
             </div>
         </div>
 
     </div>
 
-    <!-- Bottom Navigation -->
+    <!-- Navegação do Rodapé -->
     <nav class="bottom-nav">
         <button class="nav-item active" onclick="switchTab('padroes', this)">
             <span class="nav-icon">📚</span>
@@ -450,8 +503,11 @@
     </nav>
 
     <script>
-        // Data Base de Padrões em Inglês
-        const englishPatterns = [
+        // LISTA MESTRA DE PRONOMES - GARANTE 100% DOS PRONOMES PESSOAIS
+        const ALL_PRONOUNS = ["I", "You", "He/She", "It (Coisa/Objeto)", "We", "They"];
+
+        // BANCO DE DADOS DE PADRÕES (Estruturado para suportar centenas de padrões facilmente)
+        const PATTERNS_DATABASE = [
             {
                 id: "interested_in",
                 title: "Are you interested in...?",
@@ -459,43 +515,38 @@
                 translation: "Você está interessado(a) em...?",
                 explanation: "Usado para perguntar sobre o interesse de alguém em alguma proposta, objeto ou atividade.",
                 pronouns: {
-                    "You": {
-                        warning: null,
-                        present: { en: "Are you interested?", ph: "(Ar yu íntrested?)", pt: "Você está interessado(a)?" },
-                        past: { en: "Were you interested?", ph: "(Uér yu íntrested?)", pt: "Você estava interessado(a)?" },
-                        future: { en: "Will you be interested?", ph: "(Uíl yu bí íntrested?)", pt: "Você estará interessado(a)?" }
-                    },
                     "I": {
-                        warning: null,
                         present: { en: "Am I interested?", ph: "(Ém ái íntrested?)", pt: "Eu estou interessado(a)?" },
                         past: { en: "Was I interested?", ph: "(Uóz ái íntrested?)", pt: "Eu estava interessado(a)?" },
                         future: { en: "Will I be interested?", ph: "(Uíl ái bí íntrested?)", pt: "Eu estarei interessado(a)?" }
                     },
+                    "You": {
+                        present: { en: "Are you interested?", ph: "(Ar yu íntrested?)", pt: "Você está interessado(a)?" },
+                        past: { en: "Were you interested?", ph: "(Uér yu íntrested?)", pt: "Você estava interessado(a)?" },
+                        future: { en: "Will you be interested?", ph: "(Uíl yu bí íntrested?)", pt: "Você estará interessado(a)?" }
+                    },
                     "He/She": {
-                        warning: null,
                         present: { en: "Is he/she interested?", ph: "(Iz hí/shí íntrested?)", pt: "Ele/Ela está interessado(a)?" },
                         past: { en: "Was he/she interested?", ph: "(Uóz hí/shí íntrested?)", pt: "Ele/Ela estava interessado(a)?" },
                         future: { en: "Will he/she be interested?", ph: "(Uíl hí/shí bí íntrested?)", pt: "Ele/Ela estará interessado(a)?" }
                     },
                     "It (Coisa/Objeto)": {
                         warning: {
-                            text: "O pronome 'It' refere-se a objetos ou coisas inanimadas. Objetos não possuem sentimentos, por isso nativos NUNCA dizem 'Is it interested in...?' (O objeto está interessado?).",
+                            text: "O pronome 'It' refere-se a objetos ou animais. Coisas não possuem sentimentos, por isso nativos NUNCA dizem 'Is it interested in...?'",
                             recTitle: "PADRÃO EQUIVALENTE RECOMENDADO:",
                             recPattern: "Is it interesting...?",
-                            recDesc: "Para saber se algo É INTERESSANTE, os nativos trocam 'interested in' por 'interesting' (interessante)."
+                            recDesc: "Para saber se algo É INTERESSANTE, troca-se 'interested in' por 'interesting'."
                         },
                         present: { en: "Is it interesting?", ph: "(Iz it íntrestiŋ?)", pt: "Isso é interessante?" },
-                        past: { en: "Was it interesting?", ph: "(Uóz it íntrestiŋ?)", pt: "Isso foi / era interessante?" },
+                        past: { en: "Was it interesting?", ph: "(Uóz it íntrestiŋ?)", pt: "Isso foi interessante?" },
                         future: { en: "Will it be interesting?", ph: "(Uíl it bí íntrestiŋ?)", pt: "Isso será interessante?" }
                     },
                     "We": {
-                        warning: null,
                         present: { en: "Are we interested?", ph: "(Ar uí íntrested?)", pt: "Nós estamos interessados(as)?" },
                         past: { en: "Were we interested?", ph: "(Uér uí íntrested?)", pt: "Nós estávamos interessados(as)?" },
                         future: { en: "Will we be interested?", ph: "(Uíl uí bí íntrested?)", pt: "Nós estaremos interessados(as)?" }
                     },
                     "They": {
-                        warning: null,
                         present: { en: "Are they interested?", ph: "(Ar đéi íntrested?)", pt: "Eles/Elas estão interessados(as)?" },
                         past: { en: "Were they interested?", ph: "(Uér đéi íntrested?)", pt: "Eles/Elas estavam interessados(as)?" },
                         future: { en: "Will they be interested?", ph: "(Uíl đéi bí íntrested?)", pt: "Eles/Elas estarão interessados(as)?" }
@@ -503,8 +554,7 @@
                 },
                 examples: [
                     { category: "🍔 Restaurante", en: "Are you interested in dessert?", ph: "(Ar yu íntrested in dizért?)", pt: "Você está interessado(a) em sobremesa?" },
-                    { category: "💼 Trabalho", en: "Are you interested in this project?", ph: "(Ar yu íntrested in đis pródjekt?)", pt: "Você está interessado neste projeto?" },
-                    { category: "🗣️ Conversa", en: "Are you interested in joining us?", ph: "(Ar yu íntrested in djóiniŋ ás?)", pt: "Você tem interesse em se juntar a nós?" }
+                    { category: "💼 Trabalho", en: "Are you interested in this project?", ph: "(Ar yu íntrested in đis pródjekt?)", pt: "Você está interessado neste projeto?" }
                 ]
             },
             {
@@ -512,50 +562,40 @@
                 title: "Do you want to...?",
                 phonetic: "(Dú yu uónt tu...?)",
                 translation: "Você quer...?",
-                explanation: "Padrão fundamental para convites, oferecimentos ou para perguntar a intenção de alguém.",
+                explanation: "Padrão fundamental para convites, oferecimentos ou para perguntar intenções.",
                 pronouns: {
+                    "I": {
+                        present: { en: "Do I want to go?", ph: "(Dú ái uónt tu góu?)", pt: "Eu quero ir?" },
+                        past: { en: "Did I want to go?", ph: "(Did ái uónt tu góu?)", pt: "Eu queria ir?" },
+                        future: { en: "Will I want to go?", ph: "(Uíl ái uónt tu góu?)", pt: "Eu vou querer ir?" }
+                    },
                     "You": {
-                        warning: null,
                         present: { en: "Do you want to go?", ph: "(Dú yu uónt tu góu?)", pt: "Você quer ir?" },
                         past: { en: "Did you want to go?", ph: "(Did yu uónt tu góu?)", pt: "Você queria ir?" },
                         future: { en: "Will you want to go?", ph: "(Uíl yu uónt tu góu?)", pt: "Você vai querer ir?" }
                     },
-                    "I": {
-                        warning: null,
-                        present: { en: "Do I want to do this?", ph: "(Dú ái uónt tu dú đis?)", pt: "Eu quero fazer isso?" },
-                        past: { en: "Did I want to do this?", ph: "(Did ái uónt tu dú đis?)", pt: "Eu queria fazer isso?" },
-                        future: { en: "Will I want to do this?", ph: "(Uíl ái uónt tu dú đis?)", pt: "Eu vou querer fazer isso?" }
-                    },
                     "He/She": {
                         warning: {
-                            text: "Para ele/ela (He/She) no presente, o auxiliar muda de 'Do' para 'Does'.",
-                            recTitle: "REGRA DE TERCEIRA PESSOA:",
+                            text: "Para a 3ª pessoa do singular no presente, o auxiliar muda de 'Do' para 'Does'.",
+                            recTitle: "REGRA NATIVA DE TERCEIRA PESSOA:",
                             recPattern: "Does he/she want to...?",
-                            recDesc: "Nativos usam sempre 'Does' com He/She/It no presente simples."
+                            recDesc: "Utiliza-se sempre 'Does' com He/She/It no presente."
                         },
-                        present: { en: "Does he want to go?", ph: "(Dáz hí uónt tu góu?)", pt: "Ele quer ir?" },
-                        past: { en: "Did he want to go?", ph: "(Did hí uónt tu góu?)", pt: "Ele queria ir?" },
-                        future: { en: "Will he want to go?", ph: "(Uíl hí uónt tu góu?)", pt: "Ele vai querer ir?" }
+                        present: { en: "Does he/she want to go?", ph: "(Dáz hí/shí uónt tu góu?)", pt: "Ele/Ela quer ir?" },
+                        past: { en: "Did he/she want to go?", ph: "(Did hí/shí uónt tu góu?)", pt: "Ele/Ela queria ir?" },
+                        future: { en: "Will he/she want to go?", ph: "(Uíl hí/shí uónt tu góu?)", pt: "Ele/Ela vai querer ir?" }
                     },
                     "It (Coisa/Objeto)": {
-                        warning: {
-                            text: "'It' para objetos/máquinas não tem 'vontade' própria. 'Does it want' só é usado em sentido figurado.",
-                            recTitle: "PADRÃO EQUIVALENTE COMUM:",
-                            recPattern: "Does it need to...?",
-                            recDesc: "Para coisas e sistemas, nativos costumam usar 'Need' (precisar) ou 'Work' (funcionar)."
-                        },
                         present: { en: "Does it work?", ph: "(Dáz it uérk?)", pt: "Isso funciona?" },
                         past: { en: "Did it work?", ph: "(Did it uérk?)", pt: "Isso funcionou?" },
                         future: { en: "Will it work?", ph: "(Uíl it uérk?)", pt: "Isso vai funcionar?" }
                     },
                     "We": {
-                        warning: null,
                         present: { en: "Do we want to start?", ph: "(Dú uí uónt tu stárt?)", pt: "Nós queremos começar?" },
                         past: { en: "Did we want to start?", ph: "(Did uí uónt tu stárt?)", pt: "Nós queríamos começar?" },
                         future: { en: "Will we want to start?", ph: "(Uíl uí uónt tu stárt?)", pt: "Nós vamos querer começar?" }
                     },
                     "They": {
-                        warning: null,
                         present: { en: "Do they want to come?", ph: "(Dú đéi uónt tu kám?)", pt: "Eles querem vir?" },
                         past: { en: "Did they want to come?", ph: "(Did đéi uónt tu kám?)", pt: "Eles queriam vir?" },
                         future: { en: "Will they want to come?", ph: "(Uíl đéi uónt tu kám?)", pt: "Eles vão querer vir?" }
@@ -571,88 +611,108 @@
                 title: "Have you ever...?",
                 phonetic: "(Hév yu éver...?)",
                 translation: "Você já... (em algum momento da vida)?",
-                explanation: "Usado para perguntar sobre experiências de vida passadas até o momento presente.",
+                explanation: "Perguntar sobre experiências acumuladas na vida.",
                 pronouns: {
+                    "I": {
+                        present: { en: "Have I ever seen this?", ph: "(Hév ái éver sín đis?)", pt: "Eu já vi isso?" },
+                        past: { en: "Had I ever seen this?", ph: "(Héd ái éver sín đis?)", pt: "Eu já tinha visto isso?" },
+                        future: { en: "Will I have seen this?", ph: "(Uíl ái hév sín đis?)", pt: "Eu terei visto isso?" }
+                    },
                     "You": {
-                        warning: null,
                         present: { en: "Have you ever been there?", ph: "(Hév yu éver bín đér?)", pt: "Você já esteve lá?" },
                         past: { en: "Had you ever been there?", ph: "(Héd yu éver bín đér?)", pt: "Você já tinha estado lá?" },
-                        future: { en: "Will you have been there?", ph: "(Uíl yu hév bín đér?)", pt: "Você já terá estado lá?" }
+                        future: { en: "Will you have been there?", ph: "(Uíl yu hév bín đér?)", pt: "Você terá estado lá?" }
                     },
                     "He/She": {
-                        warning: {
-                            text: "Com He/She o verbo auxiliar muda de 'Have' para 'Has'.",
-                            recTitle: "REGRA DE TERCEIRA PESSOA:",
-                            recPattern: "Has he/she ever...?",
-                            recDesc: "Nativos utilizam 'Has' para He, She e It no Present Perfect."
-                        },
-                        present: { en: "Has she ever tried this?", ph: "(Héz shí éver trái-d đis?)", pt: "Ela já experimentou isso?" },
-                        past: { en: "Had she ever tried this?", ph: "(Héd shí éver trái-d đis?)", pt: "Ela já tinha experimentado isso?" },
-                        future: { en: "Will she have tried this?", ph: "(Uíl shí hév trái-d đis?)", pt: "Ela terá experimentado isso?" }
+                        present: { en: "Has he/she ever tried this?", ph: "(Héz hí/shí éver trái-d đis?)", pt: "Ele/Ela já testou isso?" },
+                        past: { en: "Had he/she ever tried this?", ph: "(Héd hí/shí éver trái-d đis?)", pt: "Ele/Ela já tinha testado isso?" },
+                        future: { en: "Will he/she have tried this?", ph: "(Uíl hí/shí hév trái-d đis?)", pt: "Ele/Ela terá testado isso?" }
+                    },
+                    "It (Coisa/Objeto)": {
+                        present: { en: "Has it ever happened?", ph: "(Héz it éver hépend?)", pt: "Isso já aconteceu?" },
+                        past: { en: "Had it ever happened?", ph: "(Héd it éver hépend?)", pt: "Isso já tinha acontecido?" },
+                        future: { en: "Will it have happened?", ph: "(Uíl it hév hépend?)", pt: "Isso terá acontecido?" }
+                    },
+                    "We": {
+                        present: { en: "Have we ever met?", ph: "(Hév uí éver mét?)", pt: "Nós já nos conhecemos?" },
+                        past: { en: "Had we ever met?", ph: "(Héd uí éver mét?)", pt: "Nós já tínhamos nos conhecido?" },
+                        future: { en: "Will we have met?", ph: "(Uíl uí hév mét?)", pt: "Nós teremos nos conhecido?" }
+                    },
+                    "They": {
+                        present: { en: "Have they ever arrived?", ph: "(Hév đéi éver erráivd?)", pt: "Eles já chegaram?" },
+                        past: { en: "Had they ever arrived?", ph: "(Héd đéi éver erráivd?)", pt: "Eles já tinham chegado?" },
+                        future: { en: "Will they have arrived?", ph: "(Uíl đéi hév erráivd?)", pt: "Eles teremos chegado?" }
                     }
                 },
                 examples: [
-                    { category: "✈️ Viagem", en: "Have you ever been to Japan?", ph: "(Hév yu éver bín tu djapén?)", pt: "Você já foi ao Japão?" },
-                    { category: "🍕 Comida", en: "Have you ever eaten sushi?", ph: "(Hév yu éver íten súshi?)", pt: "Você já comeu sushi?" }
+                    { category: "✈️ Viagem", en: "Have you ever been to Japan?", ph: "(Hév yu éver bín tu djapén?)", pt: "Você já foi ao Japão?" }
                 ]
             }
         ];
 
-        let currentPatternIndex = 0;
-        let currentPronoun = "You";
+        let selectedPatternIndex = 0;
+        let selectedPronoun = "You";
 
-        // Inicialização
+        // Inicialização do App
         document.addEventListener("DOMContentLoaded", () => {
-            initPatternSelect();
-            loadPattern(0);
+            renderPatternList(PATTERNS_DATABASE);
         });
 
-        // Alternar Abas Principais (Navegação do Rodapé)
-        function switchTab(tabId, element) {
-            // Esconde todas as views
-            document.querySelectorAll('.app-view').forEach(view => {
-                view.classList.remove('active');
-            });
+        // Renderiza a lista de seleção dos padrões
+        function renderPatternList(list) {
+            const grid = document.getElementById("patternsGrid");
+            grid.innerHTML = "";
             
-            // Remove classe active dos botões do nav
-            document.querySelectorAll('.nav-item').forEach(nav => {
-                nav.classList.remove('active');
-            });
+            if (list.length === 0) {
+                grid.innerHTML = "<p style='color:var(--text-muted); text-align:center; padding:20px;'>Nenhum padrão encontrado.</p>";
+                return;
+            }
 
-            // Ativa a view e o botão selecionado
-            document.getElementById(`view-${tabId}`).classList.add('active');
-            element.classList.add('active');
-        }
-
-        // Popula o select de padrões
-        function initPatternSelect() {
-            const select = document.getElementById("patternSelect");
-            select.innerHTML = "";
-            englishPatterns.forEach((item, index) => {
-                const opt = document.createElement("option");
-                opt.value = index;
-                opt.textContent = item.title;
-                select.appendChild(opt);
+            list.forEach((item, index) => {
+                const card = document.createElement("div");
+                card.className = "pattern-item-card";
+                card.onclick = () => openPatternDetail(PATTERNS_DATABASE.indexOf(item));
+                card.innerHTML = `
+                    <div>
+                        <div class="pattern-item-title">${item.title}</div>
+                        <div class="pattern-item-sub">${item.translation}</div>
+                    </div>
+                    <div class="arrow-icon">➔</div>
+                `;
+                grid.appendChild(card);
             });
         }
 
-        // Carrega um padrão selecionado
-        function loadPattern(index) {
-            currentPatternIndex = index;
-            const data = englishPatterns[index];
+        // Filtro em tempo real
+        function filterPatterns() {
+            const query = document.getElementById("searchPattern").value.toLowerCase();
+            const filtered = PATTERNS_DATABASE.filter(p => 
+                p.title.toLowerCase().includes(query) || 
+                p.translation.toLowerCase().includes(query)
+            );
+            renderPatternList(filtered);
+        }
 
-            // Card Principal
+        // Abrir Detalhes do Padrão
+        function openPatternDetail(index) {
+            selectedPatternIndex = index;
+            const pattern = PATTERNS_DATABASE[index];
+
+            document.getElementById("view-padroes-lista").classList.remove("active");
+            document.getElementById("view-padroes-detalhe").classList.add("active");
+
+            // Renderiza Card Header
             document.getElementById("mainPatternCard").innerHTML = `
-                <div class="pattern-title">${data.title}</div>
-                <div class="phonetic">🗣️ ${data.phonetic}</div>
-                <div class="translation">🇧🇷 ${data.translation}</div>
-                <div class="explanation">${data.explanation}</div>
+                <div class="pattern-title">${pattern.title}</div>
+                <div class="phonetic">🗣️ ${pattern.phonetic}</div>
+                <div class="translation">🇧🇷 ${pattern.translation}</div>
+                <div class="explanation">${pattern.explanation}</div>
             `;
 
-            // Exemplos Práticos
+            // Renderiza Exemplos
             const exContainer = document.getElementById("contextExamples");
             exContainer.innerHTML = "";
-            data.examples.forEach(ex => {
+            pattern.examples.forEach(ex => {
                 exContainer.innerHTML += `
                     <div class="example-item">
                         <div style="font-size: 0.8rem; color: var(--text-muted); font-weight:700; margin-bottom:4px;">${ex.category}</div>
@@ -668,14 +728,19 @@
                 `;
             });
 
-            // Reseta pronomes da matriz
-            const pronounKeys = Object.keys(data.pronouns);
-            currentPronoun = pronounKeys[0];
-            renderPronounTabs(pronounKeys);
+            // Garante seleção do primeiro pronome disponível
+            selectedPronoun = ALL_PRONOUNS[1]; // Padrão "You"
+            renderPronounTabs();
             renderMatrixContent();
         }
 
-        // Alternar gaveta da Matriz
+        // Voltar para a Lista de Padrões
+        function showPatternList() {
+            document.getElementById("view-padroes-detalhe").classList.remove("active");
+            document.getElementById("view-padroes-lista").classList.add("active");
+        }
+
+        // Alternar visualização da gaveta da matriz
         function toggleMatrix() {
             const matrix = document.getElementById("matrixContainer");
             const btnText = document.getElementById("matrixBtnText");
@@ -688,37 +753,36 @@
             }
         }
 
-        // Renderiza abas dos pronomes
-        function renderPronounTabs(keys) {
+        // Renderiza Abas de Pronomes (Garantindo 100% dos 6 Pronomes)
+        function renderPronounTabs() {
             const container = document.getElementById("pronounTabs");
             container.innerHTML = "";
-            keys.forEach(p => {
+            ALL_PRONOUNS.forEach(p => {
                 const btn = document.createElement("button");
-                btn.className = `pronoun-btn ${p === currentPronoun ? 'active' : ''}`;
+                btn.className = `pronoun-btn ${p === selectedPronoun ? 'active' : ''}`;
                 btn.textContent = p;
                 btn.onclick = () => {
-                    currentPronoun = p;
-                    renderPronounTabs(keys);
+                    selectedPronoun = p;
+                    renderPronounTabs();
                     renderMatrixContent();
                 };
                 container.appendChild(btn);
             });
         }
 
-        // Renderiza conteúdo da Matriz (Com aviso nativo se houver)
+        // Renderiza o Conteúdo da Matriz
         function renderMatrixContent() {
             const container = document.getElementById("matrixContent");
-            const pattern = englishPatterns[currentPatternIndex];
-            const pData = pattern.pronouns[currentPronoun];
+            const pattern = PATTERNS_DATABASE[selectedPatternIndex];
+            const pData = pattern.pronouns[selectedPronoun];
 
             if (!pData) {
-                container.innerHTML = "<p style='color:var(--text-muted)'>Sem variação específica para este pronome.</p>";
+                container.innerHTML = "<p style='color:var(--text-muted)'>Sem variação para este pronome.</p>";
                 return;
             }
 
             let html = "";
 
-            // Caso haja Warning (Ex: "It" para sentimentos)
             if (pData.warning) {
                 html += `
                     <div class="warning-card">
@@ -736,16 +800,9 @@
                 `;
             }
 
-            // Tempos Verbais
-            if (pData.present) {
-                html += renderTenseCard("Presente", "tag-present", pData.present);
-            }
-            if (pData.past) {
-                html += renderTenseCard("Passado", "tag-past", pData.past);
-            }
-            if (pData.future) {
-                html += renderTenseCard("Futuro", "tag-future", pData.future);
-            }
+            if (pData.present) html += renderTenseCard("Presente", "tag-present", pData.present);
+            if (pData.past) html += renderTenseCard("Passado", "tag-past", pData.past);
+            if (pData.future) html += renderTenseCard("Futuro", "tag-future", pData.future);
 
             container.innerHTML = html;
         }
@@ -766,6 +823,19 @@
             `;
         }
 
+        // Alternador de Abas do Rodapé
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+
+            if (tabId === 'padroes') {
+                document.getElementById('view-padroes-lista').classList.add('active');
+            } else {
+                document.getElementById(`view-${tabId}`).classList.add('active');
+            }
+            element.classList.add('active');
+        }
+
         // Síntese de Voz (TTS Nativo)
         function speak(text) {
             if ('speechSynthesis' in window) {
@@ -774,8 +844,6 @@
                 utterance.lang = 'en-US';
                 utterance.rate = 0.9;
                 window.speechSynthesis.speak(utterance);
-            } else {
-                alert("Seu navegador não suporta reprodução de áudio.");
             }
         }
     </script>
