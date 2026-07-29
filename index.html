@@ -102,7 +102,7 @@
     .btn-secondary { background: rgba(255,255,255,0.06); border: 1px solid var(--card-border); color: var(--text-main); }
     .btn-sm { padding: 0.45rem 0.75rem; font-size: 0.8rem; border-radius: 8px; width: auto; display: inline-flex; }
 
-    /* ONBOARDING GATEKEEPER MODAL */
+    /* ONBOARDING MODAL */
     #onboardingOverlay {
       position: fixed; inset: 0; background: rgba(11, 15, 23, 0.96); backdrop-filter: blur(20px);
       z-index: 1000; display: flex; flex-direction: column; justify-content: center; padding: 1.5rem;
@@ -155,20 +155,20 @@
       margin-bottom: 0.5rem;
     }
     .badge-cyan { background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.3); }
-    .badge-yellow { background: rgba(245, 158, 11, 0.15); color: var(--accent-yellow); border: 1px solid rgba(245, 158, 11, 0.3); }
 
     .example-box {
       background: rgba(255,255,255,0.03);
       border-left: 3px solid var(--accent-cyan);
-      border-radius: 8px;
-      padding: 0.75rem 1rem;
-      margin-top: 0.5rem;
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      margin-top: 0.65rem;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
+      gap: 6px;
     }
-    .example-en { font-weight: 700; font-size: 0.95rem; color: #ffffff; }
-    .example-pt { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+    .example-en { font-weight: 700; font-size: 1.05rem; color: var(--accent-cyan); }
+    .example-ph { font-size: 0.85rem; color: #fef08a; font-style: italic; }
+    .example-pt { font-size: 0.88rem; color: var(--text-main); }
 
     .response-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.5rem; }
     .response-card { background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 10px; padding: 0.75rem; }
@@ -245,7 +245,7 @@
         <span class="lang-flag">🇺🇸</span>
         <div>
           <div class="lang-name">Inglês (English)</div>
-          <div class="lang-desc">258 Padrões Nativos + Matrix + Stories</div>
+          <div class="lang-desc">258 Padrões Nativos + Pronúncia Aportuguesada</div>
         </div>
       </div>
       <div class="lang-card-large" onclick="setLanguage('es')">
@@ -277,7 +277,7 @@
       <div id="patternListContainer"></div>
     </section>
 
-    <!-- 2. ESTUDO FOCADO (GUIA COMPLETO DO PADRÃO) -->
+    <!-- 2. ESTUDO FOCADO (GUIA COMPLETO DINÂMICO DO PADRÃO) -->
     <section id="focusedStudySection" class="section">
       <button class="btn btn-secondary" onclick="showSection('patternsSection')" style="margin-bottom: 1rem;">
         ← Voltar para Padrões
@@ -294,21 +294,17 @@
       <!-- EXPLICAÇÃO E APLICAÇÃO -->
       <div class="card">
         <div class="card-title">💡 Aplicação & Uso Prático</div>
-        <p style="font-size:0.88rem; color:var(--text-main); line-height:1.5;" id="focusedUsageText">
-          Estrutura de alta frequência utilizada em conversas de vendas, trabalho, entrevistas e interações diárias.
-        </p>
+        <p style="font-size:0.88rem; color:var(--text-main); line-height:1.5;" id="focusedUsageText"></p>
         <div style="margin-top:0.75rem; background:rgba(245, 158, 11, 0.1); border:1px solid rgba(245, 158, 11, 0.25); padding:0.75rem; border-radius:10px;">
           <span style="color:var(--accent-yellow); font-weight:800; font-size:0.8rem;">⚠️ DICA DE USO:</span>
-          <p style="font-size:0.82rem; color:var(--text-main); margin-top:2px;" id="focusedProTip">
-            Mantenha a entonação natural de pergunta subindo o tom no final da frase.
-          </p>
+          <p style="font-size:0.82rem; color:var(--text-main); margin-top:2px;" id="focusedProTip"></p>
         </div>
       </div>
 
-      <!-- EXEMPLOS PRÁTICOS -->
+      <!-- EXEMPLOS PRÁTICOS COM PRONÚNCIA APORTUGUESADA -->
       <div class="card">
-        <div class="card-title">🧩 Exemplos Práticos</div>
-        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">Toque no som para ouvir a frase completa falada por um nativo:</p>
+        <div class="card-title">🧩 Exemplos Práticos & Pronúncia</div>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">Aprenda a pronúncia aportuguesada e ouça o áudio nativo:</p>
         <div id="focusedExamplesContainer"></div>
       </div>
 
@@ -427,7 +423,6 @@
     // SANITIZAÇÃO E LIMPEZA DE TEXTO / ÁUDIO
     function getCleanPatternText(text) {
       if (!text) return "";
-      // Remove colchetes gramaticais como [adjective], [noun/verb-ing] etc.
       return text.replace(/\[.*?\]/g, '').replace(/\(.*?\)/g, '').replace(/\?/g, '').trim();
     }
 
@@ -830,7 +825,148 @@
       `).join('');
     }
 
-    // ABRIR O GUIA COMPLETO E RICO DO PADRÃO
+    // MOTOR DINÂMICO DE GERAÇÃO DE DETALHES, PRONÚNCIA APORTUGUESADA E EXEMPLOS
+    function getPatternDataDetails(patternObj) {
+      const raw = patternObj.raw || patternObj.display || "";
+      const clean = patternObj.clean || "";
+      const desc = patternObj.desc || "";
+
+      let usage = "Estrutura essencial para conversação fluente em situações do dia a dia, trabalho e viagens.";
+      let tip = "Atente-se à entonação e conecte as palavras de forma fluida sem pausas bruscas.";
+      let posResp = ["• Yes, absolutely.", "• Definitely!", "• Yes, I am."];
+      let negResp = ["• Not really.", "• No, I'm not.", "• Maybe another time."];
+      let variations = [
+        "👉 Formas mais formais ou diretas no dia a dia.",
+        "👉 Expressões equivalentes usadas por nativos."
+      ];
+      let examples = [];
+
+      // DIVERSIFICAÇÃO DINÂMICA BASEADA NO PADRÃO SELECIONADO
+      if (raw.includes("feeling")) {
+        usage = "Usado para perguntar sobre o estado físico ou emocional de alguém no momento.";
+        tip = "O 'g' no final de 'feeling' não é pronunciado fortemente na fala rápida de nativos.";
+        examples = [
+          { en: "Are you feeling better today?", ph: "Ar yu fílin bérer tudéi?", pt: "Você está se sentindo melhor hoje?" },
+          { en: "Are you feeling tired?", ph: "Ar yu fílin táierd?", pt: "Você está se sentindo cansado(a)?" },
+          { en: "Are you feeling good?", ph: "Ar yu fílin gúd?", pt: "Você está se sentindo bem?" }
+        ];
+        posResp = ["• Yes, I feel great!", "• Much better, thanks.", "• A little bit better."];
+        negResp = ["• No, not really.", "• Still feeling bad.", "• Not yet."];
+        variations = [
+          "👉 <b>How are you feeling?</b> (Como você está se sentindo?)",
+          "👉 <b>Are you doing okay?</b> (Você está bem?)"
+        ];
+      }
+      else if (raw.includes("interested in")) {
+        usage = "Usado para descobrir os gostos, interesses ou intenções de compra de alguém.";
+        tip = "Lembre-se: 'interested IN' (e nunca 'on'). Verbos após ele ganham a terminação -ING.";
+        examples = [
+          { en: "Are you interested in coffee?", ph: "Ar yu íntrested in kófi?", pt: "Você tem interesse em café?" },
+          { en: "Are you interested in learning English?", ph: "Ar yu íntrested in lérnin ínglish?", pt: "Você tem interesse em aprender inglês?" },
+          { en: "Are you interested in this project?", ph: "Ar yu íntrested in đis pródjekt?", pt: "Você tem interesse neste projeto?" }
+        ];
+        posResp = ["• Yes, absolutely!", "• Definitely, I am.", "• Yes, I'd love to!"];
+        negResp = ["• Not really.", "• No, I'm not interested.", "• Maybe another time."];
+        variations = [
+          "👉 <b>Would you be interested in...?</b> (Você teria interesse em...?)",
+          "👉 <b>Do you want to...?</b> (Você quer...?)",
+          "👉 <b>How about...?</b> (Que tal...?)"
+        ];
+      }
+      else if (raw.toLowerCase().includes("are you") && !raw.includes("feeling")) {
+        usage = "Usado para perguntar sobre características, estados atuais ou sentimentos de alguém.";
+        tip = "Na fala rápida, 'Are you' junta os sons parecendo 'Ar-yu'.";
+        examples = [
+          { en: "Are you ready?", ph: "Ar yu rédi?", pt: "Você está pronto(a)?" },
+          { en: "Are you hungry?", ph: "Ar yu rángri?", pt: "Você está com fome?" },
+          { en: "Are you sure?", ph: "Ar yu shúr?", pt: "Você tem certeza?" }
+        ];
+        posResp = ["• Yes, I am!", "• Totally.", "• Yes, for sure."];
+        negResp = ["• No, I'm not.", "• Not yet.", "• Not really."];
+        variations = [
+          "👉 <b>Is everything okay?</b> (Está tudo bem?)",
+          "👉 <b>Are you set?</b> (Está pronto / tudo certo?)"
+        ];
+      }
+      else if (raw.includes("Can I")) {
+        usage = "Padrão fundamental para fazer pedidos educados, pedir permissão ou oferecer ajuda.";
+        tip = "'Can I' emendado soa como 'Kén-ai'.";
+        examples = [
+          { en: "Can I have some water?", ph: "Kén ai rév sàm uóter?", pt: "Posso tomar um pouco de água?" },
+          { en: "Can I help you?", ph: "Kén ai rélp yu?", pt: "Posso te ajudar?" },
+          { en: "Can I pay by card?", ph: "Kén ai péi bai kárd?", pt: "Posso pagar no cartão?" }
+        ];
+        posResp = ["• Sure, go ahead!", "• Of course!", "• Yes, certainly."];
+        negResp = ["• Sorry, you can't.", "• No, unfortunately not.", "• I'm afraid not."];
+        variations = [
+          "👉 <b>Could I have...?</b> (Eu poderia ter...?)",
+          "👉 <b>May I...?</b> (Posso...? - mais formal)"
+        ];
+      }
+      else if (raw.includes("Where is") || raw.includes("Where are")) {
+        usage = "Usado para perguntar a localização de lugares, pessoas ou objetos.";
+        tip = "'Where is' vira frequentemente a contração 'Where's' (Uérz).";
+        examples = [
+          { en: "Where is the bathroom?", ph: "Uér iz đe bézrum?", pt: "Onde fica o banheiro?" },
+          { en: "Where is my phone?", ph: "Uér iz mai foun?", pt: "Onde está meu celular?" },
+          { en: "Where are we going?", ph: "Uér ar ui góuin?", pt: "Para onde estamos indo?" }
+        ];
+        posResp = ["• It's right over there.", "• Turn left.", "• Straight ahead."];
+        negResp = ["• I don't know.", "• I have no idea.", "• Sorry, I'm not from here."];
+        variations = [
+          "👉 <b>How do I get to...?</b> (Como eu chego em...?)",
+          "👉 <b>Do you know where... is?</b> (Você sabe onde fica...?)"
+        ];
+      }
+      else if (raw.includes("used to")) {
+        usage = "Usado para falar sobre hábitos ou situações do passado que você não faz mais hoje.";
+        tip = "'Used to' soa exatamente como 'iúst tu'. O 'd' é suave.";
+        examples = [
+          { en: "I used to live in Brazil.", ph: "Ai iúst tu lív in Braszíl.", pt: "Eu costumava morar no Brasil." },
+          { en: "I used to work here.", ph: "Ai iúst tu uérk ríer.", pt: "Eu costumava trabalhar aqui." },
+          { en: "I used to play soccer.", ph: "Ai iúst tu pléi sóker.", pt: "Eu costumava jogar futebol." }
+        ];
+        posResp = ["• Me too!", "• Really? That's cool.", "• I remember that."];
+        negResp = ["• I never did.", "• Not me.", "• I don't think so."];
+        variations = [
+          "👉 <b>In the past I would...</b> (No passado eu costumava...)",
+          "👉 <b>Back then, I...</b> (Naquela época, eu...)"
+        ];
+      }
+      else if (raw.includes("Do you want")) {
+        usage = "Usado para oferecer algo a alguém ou perguntar se a pessoa quer fazer algo.";
+        tip = "Nativos costumam falar 'Do you want' como 'Duju uónt' ou 'Wanna'.";
+        examples = [
+          { en: "Do you want some coffee?", ph: "Du yu uónt sàm kófi?", pt: "Você quer um pouco de café?" },
+          { en: "Do you want to come?", ph: "Du yu uónt tu kàm?", pt: "Você quer vir junto?" },
+          { en: "Do you want help?", ph: "Du yu uónt rélp?", pt: "Você quer ajuda?" }
+        ];
+        posResp = ["• Yes, please!", "• Sure, I'd love to.", "• That would be great!"];
+        negResp = ["• No, thank you.", "• I'm good, thanks.", "• Not right now."];
+        variations = [
+          "👉 <b>Would you like...?</b> (Você gostaria de...?)",
+          "👉 <b>Wanna get...?</b> (Quer pegar...?)"
+        ];
+      }
+      else {
+        // GERADOR INTELIGENTE DE RECURSO PARA QUALQUER UM DOS 258 PADRÕES
+        const cText = clean || "this";
+        const dText = desc || "essa estrutura";
+        examples = [
+          { en: `${cText} right now.`, ph: `(${cText} ráit náu)`, pt: `${dText} agora mesmo.` },
+          { en: `${cText} every day.`, ph: `(${cText} évri déi)`, pt: `${dText} todos os dias.` },
+          { en: `${cText} with me.`, ph: `(${cText} uiz mí)`, pt: `${dText} comigo.` }
+        ];
+        variations = [
+          `👉 Outra forma parecida: <b>${cText}...</b>`,
+          `👉 Expressão equivalente no dia a dia.`
+        ];
+      }
+
+      return { usage, tip, posResp, negResp, variations, examples };
+    }
+
+    // ABRIR O GUIA COMPLETO E RICO DO PADRÃO (DINÂMICO)
     function openFocusedStudy(patternId) {
       const list = patternDatabase[currentLang] || [];
       selectedPatternObj = list.find(p => p.id === patternId) || list[0];
@@ -839,57 +975,33 @@
       document.getElementById('focusedPatternClean').innerText = selectedPatternObj.display;
       document.getElementById('focusedPatternDesc').innerText = `👉 Significado: ${selectedPatternObj.desc}`;
 
-      // GERAR CONTEXTO E DICAS DINÂMICAS
-      if (clean.toLowerCase().includes('interested in')) {
-        document.getElementById('focusedProTip').innerText = "Regra de ouro: use 'interested in' (nunca 'interested on'). Se usar verbo depois, adicione -ING (ex: learning).";
-      } else if (clean.toLowerCase().includes('used to')) {
-        document.getElementById('focusedProTip').innerText = "Use para hábitos passados que você não faz mais hoje no seu dia a dia.";
-      } else {
-        document.getElementById('focusedProTip').innerText = "Mantenha o ritmo natural sem pausar entre o pronome e o verbo da frase.";
-      }
+      // BUSCA DETALHES ESPECÍFICOS DO PADRÃO SELECIONADO
+      const details = getPatternDataDetails(selectedPatternObj);
 
-      // GERAR EXEMPLOS PRÁTICOS COM ÁUDIO LIMPO
-      const examples = generateSmartExamples(clean);
-      document.getElementById('focusedExamplesContainer').innerHTML = examples.map(ex => `
+      document.getElementById('focusedUsageText').innerText = details.usage;
+      document.getElementById('focusedProTip').innerText = details.tip;
+
+      // RENDERIZA EXEMPLOS PRÁTICOS COM PRONÚNCIA APORTUGUESADA
+      document.getElementById('focusedExamplesContainer').innerHTML = details.examples.map(ex => `
         <div class="example-box">
-          <div>
-            <div class="example-en">${ex.en}</div>
-            <div class="example-pt">${ex.pt}</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+            <div class="example-en">✅ ${ex.en}</div>
+            <button class="btn btn-sm btn-secondary" onclick="speakText('${ex.en.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
           </div>
-          <button class="btn btn-sm btn-secondary" onclick="speakText('${ex.en}')">🔊 Ouvir</button>
+          <div class="example-ph">🗣️ <i>(${ex.ph})</i></div>
+          <div class="example-pt">🇧🇷 ${ex.pt}</div>
         </div>
       `).join('');
 
-      // GERAR RESPOSTAS NATURAIS
-      document.getElementById('focusedPosResponses').innerHTML = `
-        • Yes, absolutely.<br>
-        • Definitely!<br>
-        • Yes, I am.
-      `;
-      document.getElementById('focusedNegResponses').innerHTML = `
-        • Not really.<br>
-        • No, I'm not.<br>
-        • Maybe another time.
-      `;
+      // RENDERIZA RESPOSTAS NATURAIS DINÂMICAS
+      document.getElementById('focusedPosResponses').innerHTML = details.posResp.join('<br>');
+      document.getElementById('focusedNegResponses').innerHTML = details.negResp.join('<br>');
 
-      // GERAR VARIAÇÕES NATIVAS
-      document.getElementById('focusedVariationsList').innerHTML = `
-        👉 <b>Would you be interested in...?</b> (Mais formal / Vendas)<br>
-        👉 <b>Do you want to...?</b> (Informal / Dia a dia)<br>
-        👉 <b>How about...?</b> (Sugestão rápida)
-      `;
+      // RENDERIZA VARIAÇÕES NATIVAS DINÂMICAS
+      document.getElementById('focusedVariationsList').innerHTML = details.variations.join('<br><br>');
 
       renderMatrixVariations();
       showSection('focusedStudySection');
-    }
-
-    function generateSmartExamples(cleanText) {
-      const base = cleanText.replace(/\?/g, '');
-      return [
-        { en: `${base} coffee?`, pt: `Você tem interesse em café?` },
-        { en: `${base} learning English?`, pt: `Você tem interesse em aprender inglês?` },
-        { en: `${base} this project?`, pt: `Você tem interesse neste projeto?` }
-      ];
     }
 
     function speakCurrentCleanPattern() {
@@ -906,17 +1018,13 @@
 
       const clean = selectedPatternObj.clean;
 
-      let aff = `${clean} (com ${person})`;
-      if (tense === 'past') aff = `[Passado] ${clean}`;
-      if (tense === 'future') aff = `[Futuro] ${clean}`;
-
       container.innerHTML = `
         <div class="example-box" style="margin-top:0.5rem;">
-          <div>
-            <div class="example-en">${person} -> ${clean}</div>
-            <div class="example-pt">Forma conjugada e limpa</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+            <div class="example-en">${person} ➔ ${clean}</div>
+            <button class="btn btn-sm btn-secondary" onclick="speakText('${clean.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
           </div>
-          <button class="btn btn-sm btn-secondary" onclick="speakText('${clean}')">🔊 Ouvir</button>
+          <div class="example-pt">Forma conjugada e limpa para estudo</div>
         </div>
       `;
     }
@@ -940,8 +1048,8 @@
           </div>
 
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
-            <button class="btn" onclick="speakText('${story.plainText}', 1.0)">🔊 Normal</button>
-            <button class="btn btn-secondary" onclick="speakText('${story.plainText}', 0.75)">🐢 Shadowing (0.75x)</button>
+            <button class="btn" onclick="speakText('${story.plainText.replace(/'/g, "\\'")}', 1.0)">🔊 Normal</button>
+            <button class="btn btn-secondary" onclick="speakText('${story.plainText.replace(/'/g, "\\'")}', 0.75)">🐢 Shadowing (0.75x)</button>
           </div>
         </div>
       `).join('');
@@ -983,7 +1091,7 @@
       renderSRSCard();
     }
 
-    // VOZ LIMPA E NATURAL (SEM PALAVRAS ENTRE COLCHETES)
+    // VOZ LIMPA E NATURAL
     function speakText(text, rate = 1.0) {
       if (!('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
