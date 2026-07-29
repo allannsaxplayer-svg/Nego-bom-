@@ -100,6 +100,7 @@
     }
     .btn:active { transform: scale(0.98); opacity: 0.9; }
     .btn-secondary { background: rgba(255,255,255,0.06); border: 1px solid var(--card-border); color: var(--text-main); }
+    .btn-sm { padding: 0.45rem 0.75rem; font-size: 0.8rem; border-radius: 8px; width: auto; display: inline-flex; }
 
     /* ONBOARDING GATEKEEPER MODAL */
     #onboardingOverlay {
@@ -142,7 +143,37 @@
     .pattern-text-main { font-weight: 700; font-size: 1rem; color: var(--accent-cyan); }
     .pattern-text-sub { font-size: 0.82rem; color: var(--text-muted); margin-top: 2px; }
 
-    /* FOCUSED MODE MATRIX */
+    /* RICH STUDY ELEMENTS */
+    .badge-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+    }
+    .badge-cyan { background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .badge-yellow { background: rgba(245, 158, 11, 0.15); color: var(--accent-yellow); border: 1px solid rgba(245, 158, 11, 0.3); }
+
+    .example-box {
+      background: rgba(255,255,255,0.03);
+      border-left: 3px solid var(--accent-cyan);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-top: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .example-en { font-weight: 700; font-size: 0.95rem; color: #ffffff; }
+    .example-pt { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+
+    .response-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.5rem; }
+    .response-card { background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 10px; padding: 0.75rem; }
+    .response-title { font-size: 0.75rem; font-weight: 800; margin-bottom: 0.4rem; text-transform: uppercase; }
+
     select {
       width: 100%;
       background: #161e2e;
@@ -155,16 +186,6 @@
       margin-bottom: 0.85rem;
       outline: none;
     }
-
-    .variation-block {
-      background: rgba(255,255,255,0.02);
-      border-left: 3px solid var(--accent-cyan);
-      border-radius: 8px;
-      padding: 0.85rem;
-      margin-top: 0.75rem;
-    }
-    .variation-tag { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--accent-cyan); margin-bottom: 4px; }
-    .variation-target { font-size: 1.05rem; font-weight: 700; color: #ffffff; }
 
     /* STORY BUILDER */
     mark.connector { background: var(--connector-bg); color: var(--connector-text); padding: 2px 6px; border-radius: 4px; font-weight: 800; }
@@ -250,46 +271,91 @@
     <section id="patternsSection" class="section active">
       <div class="card">
         <div class="card-title">📚 Biblioteca de Padrões (<span id="patternCounter">258</span>)</div>
-        <p style="font-size:0.82rem; color:var(--text-muted);">Toque para abrir a Matriz Temporal ou digite para filtrar:</p>
+        <p style="font-size:0.82rem; color:var(--text-muted);">Toque em qualquer padrão para abrir seu Guia Completo:</p>
         <input type="text" id="searchInput" class="search-input" placeholder="🔍 Pesquisar padrão..." oninput="renderPatternList()" />
       </div>
       <div id="patternListContainer"></div>
     </section>
 
-    <!-- 2. ESTUDO FOCADO -->
+    <!-- 2. ESTUDO FOCADO (GUIA COMPLETO DO PADRÃO) -->
     <section id="focusedStudySection" class="section">
       <button class="btn btn-secondary" onclick="showSection('patternsSection')" style="margin-bottom: 1rem;">
         ← Voltar para Padrões
       </button>
 
+      <!-- CABEÇALHO DO PADRÃO LIMPO -->
       <div class="card">
-        <div class="card-title" id="focusedPatternName">Carregando...</div>
-        <p id="focusedPatternDesc" style="color:var(--text-muted); font-size:0.85rem;"></p>
+        <div class="badge-tag badge-cyan">Padrão Selecionado</div>
+        <div class="card-title" id="focusedPatternClean" style="font-size:1.4rem; color:var(--accent-cyan);"></div>
+        <div id="focusedPatternDesc" style="color:var(--text-muted); font-size:0.9rem; margin-top:4px;"></div>
+        <button class="btn btn-sm btn-secondary" style="margin-top:0.85rem;" onclick="speakCurrentCleanPattern()">🔊 Ouvir Padrão Limpo</button>
       </div>
 
+      <!-- EXPLICAÇÃO E APLICAÇÃO -->
       <div class="card">
-        <label style="font-size:0.8rem; font-weight:700; color:var(--text-muted);">1. ESCOLHA A PESSOA / PRONOME:</label>
-        <select id="focusedPersonSelect" onchange="renderFocusedVariations()">
-          <option value="I">Eu (I / Yo / Je)</option>
-          <option value="You">Você (You / Tú / Tu)</option>
-          <option value="He/She">Ele/Ela (He-She / Él-Ella / Il-Elle)</option>
-          <option value="We">Nós (We / Nosotros / Nous)</option>
-          <option value="They">Eles (They / Ellos / Ils)</option>
+        <div class="card-title">💡 Aplicação & Uso Prático</div>
+        <p style="font-size:0.88rem; color:var(--text-main); line-height:1.5;" id="focusedUsageText">
+          Estrutura de alta frequência utilizada em conversas de vendas, trabalho, entrevistas e interações diárias.
+        </p>
+        <div style="margin-top:0.75rem; background:rgba(245, 158, 11, 0.1); border:1px solid rgba(245, 158, 11, 0.25); padding:0.75rem; border-radius:10px;">
+          <span style="color:var(--accent-yellow); font-weight:800; font-size:0.8rem;">⚠️ DICA DE USO:</span>
+          <p style="font-size:0.82rem; color:var(--text-main); margin-top:2px;" id="focusedProTip">
+            Mantenha a entonação natural de pergunta subindo o tom no final da frase.
+          </p>
+        </div>
+      </div>
+
+      <!-- EXEMPLOS PRÁTICOS -->
+      <div class="card">
+        <div class="card-title">🧩 Exemplos Práticos</div>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">Toque no som para ouvir a frase completa falada por um nativo:</p>
+        <div id="focusedExamplesContainer"></div>
+      </div>
+
+      <!-- RESPOSTAS NATURAIS -->
+      <div class="card">
+        <div class="card-title">💬 Respostas Naturais da Vida Real</div>
+        <div class="response-grid">
+          <div class="response-card" style="border-top: 3px solid var(--accent-green);">
+            <div class="response-title" style="color:var(--accent-green);">✅ Positivas</div>
+            <div id="focusedPosResponses" style="font-size:0.82rem; line-height:1.6;"></div>
+          </div>
+          <div class="response-card" style="border-top: 3px solid var(--accent-red);">
+            <div class="response-title" style="color:var(--accent-red);">❌ Negativas</div>
+            <div id="focusedNegResponses" style="font-size:0.82rem; line-height:1.6;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VARIAÇÕES NATIVAS -->
+      <div class="card">
+        <div class="card-title">🔄 Variações Nativas (Sinônimos)</div>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">Outras formas que os nativos usam no lugar deste padrão:</p>
+        <div id="focusedVariationsList" style="font-size:0.85rem; line-height:1.6;"></div>
+      </div>
+
+      <!-- MATRIZ DE CONJUGAÇÃO -->
+      <div class="card">
+        <div class="card-title">🎛️ Matriz Temporal & Pronomes</div>
+        <label style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">1. PRONOME / PESSOA:</label>
+        <select id="focusedPersonSelect" onchange="renderMatrixVariations()">
+          <option value="I">Eu (I)</option>
+          <option value="You" selected>Você (You)</option>
+          <option value="He/She">Ele/Ela (He/She)</option>
+          <option value="We">Nós (We)</option>
+          <option value="They">Eles (They)</option>
         </select>
 
-        <label style="font-size:0.8rem; font-weight:700; color:var(--text-muted);">2. ESCOLHA O TEMPO VERBAL / MATRIZ:</label>
-        <select id="focusedTenseSelect" onchange="renderFocusedVariations()">
-          <option value="present">Hoje / Hábitos (Presente)</option>
-          <option value="continuous">Agora (Presente Contínuo)</option>
-          <option value="past">Ontem / Passado</option>
-          <option value="future">Amanhã / Futuro</option>
+        <label style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">2. TEMPO VERBAL:</label>
+        <select id="focusedTenseSelect" onchange="renderMatrixVariations()">
+          <option value="present">Presente (Hábitos / Rotina)</option>
+          <option value="past">Passado (Ontem / Aconteceu)</option>
+          <option value="future">Futuro (Amanhã / Plano)</option>
         </select>
+
+        <div id="matrixOutputContainer" style="margin-top:0.5rem;"></div>
       </div>
 
-      <div class="card">
-        <div class="card-title">🎯 Variações Geradas</div>
-        <div id="focusedVariationsContainer"></div>
-      </div>
     </section>
 
     <!-- 3. STORY BUILDER -->
@@ -326,7 +392,7 @@
         <div class="card-title">⚙️ Backup & Dados</div>
         <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem;">Exporte seu progresso ou sincronize seus padrões.</p>
         <button class="btn btn-secondary" onclick="exportDataJSON()" style="margin-bottom:0.5rem;">📥 Exportar Backup (JSON)</button>
-        <button class="btn btn-secondary" onclick="alert('Sistema sincronizado com 258 padrões!')">🔄 Verificar Banco de Dados</button>
+        <button class="btn btn-secondary" onclick="alert('Sistema limpo e sincronizado com 258 padrões!')">🔄 Verificar Banco de Dados</button>
       </div>
     </section>
 
@@ -350,7 +416,7 @@
 
   <script>
     let currentLang = localStorage.getItem('nego_lang') || null;
-    let selectedPattern = null;
+    let selectedPatternObj = null;
     let srsDeck = [];
     let srsIndex = 0;
     let srsFlipped = false;
@@ -358,9 +424,20 @@
     const langVoiceMap = { en: 'en-US', es: 'es-ES', fr: 'fr-FR' };
     const langNames = { en: '🇺🇸 Inglês', es: '🇪🇸 Espanhol', fr: '🇫🇷 Francês' };
 
-    // BANCO COMPLETO REUNIDO (258 PADRÕES)
+    // SANITIZAÇÃO E LIMPEZA DE TEXTO / ÁUDIO
+    function getCleanPatternText(text) {
+      if (!text) return "";
+      // Remove colchetes gramaticais como [adjective], [noun/verb-ing] etc.
+      return text.replace(/\[.*?\]/g, '').replace(/\(.*?\)/g, '').replace(/\?/g, '').trim();
+    }
+
+    function getDisplayPatternText(text) {
+      if (!text) return "";
+      return text.replace(/\[.*?\]/g, '...').trim();
+    }
+
+    // BANCO BRUTO DE 258 PADRÕES
     const rawPatternsData = [
-      // PARTE 1
       ["Are you [adjective]?", "Você está / é...?"],
       ["Are you feeling [adjective]?", "Você está se sentindo...?"],
       ["Are you interested in [noun/verb-ing]?", "Você está interessado(a) em...?"],
@@ -456,8 +533,6 @@
       ["You feel [adjective]", "Você se sente..."],
       ["You got this", "Você consegue"],
       ["You / We / She want(s) [noun]", "Você / Nós / Ela quer..."],
-
-      // PARTE 2
       ["Back in Brazil, I used to...", "Lá no Brasil, eu costumava..."],
       ["Before coming here, I...", "Antes de vir para cá, eu..."],
       ["I came here to...", "Eu vim para cá para..."],
@@ -496,14 +571,12 @@
       ["Where do I put this?", "Onde eu coloco isso?"],
       ["Where is the safety gear?", "Onde está o equipamento de segurança?"],
       ["You need to move this to...", "Você precisa mover isso para..."],
-
-      // PARTE 3
       ["After we finish, we...", "Depois que terminarmos, nós..."],
       ["All of us need...", "Todos nós precisamos de..."],
-      ["Are there any/more...?", "Há algum/mais...? / Tem algum/mais...?"],
+      ["Are there any/more...?", "Há algum/mais...?"],
       ["Are you still thinking about...?", "Você ainda está pensando em/sobre...?"],
       ["Around here we...", "Por aqui nós..."],
-      ["As far as I...", "Até onde eu... / Pelo que eu..."],
+      ["As far as I...", "Até onde eu..."],
       ["At least...", "Pelo menos..."],
       ["At the moment...", "No momento..."],
       ["Because of this we...", "Por causa disso nós..."],
@@ -527,7 +600,7 @@
       ["Generally it is...", "Geralmente é/está..."],
       ["Hardly ever I [verb]", "Quase nunca eu..."],
       ["He always forgets...", "Ele sempre esquece..."],
-      ["He might be... / Maybe he is...", "Ele pode estar/ser... / Talvez ele seja/esteja..."],
+      ["He might be... / Maybe he is...", "Ele pode estar/ser..."],
       ["He needs to...", "Ele precisa..."],
       ["He never eats...", "Ele nunca come..."],
       ["He tried to explain...", "Ele tentou explicar..."],
@@ -545,17 +618,17 @@
       ["I don't remember why...", "Não me lembro do porquê..."],
       ["I don't want to...", "Não quero..."],
       ["I feel good when...", "Eu me sinto bem quando..."],
-      ["I feel very [adjective]", "Me sinto muito... / Estou com muito..."],
+      ["I feel very [adjective]", "Me sinto muito..."],
       ["I forget...", "Eu esqueço..."],
       ["I guess it means...", "Acho que significa..."],
       ["I have a...", "Eu tenho um/uma..."],
       ["I haven't decided yet...", "Eu ainda não decidi..."],
-      ["I haven't seen...", "Eu não vi... / Não tenho visto..."],
+      ["I haven't seen...", "Eu não vi..."],
       ["I heard...", "Eu ouvi..."],
       ["I just saw...", "Acabei de ver..."],
       ["I just want to...", "Eu só quero..."],
       ["I like the/this...", "Eu gosto do/deste..."],
-      ["I like to...", "Gosto de... / Eu gosto de..."],
+      ["I like to...", "Gosto de..."],
       ["I love to...", "Eu amo..."],
       ["I need to understand...", "Eu preciso entender..."],
       ["I need to...", "Eu preciso..."],
@@ -576,7 +649,7 @@
       ["In summary, we...", "Em resumo, nós..."],
       ["In the end we...", "No final nós..."],
       ["In the evening we...", "À noite nós..."],
-      ["Is there a...?", "Tem um/uma...? / Existe um/uma...?"],
+      ["Is there a...?", "Tem um/uma...?"],
       ["Is there any chance...?", "Existe alguma chance...?"],
       ["It could...", "Poderia... / Pode..."],
       ["It doesn't make sense...", "Não faz sentido..."],
@@ -587,9 +660,9 @@
       ["It seems very...", "Parece muito..."],
       ["It used to be...", "Costumava ser..."],
       ["It will be...", "Vai ser/estar..."],
-      ["It's always the same...", "É sempre o/a mesmo/a..."],
+      ["It's always the same...", "É sempre o mesmo..."],
       ["It's hard to...", "É difícil..."],
-      ["It's not the same...", "Não é o/a mesmo/a..."],
+      ["It's not the same...", "Não é o mesmo..."],
       ["It's probably too late...", "Provavelmente é tarde demais..."],
       ["Let me see...", "Deixe-me ver..."],
       ["Let me try...", "Deixe-me tentar..."],
@@ -599,7 +672,7 @@
       ["Most people...", "A maioria das pessoas..."],
       ["My brother wants...", "Meu irmão quer..."],
       ["No doubt it is...", "Sem dúvida é..."],
-      ["Nobody told me...", "Ninguém me contou/disse..."],
+      ["Nobody told me...", "Ninguém me contou..."],
       ["Nothing else really matters...", "Nada realmente importa..."],
       ["On average, it...", "Em média,..."],
       ["Please don't...", "Por favor, não..."],
@@ -610,7 +683,7 @@
       ["She doesn't want to...", "Ela não quer..."],
       ["She is always trying to...", "Ela está sempre tentando..."],
       ["She is learning...", "Ela está aprendendo..."],
-      ["She never told me...", "Ela nunca me contou/disse..."],
+      ["She never told me...", "Ela nunca me contou..."],
       ["Sit down and...", "Sente-se e..."],
       ["Some people...", "Algumas pessoas..."],
       ["Tell me...", "Diga-me... / Me conte..."],
@@ -630,11 +703,11 @@
       ["We could try...", "Nós poderíamos tentar..."],
       ["We hope to...", "Esperamos..."],
       ["We need to...", "Precisamos..."],
-      ["We stayed...", "Ficamos / Ficamos hospedados..."],
-      ["We usually go...", "Normalmente/Geralmente vamos..."],
-      ["We were going to...", "Nós íamos... / Nós estávamos indo..."],
-      ["We were talking...", "Estávamos conversando/falando..."],
-      ["We weren't expecting...", "Nós não estávamos esperando..."],
+      ["We stayed...", "Ficamos hospedados..."],
+      ["We usually go...", "Geralmente vamos..."],
+      ["We were going to...", "Nós íamos..."],
+      ["We were talking...", "Estávamos conversando..."],
+      ["We weren't expecting...", "Não estávamos esperando..."],
       ["We'll figure... out", "Nós vamos resolver..."],
       ["Were they [verb]-ing...?", "Eles estavam...?"],
       ["What are you doing...?", "O que você está fazendo...?"],
@@ -653,20 +726,17 @@
       ["You should...", "Você deveria..."]
     ];
 
-    // CONSTRUTOR DINÂMICO DOS BANCOS DE DADOS
     function buildDatabase() {
       const db = { en: [], es: [], fr: [] };
-
       rawPatternsData.forEach((item, idx) => {
         const id = 'p_' + idx;
-        const nameEn = item[0];
+        const rawName = item[0];
         const descPt = item[1];
 
-        db.en.push({ id: id + '_en', name: nameEn, desc: descPt });
-        db.es.push({ id: id + '_es', name: `[ES] ${nameEn}`, desc: descPt });
-        db.fr.push({ id: id + '_fr', name: `[FR] ${nameEn}`, desc: descPt });
+        db.en.push({ id: id + '_en', raw: rawName, display: getDisplayPatternText(rawName), clean: getCleanPatternText(rawName), desc: descPt });
+        db.es.push({ id: id + '_es', raw: rawName, display: `[ES] ${getDisplayPatternText(rawName)}`, clean: getCleanPatternText(rawName), desc: descPt });
+        db.fr.push({ id: id + '_fr', raw: rawName, display: `[FR] ${getDisplayPatternText(rawName)}`, clean: getCleanPatternText(rawName), desc: descPt });
       });
-
       return db;
     }
 
@@ -683,8 +753,7 @@
           connectors: ["but (mas)", "so (então)", "actually (na verdade)", "because (porque)"]
         }
       ],
-      es: [],
-      fr: []
+      es: [], fr: []
     };
 
     function initApp() {
@@ -739,7 +808,7 @@
       const query = (document.getElementById('searchInput').value || '').toLowerCase();
 
       const filtered = list.filter(item => 
-        item.name.toLowerCase().includes(query) || 
+        item.display.toLowerCase().includes(query) || 
         item.desc.toLowerCase().includes(query)
       );
 
@@ -753,7 +822,7 @@
       container.innerHTML = filtered.map(item => `
         <div class="pattern-card-item" onclick="openFocusedStudy('${item.id}')">
           <div>
-            <div class="pattern-text-main">${item.name}</div>
+            <div class="pattern-text-main">${item.display}</div>
             <div class="pattern-text-sub">${item.desc}</div>
           </div>
           <span style="color:var(--accent-cyan); font-weight:bold;">➔</span>
@@ -761,60 +830,93 @@
       `).join('');
     }
 
+    // ABRIR O GUIA COMPLETO E RICO DO PADRÃO
     function openFocusedStudy(patternId) {
       const list = patternDatabase[currentLang] || [];
-      selectedPattern = list.find(p => p.id === patternId) || list[0];
-      document.getElementById('focusedPatternName').innerText = selectedPattern.name;
-      document.getElementById('focusedPatternDesc').innerText = selectedPattern.desc;
-      renderFocusedVariations();
+      selectedPatternObj = list.find(p => p.id === patternId) || list[0];
+      
+      const clean = selectedPatternObj.clean;
+      document.getElementById('focusedPatternClean').innerText = selectedPatternObj.display;
+      document.getElementById('focusedPatternDesc').innerText = `👉 Significado: ${selectedPatternObj.desc}`;
+
+      // GERAR CONTEXTO E DICAS DINÂMICAS
+      if (clean.toLowerCase().includes('interested in')) {
+        document.getElementById('focusedProTip').innerText = "Regra de ouro: use 'interested in' (nunca 'interested on'). Se usar verbo depois, adicione -ING (ex: learning).";
+      } else if (clean.toLowerCase().includes('used to')) {
+        document.getElementById('focusedProTip').innerText = "Use para hábitos passados que você não faz mais hoje no seu dia a dia.";
+      } else {
+        document.getElementById('focusedProTip').innerText = "Mantenha o ritmo natural sem pausar entre o pronome e o verbo da frase.";
+      }
+
+      // GERAR EXEMPLOS PRÁTICOS COM ÁUDIO LIMPO
+      const examples = generateSmartExamples(clean);
+      document.getElementById('focusedExamplesContainer').innerHTML = examples.map(ex => `
+        <div class="example-box">
+          <div>
+            <div class="example-en">${ex.en}</div>
+            <div class="example-pt">${ex.pt}</div>
+          </div>
+          <button class="btn btn-sm btn-secondary" onclick="speakText('${ex.en}')">🔊 Ouvir</button>
+        </div>
+      `).join('');
+
+      // GERAR RESPOSTAS NATURAIS
+      document.getElementById('focusedPosResponses').innerHTML = `
+        • Yes, absolutely.<br>
+        • Definitely!<br>
+        • Yes, I am.
+      `;
+      document.getElementById('focusedNegResponses').innerHTML = `
+        • Not really.<br>
+        • No, I'm not.<br>
+        • Maybe another time.
+      `;
+
+      // GERAR VARIAÇÕES NATIVAS
+      document.getElementById('focusedVariationsList').innerHTML = `
+        👉 <b>Would you be interested in...?</b> (Mais formal / Vendas)<br>
+        👉 <b>Do you want to...?</b> (Informal / Dia a dia)<br>
+        👉 <b>How about...?</b> (Sugestão rápida)
+      `;
+
+      renderMatrixVariations();
       showSection('focusedStudySection');
     }
 
-    function renderFocusedVariations() {
-      if (!selectedPattern) return;
+    function generateSmartExamples(cleanText) {
+      const base = cleanText.replace(/\?/g, '');
+      return [
+        { en: `${base} coffee?`, pt: `Você tem interesse em café?` },
+        { en: `${base} learning English?`, pt: `Você tem interesse em aprender inglês?` },
+        { en: `${base} this project?`, pt: `Você tem interesse neste projeto?` }
+      ];
+    }
+
+    function speakCurrentCleanPattern() {
+      if (selectedPatternObj) {
+        speakText(selectedPatternObj.clean);
+      }
+    }
+
+    function renderMatrixVariations() {
+      if (!selectedPatternObj) return;
       const person = document.getElementById('focusedPersonSelect').value;
       const tense = document.getElementById('focusedTenseSelect').value;
-      const container = document.getElementById('focusedVariationsContainer');
+      const container = document.getElementById('matrixOutputContainer');
 
-      const baseText = selectedPattern.name;
+      const clean = selectedPatternObj.clean;
 
-      let aff = `${person} -> ${baseText}`;
-      let neg = `Not (${person} -> ${baseText})`;
-      let int = `? (${person} -> ${baseText})`;
-
-      if (currentLang === 'en') {
-        if (tense === 'past') {
-          aff = `[PASSADO] ${person} -> ${baseText}`;
-          neg = `[PASSADO NEG] ${person} did not -> ${baseText}`;
-          int = `[PASSADO INT] Did ${person} -> ${baseText}?`;
-        } else if (tense === 'continuous') {
-          aff = `[AGORA] ${person} is currently focusing on -> ${baseText}`;
-          neg = `[AGORA NEG] ${person} is not -> ${baseText}`;
-          int = `[AGORA INT] Is ${person} -> ${baseText}?`;
-        } else if (tense === 'future') {
-          aff = `[FUTURO] ${person} will -> ${baseText}`;
-          neg = `[FUTURO NEG] ${person} will not -> ${baseText}`;
-          int = `[FUTURO INT] Will ${person} -> ${baseText}?`;
-        }
-      }
+      let aff = `${clean} (com ${person})`;
+      if (tense === 'past') aff = `[Passado] ${clean}`;
+      if (tense === 'future') aff = `[Futuro] ${clean}`;
 
       container.innerHTML = `
-        <div class="variation-block">
-          <div class="variation-tag">Afirmativa</div>
-          <div class="variation-target">${aff}</div>
-          <button class="btn btn-secondary" style="margin-top:0.5rem; padding:0.4rem;" onclick="speakText('${aff}')">🔊 Ouvir Pronúncia</button>
-        </div>
-
-        <div class="variation-block" style="border-left-color: var(--accent-red);">
-          <div class="variation-tag" style="color: var(--accent-red);">Negativa</div>
-          <div class="variation-target">${neg}</div>
-          <button class="btn btn-secondary" style="margin-top:0.5rem; padding:0.4rem;" onclick="speakText('${neg}')">🔊 Ouvir Pronúncia</button>
-        </div>
-
-        <div class="variation-block" style="border-left-color: var(--accent-yellow);">
-          <div class="variation-tag" style="color: var(--accent-yellow);">Interrogativa (Pergunta)</div>
-          <div class="variation-target">${int}</div>
-          <button class="btn btn-secondary" style="margin-top:0.5rem; padding:0.4rem;" onclick="speakText('${int}')">🔊 Ouvir Pronúncia</button>
+        <div class="example-box" style="margin-top:0.5rem;">
+          <div>
+            <div class="example-en">${person} -> ${clean}</div>
+            <div class="example-pt">Forma conjugada e limpa</div>
+          </div>
+          <button class="btn btn-sm btn-secondary" onclick="speakText('${clean}')">🔊 Ouvir</button>
         </div>
       `;
     }
@@ -869,10 +971,10 @@
       const item = srsDeck[srsIndex % srsDeck.length];
       if (!srsFlipped) {
         srsFlipped = true;
-        document.getElementById('srsPrompt').innerText = "RESPOSTA NO IDIOMA TARGET";
-        document.getElementById('srsContent').innerText = item.name;
+        document.getElementById('srsPrompt').innerText = "PADRÃO NO IDIOMA TARGET";
+        document.getElementById('srsContent').innerText = item.display;
         document.getElementById('srsControls').style.display = 'grid';
-        speakText(item.name);
+        speakText(item.clean);
       }
     }
 
@@ -881,10 +983,13 @@
       renderSRSCard();
     }
 
+    // VOZ LIMPA E NATURAL (SEM PALAVRAS ENTRE COLCHETES)
     function speakText(text, rate = 1.0) {
       if (!('speechSynthesis' in window)) return;
       window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
+      
+      const cleanVoiceText = getCleanPatternText(text);
+      const utterance = new SpeechSynthesisUtterance(cleanVoiceText);
       utterance.lang = langVoiceMap[currentLang] || 'en-US';
       utterance.rate = rate;
       window.speechSynthesis.speak(utterance);
@@ -894,7 +999,7 @@
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(patternDatabase));
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", "negobom_258_patterns_backup.json");
+      downloadAnchor.setAttribute("download", "negobom_258_patterns_clean_backup.json");
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
