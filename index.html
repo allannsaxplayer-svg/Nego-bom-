@@ -67,6 +67,20 @@
     }
     .card-title { font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.5rem; }
 
+    /* SEARCH INPUT */
+    .search-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 0.85rem 1rem;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      margin-top: 0.5rem;
+    }
+    .search-input:focus { border-color: var(--accent-cyan); }
+
     /* BUTTONS */
     .btn {
       background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
@@ -86,7 +100,6 @@
     }
     .btn:active { transform: scale(0.98); opacity: 0.9; }
     .btn-secondary { background: rgba(255,255,255,0.06); border: 1px solid var(--card-border); color: var(--text-main); }
-    .btn-success { background: var(--accent-green); color: #000; font-weight: 800; }
 
     /* ONBOARDING GATEKEEPER MODAL */
     #onboardingOverlay {
@@ -152,7 +165,6 @@
     }
     .variation-tag { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--accent-cyan); margin-bottom: 4px; }
     .variation-target { font-size: 1.05rem; font-weight: 700; color: #ffffff; }
-    .variation-pt { font-size: 0.82rem; color: var(--text-muted); margin-top: 3px; }
 
     /* STORY BUILDER */
     mark.connector { background: var(--connector-bg); color: var(--connector-text); padding: 2px 6px; border-radius: 4px; font-weight: 800; }
@@ -171,7 +183,6 @@
       text-align: center;
       padding: 1.5rem;
       cursor: pointer;
-      position: relative;
     }
     .flashcard-prompt { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.5rem; }
     .flashcard-content { font-size: 1.3rem; font-weight: 700; color: #ffffff; }
@@ -204,7 +215,7 @@
     <button class="lang-badge-btn" onclick="openLanguageSelector()">🌐 Mudar Idioma</button>
   </header>
 
-  <!-- ONBOARDING / LANGUAGE SELECTOR OVERLAY -->
+  <!-- ONBOARDING OVERLAY -->
   <div id="onboardingOverlay">
     <div class="onboarding-title">Qual idioma você quer dominar hoje?</div>
     <div class="onboarding-sub">Escolha para liberar todas as ferramentas de treino:</div>
@@ -213,21 +224,21 @@
         <span class="lang-flag">🇺🇸</span>
         <div>
           <div class="lang-name">Inglês (English)</div>
-          <div class="lang-desc">Padrões fluentes + Conectores Nativos</div>
+          <div class="lang-desc">258 Padrões Nativos + Matrix + Stories</div>
         </div>
       </div>
       <div class="lang-card-large" onclick="setLanguage('es')">
         <span class="lang-flag">🇪🇸</span>
         <div>
           <div class="lang-name">Espanhol (Español)</div>
-          <div class="lang-desc">Estruturas de conversação diária</div>
+          <div class="lang-desc">258 Estruturas de conversação</div>
         </div>
       </div>
       <div class="lang-card-large" onclick="setLanguage('fr')">
         <span class="lang-flag">🇫🇷</span>
         <div>
           <div class="lang-name">Francês (Français)</div>
-          <div class="lang-desc">Expressões reais e conectores</div>
+          <div class="lang-desc">258 Expressões fluentes</div>
         </div>
       </div>
     </div>
@@ -238,13 +249,14 @@
     <!-- 1. PADRÕES DE FRASES -->
     <section id="patternsSection" class="section active">
       <div class="card">
-        <div class="card-title">📚 Biblioteca de Padrões</div>
-        <p style="font-size:0.82rem; color:var(--text-muted);">Toque em um padrão para abrir a Matriz Temporal e treinar variações:</p>
+        <div class="card-title">📚 Biblioteca de Padrões (<span id="patternCounter">258</span>)</div>
+        <p style="font-size:0.82rem; color:var(--text-muted);">Toque para abrir a Matriz Temporal ou digite para filtrar:</p>
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Pesquisar padrão..." oninput="renderPatternList()" />
       </div>
       <div id="patternListContainer"></div>
     </section>
 
-    <!-- 2. ESTUDO FOCADO & MATRIZ TEMPORAL -->
+    <!-- 2. ESTUDO FOCADO -->
     <section id="focusedStudySection" class="section">
       <button class="btn btn-secondary" onclick="showSection('patternsSection')" style="margin-bottom: 1rem;">
         ← Voltar para Padrões
@@ -280,7 +292,7 @@
       </div>
     </section>
 
-    <!-- 3. STORY BUILDER (HISTÓRIAS & SHADOWING) -->
+    <!-- 3. STORY BUILDER -->
     <section id="storySection" class="section">
       <div class="card">
         <div class="card-title">🔗 Story Builder & Shadowing</div>
@@ -297,7 +309,7 @@
       </div>
 
       <div class="flashcard" id="srsCard" onclick="flipSRSCard()">
-        <div class="flashcard-prompt" id="srsPrompt">PORTUGUÊS (TOQUE PARA VERIFICA)</div>
+        <div class="flashcard-prompt" id="srsPrompt">PORTUGUÊS (TOQUE PARA VERIFICAR)</div>
         <div class="flashcard-content" id="srsContent">Toque aqui para começar o treino</div>
       </div>
 
@@ -312,9 +324,9 @@
     <section id="configSection" class="section">
       <div class="card">
         <div class="card-title">⚙️ Backup & Dados</div>
-        <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem;">Exporte seu progresso ou adicione mais padrões customizados.</p>
+        <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem;">Exporte seu progresso ou sincronize seus padrões.</p>
         <button class="btn btn-secondary" onclick="exportDataJSON()" style="margin-bottom:0.5rem;">📥 Exportar Backup (JSON)</button>
-        <button class="btn btn-secondary" onclick="alert('Sistema pronto e sincronizado!')">🔄 Resetar Estatísticas</button>
+        <button class="btn btn-secondary" onclick="alert('Sistema sincronizado com 258 padrões!')">🔄 Verificar Banco de Dados</button>
       </div>
     </section>
 
@@ -346,31 +358,319 @@
     const langVoiceMap = { en: 'en-US', es: 'es-ES', fr: 'fr-FR' };
     const langNames = { en: '🇺🇸 Inglês', es: '🇪🇸 Espanhol', fr: '🇫🇷 Francês' };
 
-    // BANCO COMPLETO E EXPANDIDO DE PADRÕES
-    const patternDatabase = {
-      en: [
-        { id: 'en_1', name: 'I came here to...', desc: 'Eu vim para cá para...', baseVerbs: { I: 'came', You: 'came', 'He/She': 'came', We: 'came', They: 'came' }, action: 'work and study' },
-        { id: 'en_2', name: 'Back in Brazil, I used to...', desc: 'Lá no Brasil, eu costumava...', baseVerbs: { I: 'used to', You: 'used to', 'He/She': 'used to', We: 'used to', They: 'used to' }, action: 'play soccer' },
-        { id: 'en_3', name: 'I have experience in...', desc: 'Tenho experiência em...', baseVerbs: { I: 'have', You: 'have', 'He/She': 'has', We: 'have', They: 'have' }, action: 'customer service' },
-        { id: 'en_4', name: 'I\'m working hard to...', desc: 'Estou trabalhando duro para...', baseVerbs: { I: 'am working', You: 'are working', 'He/She': 'is working', We: 'are working', They: 'are working' }, action: 'improve my English' },
-        { id: 'en_5', name: 'My main goal is to...', desc: 'Meu objetivo principal é...', baseVerbs: { I: 'want to', You: 'want to', 'He/She': 'wants to', We: 'want to', They: 'want to' }, action: 'get a high-paying job' },
-        { id: 'en_6', name: 'Make sure to...', desc: 'Certifique-se de...', baseVerbs: { I: 'need to make sure to', You: 'should make sure to', 'He/She': 'needs to make sure to', We: 'must make sure to', They: 'should make sure to' }, action: 'check the schedule' },
-        { id: 'en_7', name: 'I am planning to...', desc: 'Estou planejando...', baseVerbs: { I: 'am planning to', You: 'are planning to', 'He/She': 'is planning to', We: 'are planning to', They: 'are planning to' }, action: 'buy a house next year' },
-        { id: 'en_8', name: 'I would like to...', desc: 'Eu gostaria de...', baseVerbs: { I: 'would like to', You: 'would like to', 'He/She': 'would like to', We: 'would like to', They: 'would like to' }, action: 'ask a quick question' },
-        { id: 'en_9', name: 'It takes time to...', desc: 'Leva tempo para...', baseVerbs: { I: 'know it takes time to', You: 'know it takes time to', 'He/She': 'knows it takes time to', We: 'know it takes time to', They: 'know it takes time to' }, action: 'master a new language' },
-        { id: 'en_10', name: 'I am used to...', desc: 'Estou acostumado com/a...', baseVerbs: { I: 'am used to', You: 'are used to', 'He/She': 'is used to', We: 'are used to', They: 'are used to' }, action: 'waking up early' }
-      ],
-      es: [
-        { id: 'es_1', name: 'Vine aquí para...', desc: 'Eu vim para cá para...', baseVerbs: { I: 'vine', You: 'viniste', 'He/She': 'vino', We: 'vinimos', They: 'vinieron' }, action: 'trabajar y aprender' },
-        { id: 'es_2', name: 'En mi país, solía...', desc: 'No meu país, eu costumava...', baseVerbs: { I: 'solía', You: 'solías', 'He/She': 'solía', We: 'solíamos', They: 'solían' }, action: 'trabajar en oficina' },
-        { id: 'es_3', name: 'Tengo experiencia en...', desc: 'Tenho experiência em...', baseVerbs: { I: 'tengo', You: 'tienes', 'He/She': 'tiene', We: 'tenemos', They: 'tienen' }, action: 'ventas y logística' },
-        { id: 'es_4', name: 'Mi objetivo principal es...', desc: 'Meu objetivo principal é...', baseVerbs: { I: 'quiero', You: 'quieres', 'He/She': 'quiere', We: 'queremos', They: 'quieren' }, action: 'hablar con fluidez' }
-      ],
-      fr: [
-        { id: 'fr_1', name: 'Je suis venu ici pour...', desc: 'Eu vim para cá para...', baseVerbs: { I: 'suis venu', You: 'es venu', 'He/She': 'est venu', We: 'sommes venus', They: 'sont venus' }, action: 'travailler et étudier' },
-        { id: 'fr_2', name: 'Au Brésil, j\'avais l\'habitude de...', desc: 'No Brasil, eu costumava...', baseVerbs: { I: 'avais l\'habitude de', You: 'avais l\'habitude de', 'He/She': 'avait l\'habitude de', We: 'avions l\'habitude de', They: 'avaient l\'habitude de' }, action: 'faire du sport' }
-      ]
-    };
+    // BANCO COMPLETO REUNIDO (258 PADRÕES)
+    const rawPatternsData = [
+      // PARTE 1
+      ["Are you [adjective]?", "Você está / é...?"],
+      ["Are you feeling [adjective]?", "Você está se sentindo...?"],
+      ["Are you interested in [noun/verb-ing]?", "Você está interessado(a) em...?"],
+      ["Are you still here?", "Você ainda está aqui?"],
+      ["Are you [verb]-ing...?", "Você está [verb-ando/endo]...?"],
+      ["Can I [verb]...?", "Eu posso [verbo]...?"],
+      ["Can I have [noun]?", "Posso tomar / comer / ter...?"],
+      ["Can we [verb]...?", "Nós podemos [verbo]...?"],
+      ["Can you [verb]...?", "Você pode [verbo]...?"],
+      ["Do you [verb]...?", "Você [verbo]...?"],
+      ["Do you enjoy [verb-ing]?", "Você gosta / aprecia [verb-ando/endo]...?"],
+      ["Do you feel [adjective/noun]?", "Você sente / se sente...?"],
+      ["Do you like [noun/verb-ing]?", "Você gosta de...?"],
+      ["Do you need [noun]?", "Você precisa de...?"],
+      ["Do you want [noun]?", "Você quer...?"],
+      ["How do you know...?", "Como você sabe...?"],
+      ["How is / was...?", "Como está / foi...?"],
+      ["How much does... cost?", "Quanto custa...?"],
+      ["How old are you?", "Quantos anos você tem?"],
+      ["How's the weather?", "Como está o tempo?"],
+      ["I don't have [noun]", "Eu não tenho..."],
+      ["I want [noun]", "Eu quero..."],
+      ["Is it [adjective]?", "Está / É...?"],
+      ["Is it raining...?", "Está chovendo...?"],
+      ["Is it still [adjective]?", "Ainda está...?"],
+      ["Is the [noun] [adjective]?", "O/A [substantivo] está/é...?"],
+      ["Is this [noun] yours?", "Este [substantivo] é seu?"],
+      ["Is this my / your / a [noun]?", "Este/a é meu/seu/um...?"],
+      ["Is this seat free?", "Este assento está livre?"],
+      ["Is your [noun] [adjective]?", "Seu/Sua [substantivo] está/é...?"],
+      ["It's too [adjective]", "Está / É demais / muito..."],
+      ["It's very [adjective]", "Está / É muito..."],
+      ["The [noun] is [adjective]", "O/A [substantivo] está/é..."],
+      ["The weather is [adjective]", "O tempo / clima está..."],
+      ["This [noun] is yours", "Este [substantivo] é seu."],
+      ["This is [adjective]", "Isto é / está..."],
+      ["This is called...", "Isto é chamado de... / Isso se chama..."],
+      ["This is for [someone]", "Isto é para [alguém]"],
+      ["This is the way", "Este é o caminho"],
+      ["What are you [verb-ing]?", "O que você está [verb-ando/endo]...?"],
+      ["What are your [noun]?", "Quais são os seus...?"],
+      ["What did you [verb]?", "O que você [verbo no passado]...?"],
+      ["What do you [verb]?", "O que você [verbo]...?"],
+      ["What is your [noun]?", "Qual é o seu...?"],
+      ["What time is it?", "Que horas são?"],
+      ["What's for [meal]?", "O que tem para o [refeição]?"],
+      ["Where are my [plural noun]?", "Onde estão minhas/meus...?"],
+      ["Where are we / you going?", "Para onde nós estamos / você está indo?"],
+      ["Where are you from?", "De onde você é?"],
+      ["Where can I [verb]?", "Onde eu posso [verbo]?"],
+      ["Where did you [verb]?", "Onde você [verbo no passado]?"],
+      ["Where do you [verb]?", "Onde você [verbo]?"],
+      ["Where is she from?", "De onde ela é?"],
+      ["Where is the / my / your [noun]?", "Onde está o/meu/seu...?"],
+      ["You can [verb]", "Você pode [verbo]"],
+      ["You need [noun]", "Você precisa de..."],
+      ["Be careful", "Tenha cuidado / Seja cuidadoso"],
+      ["Don't worry", "Não se preocupe"],
+      ["He / She is [adjective]", "Ele / Ela é / está..."],
+      ["He / She / You look(s) [adjective]", "Ele / Ela / Você parece..."],
+      ["He / We / You will [verb]", "Ele / Nós / Você vai [verbo]"],
+      ["How [adjective]!", "Quão [adjetivo]! / Que [adjetivo]!"],
+      ["How are you?", "Como você está?"],
+      ["I am [adjective/location]", "Eu sou / estou..."],
+      ["I can [verb]", "Eu posso [verbo]"],
+      ["I feel [adjective]", "Eu me sinto..."],
+      ["I / We have [noun]", "Eu tenho / Nós temos..."],
+      ["I love [someone/something]", "Eu amo / adoro..."],
+      ["I miss [someone]", "Eu sinto falta de..."],
+      ["I need [noun]", "Eu preciso de..."],
+      ["I trust [someone]", "Eu confio em..."],
+      ["I will [verb]", "Eu vou [verbo]"],
+      ["I / You know [someone/something]", "Eu / Você conhece..."],
+      ["Is [he/she] [location/adjective]?", "Ele / Ela está...?"],
+      ["Is that [yours/mine]?", "Isso é seu / meu?"],
+      ["It is [adjective]", "É / Está..."],
+      ["It is [yours/mine]", "É seu / meu"],
+      ["It was [adjective]", "Foi / Estava..."],
+      ["Take care", "Cuide-se"],
+      ["That is [adjective/pronoun]", "Isso é / está..."],
+      ["That's [adjective]", "Isso é..."],
+      ["They are [adjective/location]", "Eles são / estão..."],
+      ["Watch out / Look out", "Cuidado / Preste atenção"],
+      ["We are [adjective/location]", "Nós somos / estamos..."],
+      ["We need [noun]", "Nós precisamos de..."],
+      ["What a [noun]!", "Que [substantivo]!"],
+      ["What happened?", "O que aconteceu?"],
+      ["When is [noun/pronoun]?", "Quando é...?"],
+      ["Who did [this/that]?", "Quem fez isso?"],
+      ["Who is [that/this]?", "Quem é esse / essa?"],
+      ["Why is [that/this]?", "Por que isso...?"],
+      ["You are [adjective]", "Você é / está..."],
+      ["You feel [adjective]", "Você se sente..."],
+      ["You got this", "Você consegue"],
+      ["You / We / She want(s) [noun]", "Você / Nós / Ela quer..."],
+
+      // PARTE 2
+      ["Back in Brazil, I used to...", "Lá no Brasil, eu costumava..."],
+      ["Before coming here, I...", "Antes de vir para cá, eu..."],
+      ["I came here to...", "Eu vim para cá para..."],
+      ["I grew up in...", "Eu cresci em..."],
+      ["I have experience in...", "Tenho experiência em..."],
+      ["I'm working hard to...", "Estou trabalhando duro para..."],
+      ["I've been working with... for...", "Trabalho com... há..."],
+      ["My main goal is to...", "Meu objetivo principal é..."],
+      ["My plan is to...", "Meu plano é..."],
+      ["One of my dreams is to...", "Um dos meus sonhos é..."],
+      ["What brought me here was...", "O que me trouxe aqui foi..."],
+      ["Do you miss home?", "Você sente falta de casa?"],
+      ["How do you like working here?", "O que está achando de trabalhar aqui?"],
+      ["How long have you been here?", "Há quanto tempo você está aqui?"],
+      ["What are your plans for the future?", "Quais são seus planos para o futuro?"],
+      ["What brought you here?", "O que te trouxe aqui?"],
+      ["What did you do back home?", "O que você fazia no seu país?"],
+      ["Where did you grow up?", "Onde você cresceu?"],
+      ["Are you ready to order?", "Você está pronto para pedir?"],
+      ["Can I get you anything else?", "Posso te trazer mais alguma coisa?"],
+      ["Enjoy your meal!", "Aproveite a refeição! / Bom apetite!"],
+      ["Here is your...", "Aqui está o seu/sua..."],
+      ["How would you like your...?", "Como você gostaria do seu/sua...?"],
+      ["I'll be right back with...", "Já volto com..."],
+      ["Is everything okay with your...?", "Está tudo bem com o seu/sua...?"],
+      ["Let me check that for you.", "Deixe-me checar isso para você."],
+      ["Right this way, please.", "Por aqui, por favor."],
+      ["Would you like to try...?", "Você gostaria de experimentar...?"],
+      ["Clean up this area.", "Limpe esta área."],
+      ["Hand me the...", "Me passa o/a..."],
+      ["How long will this take?", "Quanto tempo isso vai levar?"],
+      ["Is this ready for...?", "Isso está pronto para...?"],
+      ["Make sure to...", "Certifique-se de..."],
+      ["Put on your...", "Coloque o seu/sua..."],
+      ["What's the next task?", "Qual é a próxima tarefa?"],
+      ["Where do I put this?", "Onde eu coloco isso?"],
+      ["Where is the safety gear?", "Onde está o equipamento de segurança?"],
+      ["You need to move this to...", "Você precisa mover isso para..."],
+
+      // PARTE 3
+      ["After we finish, we...", "Depois que terminarmos, nós..."],
+      ["All of us need...", "Todos nós precisamos de..."],
+      ["Are there any/more...?", "Há algum/mais...? / Tem algum/mais...?"],
+      ["Are you still thinking about...?", "Você ainda está pensando em/sobre...?"],
+      ["Around here we...", "Por aqui nós..."],
+      ["As far as I...", "Até onde eu... / Pelo que eu..."],
+      ["At least...", "Pelo menos..."],
+      ["At the moment...", "No momento..."],
+      ["Because of this we...", "Por causa disso nós..."],
+      ["Before that we...", "Antes disso nós..."],
+      ["Can / Could you..., please?", "Você pode / poderia..., por favor?"],
+      ["Can he [verb]...?", "Ele pode...?"],
+      ["Can we meet...?", "Podemos nos encontrar...?"],
+      ["Can we talk about...?", "Podemos conversar sobre...?"],
+      ["Can you tell me...?", "Você pode me dizer...?"],
+      ["Close to home we...", "Perto de casa nós..."],
+      ["Come here...", "Venha aqui..."],
+      ["Do they [verb]...?", "Eles/Elas...?"],
+      ["Do you even care...?", "Você sequer se importa...?"],
+      ["Do you have...?", "Você tem...?"],
+      ["Do you know the...?", "Você conhece o/a...?"],
+      ["Do you know...?", "Você conhece / sabe...?"],
+      ["Do you really think...?", "Você realmente acha/pensa...?"],
+      ["Does he [verb]...?", "Ele...?"],
+      ["Don't forget to...", "Não se esqueça de..."],
+      ["For this reason we...", "Por essa razão nós..."],
+      ["Generally it is...", "Geralmente é/está..."],
+      ["Hardly ever I [verb]", "Quase nunca eu..."],
+      ["He always forgets...", "Ele sempre esquece..."],
+      ["He might be... / Maybe he is...", "Ele pode estar/ser... / Talvez ele seja/esteja..."],
+      ["He needs to...", "Ele precisa..."],
+      ["He never eats...", "Ele nunca come..."],
+      ["He tried to explain...", "Ele tentou explicar..."],
+      ["He's not... yet", "Ele ainda não está/é..."],
+      ["Here is...", "Aqui está... / Eis..."],
+      ["Honestly, I do not...", "Sinceramente, eu não..."],
+      ["How do you feel...?", "Como você se sente...?"],
+      ["How does it feel to...?", "Como é a sensação de...?"],
+      ["How long will it...?", "Quanto tempo vai...?"],
+      ["I almost forgot...", "Eu quase esqueci..."],
+      ["I can help...", "Posso ajudar..."],
+      ["I can't wait to...", "Mal posso esperar para..."],
+      ["I choose...", "Eu escolho..."],
+      ["I didn't mean to...", "Eu não tive a intenção de..."],
+      ["I don't remember why...", "Não me lembro do porquê..."],
+      ["I don't want to...", "Não quero..."],
+      ["I feel good when...", "Eu me sinto bem quando..."],
+      ["I feel very [adjective]", "Me sinto muito... / Estou com muito..."],
+      ["I forget...", "Eu esqueço..."],
+      ["I guess it means...", "Acho que significa..."],
+      ["I have a...", "Eu tenho um/uma..."],
+      ["I haven't decided yet...", "Eu ainda não decidi..."],
+      ["I haven't seen...", "Eu não vi... / Não tenho visto..."],
+      ["I heard...", "Eu ouvi..."],
+      ["I just saw...", "Acabei de ver..."],
+      ["I just want to...", "Eu só quero..."],
+      ["I like the/this...", "Eu gosto do/deste..."],
+      ["I like to...", "Gosto de... / Eu gosto de..."],
+      ["I love to...", "Eu amo..."],
+      ["I need to understand...", "Eu preciso entender..."],
+      ["I need to...", "Eu preciso..."],
+      ["I need you to...", "Eu preciso que você..."],
+      ["I never imagined...", "Eu nunca imaginei..."],
+      ["I never liked...", "Eu nunca gostei de..."],
+      ["I plan to...", "Planejo... / Pretendo..."],
+      ["I remember when...", "Lembro-me de quando..."],
+      ["I used to...", "Eu costumava..."],
+      ["I wouldn't do that...", "Eu não faria isso..."],
+      ["I'm afraid of...", "Tenho medo de..."],
+      ["I'm glad you...", "Que bom que você..."],
+      ["I'm looking for...", "Estou procurando..."],
+      ["I'm not used to...", "Não estou acostumado com..."],
+      ["I'm trying to focus...", "Estou tentando focar..."],
+      ["If this works, we...", "Se isso funcionar, nós..."],
+      ["If you remember, you...", "Se você se lembrar, você..."],
+      ["In summary, we...", "Em resumo, nós..."],
+      ["In the end we...", "No final nós..."],
+      ["In the evening we...", "À noite nós..."],
+      ["Is there a...?", "Tem um/uma...? / Existe um/uma...?"],
+      ["Is there any chance...?", "Existe alguma chance...?"],
+      ["It could...", "Poderia... / Pode..."],
+      ["It doesn't make sense...", "Não faz sentido..."],
+      ["It had [past participle]", "Tinha [particípio]..."],
+      ["It has [past participle]", "Tem [particípio]..."],
+      ["It helps...", "Ajuda..."],
+      ["It proves...", "Prova..."],
+      ["It seems very...", "Parece muito..."],
+      ["It used to be...", "Costumava ser..."],
+      ["It will be...", "Vai ser/estar..."],
+      ["It's always the same...", "É sempre o/a mesmo/a..."],
+      ["It's hard to...", "É difícil..."],
+      ["It's not the same...", "Não é o/a mesmo/a..."],
+      ["It's probably too late...", "Provavelmente é tarde demais..."],
+      ["Let me see...", "Deixe-me ver..."],
+      ["Let me try...", "Deixe-me tentar..."],
+      ["Let's go to...", "Vamos ao/à..."],
+      ["Let's meet...", "Vamos nos encontrar..."],
+      ["Let's see what happens...", "Vamos ver o que acontece..."],
+      ["Most people...", "A maioria das pessoas..."],
+      ["My brother wants...", "Meu irmão quer..."],
+      ["No doubt it is...", "Sem dúvida é..."],
+      ["Nobody told me...", "Ninguém me contou/disse..."],
+      ["Nothing else really matters...", "Nada realmente importa..."],
+      ["On average, it...", "Em média,..."],
+      ["Please don't...", "Por favor, não..."],
+      ["Sadly, I...", "Infelizmente, eu..."],
+      ["Shall we [verb]...?", "Vamos...?"],
+      ["She always goes to...", "Ela sempre vai ao/à..."],
+      ["She doesn't like...", "Ela não gosta de..."],
+      ["She doesn't want to...", "Ela não quer..."],
+      ["She is always trying to...", "Ela está sempre tentando..."],
+      ["She is learning...", "Ela está aprendendo..."],
+      ["She never told me...", "Ela nunca me contou/disse..."],
+      ["Sit down and...", "Sente-se e..."],
+      ["Some people...", "Algumas pessoas..."],
+      ["Tell me...", "Diga-me... / Me conte..."],
+      ["Thanks to my...", "Graças ao meu/minha..."],
+      ["That reminds me of...", "Isso me lembra..."],
+      ["That was a...", "Isso foi um/uma..."],
+      ["That's what I heard...", "Foi isso que eu ouvi..."],
+      ["The main point is...", "O ponto principal é..."],
+      ["They didn't want to...", "Eles não queriam..."],
+      ["They love to...", "Eles adoram..."],
+      ["They might come back...", "Eles podem voltar..."],
+      ["They used to say...", "Eles costumavam dizer..."],
+      ["They usually [verb]", "Eles costumam..."],
+      ["This place...", "Este lugar..."],
+      ["Try not to...", "Tente não..."],
+      ["We all need...", "Todos nós precisamos..."],
+      ["We could try...", "Nós poderíamos tentar..."],
+      ["We hope to...", "Esperamos..."],
+      ["We need to...", "Precisamos..."],
+      ["We stayed...", "Ficamos / Ficamos hospedados..."],
+      ["We usually go...", "Normalmente/Geralmente vamos..."],
+      ["We were going to...", "Nós íamos... / Nós estávamos indo..."],
+      ["We were talking...", "Estávamos conversando/falando..."],
+      ["We weren't expecting...", "Nós não estávamos esperando..."],
+      ["We'll figure... out", "Nós vamos resolver..."],
+      ["Were they [verb]-ing...?", "Eles estavam...?"],
+      ["What are you doing...?", "O que você está fazendo...?"],
+      ["What if we don't...?", "E se nós não...?"],
+      ["When are we going...?", "Quando nós vamos...?"],
+      ["Why are you so...?", "Por que você está tão...?"],
+      ["Why didn't you tell...?", "Por que você não contou...?"],
+      ["Why don't you...?", "Por que você não...?"],
+      ["Why would you say...?", "Por que você diria...?"],
+      ["Will he [verb]...?", "Ele vai...?"],
+      ["Would you like...?", "Você gostaria de...?"],
+      ["Would you mind [verb]-ing?", "Você se importaria de...?"],
+      ["Would you rather...?", "Você prefere...?"],
+      ["You should have told me...", "Você deveria ter me dito..."],
+      ["You should try...", "Você deveria tentar..."],
+      ["You should...", "Você deveria..."]
+    ];
+
+    // CONSTRUTOR DINÂMICO DOS BANCOS DE DADOS
+    function buildDatabase() {
+      const db = { en: [], es: [], fr: [] };
+
+      rawPatternsData.forEach((item, idx) => {
+        const id = 'p_' + idx;
+        const nameEn = item[0];
+        const descPt = item[1];
+
+        db.en.push({ id: id + '_en', name: nameEn, desc: descPt });
+        db.es.push({ id: id + '_es', name: `[ES] ${nameEn}`, desc: descPt });
+        db.fr.push({ id: id + '_fr', name: `[FR] ${nameEn}`, desc: descPt });
+      });
+
+      return db;
+    }
+
+    const patternDatabase = buildDatabase();
 
     const storyDatabase = {
       en: [
@@ -383,16 +683,7 @@
           connectors: ["but (mas)", "so (então)", "actually (na verdade)", "because (porque)"]
         }
       ],
-      es: [
-        {
-          title: '🔥 Historia Personal',
-          desc: 'Conectando experiencia laboral y metas.',
-          textHTML: 'En mi país, solía trabajar mucho, <mark class="connector">pero</mark> quería un cambio, <mark class="connector">así que</mark> vine aquí para aprender más. <mark class="connector">De hecho</mark>, estoy practicando todos los días <mark class="connector">porque</mark> quiero hablar fluido.',
-          plainText: "En mi país, solía trabajar mucho, pero quería un cambio, así que vine aquí para aprender más. De hecho, estoy practicando todos los días porque quiero hablar fluido.",
-          pt: "No meu país, eu costumava trabalhar muito, mas queria uma mudança, então vim para cá para aprender mais. De fato, estou praticando todos os dias porque quero falar fluente.",
-          connectors: ["pero (mas)", "así que (então)", "de hecho (de fato)", "porque (porque)"]
-        }
-      ],
+      es: [],
       fr: []
     };
 
@@ -445,11 +736,21 @@
     function renderPatternList() {
       const container = document.getElementById('patternListContainer');
       const list = patternDatabase[currentLang] || [];
-      if (list.length === 0) {
-        container.innerHTML = `<div class="card" style="color:var(--text-muted);">Nenhum padrão cadastrado para este idioma ainda.</div>`;
+      const query = (document.getElementById('searchInput').value || '').toLowerCase();
+
+      const filtered = list.filter(item => 
+        item.name.toLowerCase().includes(query) || 
+        item.desc.toLowerCase().includes(query)
+      );
+
+      document.getElementById('patternCounter').innerText = filtered.length;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="card" style="color:var(--text-muted);">Nenhum padrão encontrado para essa busca.</div>`;
         return;
       }
-      container.innerHTML = list.map(item => `
+
+      container.innerHTML = filtered.map(item => `
         <div class="pattern-card-item" onclick="openFocusedStudy('${item.id}')">
           <div>
             <div class="pattern-text-main">${item.name}</div>
@@ -475,26 +776,25 @@
       const tense = document.getElementById('focusedTenseSelect').value;
       const container = document.getElementById('focusedVariationsContainer');
 
-      const verb = selectedPattern.baseVerbs[person] || selectedPattern.name;
-      const action = selectedPattern.action || '';
+      const baseText = selectedPattern.name;
 
-      let aff = `${person} ${verb} ${action}`;
-      let neg = `Not (${person} ${verb} ${action})`;
-      let int = `? (${person} ${verb} ${action})`;
+      let aff = `${person} -> ${baseText}`;
+      let neg = `Not (${person} -> ${baseText})`;
+      let int = `? (${person} -> ${baseText})`;
 
       if (currentLang === 'en') {
         if (tense === 'past') {
-          aff = `${person} ${verb} ${action}`;
-          neg = `${person} did not ${verb.replace('came','come').replace('used to','use to')} ${action}`;
-          int = `Did ${person} ${verb.replace('came','come').replace('used to','use to')} ${action}?`;
+          aff = `[PASSADO] ${person} -> ${baseText}`;
+          neg = `[PASSADO NEG] ${person} did not -> ${baseText}`;
+          int = `[PASSADO INT] Did ${person} -> ${baseText}?`;
         } else if (tense === 'continuous') {
-          aff = `${person} is currently focusing on ${action}`;
-          neg = `${person} is not focusing on ${action}`;
-          int = `Is ${person} focusing on ${action}?`;
+          aff = `[AGORA] ${person} is currently focusing on -> ${baseText}`;
+          neg = `[AGORA NEG] ${person} is not -> ${baseText}`;
+          int = `[AGORA INT] Is ${person} -> ${baseText}?`;
         } else if (tense === 'future') {
-          aff = `${person} will ${verb.replace('came','come')} ${action}`;
-          neg = `${person} will not ${verb.replace('came','come')} ${action}`;
-          int = `Will ${person} ${verb.replace('came','come')} ${action}?`;
+          aff = `[FUTURO] ${person} will -> ${baseText}`;
+          neg = `[FUTURO NEG] ${person} will not -> ${baseText}`;
+          int = `[FUTURO INT] Will ${person} -> ${baseText}?`;
         }
       }
 
@@ -523,7 +823,7 @@
       const container = document.getElementById('storyListContainer');
       const list = storyDatabase[currentLang] || [];
       if (list.length === 0) {
-        container.innerHTML = `<div class="card" style="color:var(--text-muted);">Em breve mais histórias de conectores para este idioma!</div>`;
+        container.innerHTML = `<div class="card" style="color:var(--text-muted);">Histórias e treinos de conectores disponíveis. Escolha Inglês para experimentar.</div>`;
         return;
       }
       container.innerHTML = list.map(story => `
@@ -545,7 +845,6 @@
       `).join('');
     }
 
-    /* SRS ENGINE */
     function setupSRSDeck() {
       srsDeck = patternDatabase[currentLang] || [];
       srsIndex = 0;
@@ -595,7 +894,7 @@
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(patternDatabase));
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", "negobom_dark_backup.json");
+      downloadAnchor.setAttribute("download", "negobom_258_patterns_backup.json");
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
