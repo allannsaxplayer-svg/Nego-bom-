@@ -1,1119 +1,1106 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Nego Bom Polyglot - Dark Edition</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nego Bom Polyglot</title>
   <style>
     :root {
-      --bg-dark: #0b0f17;
-      --card-bg: rgba(22, 30, 46, 0.85);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --accent-cyan: #38bdf8;
-      --accent-blue: #6366f1;
+      --bg-dark: #0b1120;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --accent-blue: #3b82f6;
       --accent-green: #10b981;
       --accent-red: #ef4444;
       --accent-yellow: #f59e0b;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
-      --connector-bg: #fef08a;
-      --connector-text: #854d0e;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--bg-dark); color: var(--text-main); padding-bottom: 110px; min-height: 100vh; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
 
-    /* HEADER & BRANDING */
-    header {
-      background: rgba(11, 15, 23, 0.95);
-      backdrop-filter: blur(16px);
-      padding: 1.1rem 1rem;
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      padding-bottom: 80px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      background-color: rgba(15, 23, 42, 0.9);
+      border-bottom: 1px solid var(--card-border);
       position: sticky;
       top: 0;
-      z-index: 200;
-      border-bottom: 1px solid var(--card-border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      z-index: 100;
+      backdrop-filter: blur(8px);
     }
-    .brand-title { font-size: 1.1rem; font-weight: 800; background: linear-gradient(135deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
-    .brand-subtitle { font-size: 0.7rem; color: var(--text-muted); }
-    .lang-badge-btn {
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      color: var(--accent-cyan);
+
+    .brand-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #60a5fa;
+      letter-spacing: 0.5px;
+    }
+
+    .subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .lang-badge {
+      background-color: #1e293b;
+      border: 1px solid var(--accent-blue);
+      color: #93c5fd;
       padding: 6px 12px;
       border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
     }
 
-    /* CONTAINER & SECTIONS */
-    .container { max-width: 600px; margin: 0 auto; padding: 1rem; }
-    .section { display: none; animation: fadeIn 0.25s ease-out; }
-    .section.active { display: block; }
-
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* CARDS & GLASSMORPHISM */
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 1.25rem;
-      margin-bottom: 1rem;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    /* Container Principal */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 16px;
     }
-    .card-title { font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.5rem; }
 
-    /* SEARCH INPUT */
-    .search-input {
+    /* Selector de Padrões */
+    .pattern-selector {
+      margin-bottom: 16px;
+    }
+
+    .pattern-selector select {
       width: 100%;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--card-border);
+      padding: 12px;
+      background-color: var(--card-bg);
+      color: var(--text-main);
+      border: 1px solid var(--accent-blue);
       border-radius: 12px;
-      padding: 0.85rem 1rem;
-      color: #fff;
-      font-size: 0.9rem;
+      font-size: 1rem;
+      font-weight: 600;
       outline: none;
-      margin-top: 0.5rem;
     }
-    .search-input:focus { border-color: var(--accent-cyan); }
 
-    /* BUTTONS */
-    .btn {
-      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+    /* Card Padrão Selecionado */
+    .main-card {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 2px solid var(--accent-blue);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+    }
+
+    .pattern-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #60a5fa;
+      margin-bottom: 6px;
+    }
+
+    .pattern-pron {
+      font-style: italic;
+      color: #fde047;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .pattern-pt {
+      font-size: 1.1rem;
+      color: var(--text-main);
+      margin-bottom: 12px;
+    }
+
+    .pattern-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--card-border);
+      padding-top: 10px;
+    }
+
+    /* Botão de Destaque da Matriz */
+    .matrix-trigger-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
       color: #ffffff;
       border: none;
-      padding: 0.85rem 1rem;
       border-radius: 12px;
+      font-size: 1.05rem;
       font-weight: 700;
-      font-size: 0.9rem;
-      width: 100%;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.5rem;
-      transition: all 0.2s;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+      margin-bottom: 24px;
+      transition: transform 0.2s;
     }
-    .btn:active { transform: scale(0.98); opacity: 0.9; }
-    .btn-secondary { background: rgba(255,255,255,0.06); border: 1px solid var(--card-border); color: var(--text-main); }
-    .btn-sm { padding: 0.45rem 0.75rem; font-size: 0.8rem; border-radius: 8px; width: auto; display: inline-flex; }
 
-    /* ONBOARDING MODAL */
-    #onboardingOverlay {
-      position: fixed; inset: 0; background: rgba(11, 15, 23, 0.96); backdrop-filter: blur(20px);
-      z-index: 1000; display: flex; flex-direction: column; justify-content: center; padding: 1.5rem;
+    .matrix-trigger-btn:active {
+      transform: scale(0.98);
     }
-    .onboarding-title { text-align: center; font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; background: linear-gradient(135deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .onboarding-sub { text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
 
-    .lang-grid { display: grid; grid-template-columns: 1fr; gap: 0.85rem; }
-    .lang-card-large {
-      background: var(--card-bg);
+    /* Section Cards */
+    .section-card {
+      background-color: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 16px;
-      padding: 1.25rem;
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    .section-header {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 6px;
       display: flex;
       align-items: center;
-      gap: 1rem;
-      cursor: pointer;
-      transition: all 0.2s;
+      gap: 8px;
     }
-    .lang-card-large:active { border-color: var(--accent-cyan); background: rgba(56, 189, 248, 0.1); }
-    .lang-flag { font-size: 2.2rem; }
-    .lang-name { font-size: 1.1rem; font-weight: 700; }
-    .lang-desc { font-size: 0.8rem; color: var(--text-muted); }
 
-    /* PATTERN LIST */
-    .pattern-card-item {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--card-border);
+    .section-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    /* Categorias de Exemplos Práticos */
+    .category-block {
+      margin-bottom: 20px;
+      border-bottom: 1px dashed var(--card-border);
+      padding-bottom: 16px;
+    }
+
+    .category-block:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .category-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #93c5fd;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Item de Frase (Card de Áudio/Pronúncia) */
+    .phrase-item {
+      background-color: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 0.65rem;
-      cursor: pointer;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .phrase-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 4px;
     }
-    .pattern-card-item:active { background: rgba(56, 189, 248, 0.08); border-color: var(--accent-cyan); }
-    .pattern-text-main { font-weight: 700; font-size: 1rem; color: var(--accent-cyan); }
-    .pattern-text-sub { font-size: 0.82rem; color: var(--text-muted); margin-top: 2px; }
 
-    /* RICH STUDY ELEMENTS */
-    .badge-tag {
-      display: inline-block;
-      padding: 4px 10px;
+    .phrase-en {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #60a5fa;
+    }
+
+    .btn-audio {
+      background-color: #334155;
+      color: #f8fafc;
+      border: none;
+      padding: 5px 10px;
       border-radius: 20px;
-      font-size: 0.72rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 0.5rem;
-    }
-    .badge-cyan { background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.3); }
-
-    .example-box {
-      background: rgba(255,255,255,0.03);
-      border-left: 3px solid var(--accent-cyan);
-      border-radius: 10px;
-      padding: 0.85rem 1rem;
-      margin-top: 0.65rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-audio:hover {
+      background-color: var(--accent-blue);
+    }
+
+    .phrase-pron {
+      font-size: 0.85rem;
+      color: #fde047;
+      font-style: italic;
+      margin-bottom: 4px;
+    }
+
+    .phrase-pt {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    /* Respostas Positivas e Negativas Grid */
+    .responses-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 480px) {
+      .responses-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .res-box {
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .res-box.positive {
+      background-color: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .res-box.negative {
+      background-color: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .res-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .res-title.positive { color: #34d399; }
+    .res-title.negative { color: #f87171; }
+
+    /* Modal / Tela Cheia da Matriz */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(11, 17, 32, 0.95);
+      z-index: 1000;
+      display: none;
+      overflow-y: auto;
+      backdrop-filter: blur(10px);
+    }
+
+    .modal-overlay.active {
+      display: block;
+    }
+
+    .modal-content {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 12px;
+    }
+
+    .modal-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #60a5fa;
+    }
+
+    .btn-close {
+      background: #334155;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* Pronome Selector Pills */
+    .pronoun-selector-label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .pronoun-pills {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .pronoun-pill {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .pronoun-pill.active {
+      background-color: var(--accent-blue);
+      border-color: #60a5fa;
+      color: white;
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    }
+
+    /* Warning Box para Incompatibilidade */
+    .warning-box {
+      background-color: rgba(245, 158, 11, 0.1);
+      border: 2px dashed var(--accent-yellow);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .warning-title {
+      color: #fbbf24;
+      font-weight: 800;
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
       gap: 6px;
     }
-    .example-en { font-weight: 700; font-size: 1.05rem; color: var(--accent-cyan); }
-    .example-ph { font-size: 0.85rem; color: #fef08a; font-style: italic; }
-    .example-pt { font-size: 0.88rem; color: var(--text-main); }
 
-    .response-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.5rem; }
-    .response-card { background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 10px; padding: 0.75rem; }
-    .response-title { font-size: 0.75rem; font-weight: 800; margin-bottom: 0.4rem; text-transform: uppercase; }
-
-    select {
-      width: 100%;
-      background: #161e2e;
-      color: var(--text-main);
-      border: 1px solid var(--card-border);
-      padding: 0.85rem;
-      border-radius: 10px;
-      font-weight: 600;
-      margin-top: 0.35rem;
-      margin-bottom: 0.85rem;
-      outline: none;
+    .warning-desc {
+      font-size: 0.9rem;
+      color: #fef08a;
+      line-height: 1.4;
+      margin-bottom: 12px;
     }
 
-    /* STORY BUILDER */
-    mark.connector { background: var(--connector-bg); color: var(--connector-text); padding: 2px 6px; border-radius: 4px; font-weight: 800; }
-    .connector-badge { display: inline-block; background: rgba(254, 240, 138, 0.15); color: #fef08a; border: 1px solid rgba(254, 240, 138, 0.3); font-size: 0.72rem; font-weight: 700; padding: 4px 8px; border-radius: 12px; margin-right: 4px; margin-bottom: 6px; }
+    .equivalent-box {
+      background-color: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: 12px;
+      padding: 12px;
+    }
 
-    /* SRS FLASHCARDS */
-    .flashcard {
-      background: linear-gradient(145deg, #161e2e, #0d131f);
+    .equivalent-title {
+      color: #34d399;
+      font-weight: 800;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    /* 4 Tempos Verbais Grid */
+    .tenses-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .tense-card {
+      background-color: var(--card-bg);
       border: 1px solid var(--card-border);
-      min-height: 200px;
-      border-radius: 18px;
+      border-radius: 12px;
+      padding: 14px;
+      border-left: 4px solid var(--accent-blue);
+    }
+
+    .tense-card.present { border-left-color: #10b981; }
+    .tense-card.past { border-left-color: #3b82f6; }
+    .tense-card.future { border-left-color: #a855f7; }
+    .tense-card.conditional { border-left-color: #f59e0b; }
+
+    .tense-tag {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .tense-card.present .tense-tag { color: #34d399; }
+    .tense-card.past .tense-tag { color: #60a5fa; }
+    .tense-card.future .tense-tag { color: #c084fc; }
+    .tense-card.conditional .tense-tag { color: #fbbf24; }
+
+    /* Barra Inferior Ficha */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #0f172a;
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 99;
+    }
+
+    .nav-item {
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      text-align: center;
-      padding: 1.5rem;
-      cursor: pointer;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-decoration: none;
     }
-    .flashcard-prompt { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.5rem; }
-    .flashcard-content { font-size: 1.3rem; font-weight: 700; color: #ffffff; }
-    .srs-btn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 1rem; }
-    .srs-btn { padding: 0.75rem; border-radius: 10px; border: none; font-weight: 800; font-size: 0.8rem; cursor: pointer; color: #000000; }
 
-    /* BOTTOM NAV */
-    nav.bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      background: rgba(11, 15, 23, 0.92);
-      backdrop-filter: blur(20px);
-      border-top: 1px solid var(--card-border);
-      display: flex; justify-content: space-around;
-      padding: 0.6rem 0 calc(0.6rem + env(safe-area-inset-bottom));
-      z-index: 100;
+    .nav-item.active {
+      color: var(--accent-blue);
+      font-weight: bold;
     }
-    .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.65rem; color: var(--text-muted); cursor: pointer; width: 18%; font-weight: 600; }
-    .nav-item.active { color: var(--accent-cyan); }
-    .nav-icon { font-size: 1.25rem; margin-bottom: 3px; }
+
+    .nav-icon {
+      font-size: 1.2rem;
+      margin-bottom: 2px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header>
+  <!-- Header -->
+  <header class="header">
     <div>
       <div class="brand-title">NEGO BOM POLYGLOT</div>
-      <div class="brand-subtitle" id="activeLangLabel">Selecione um Idioma</div>
+      <div class="subtitle">Dominando Padrões do Inglês Native</div>
     </div>
-    <button class="lang-badge-btn" onclick="openLanguageSelector()">🌐 Mudar Idioma</button>
+    <div class="lang-badge">🇺🇸 Inglês</div>
   </header>
 
-  <!-- ONBOARDING OVERLAY -->
-  <div id="onboardingOverlay">
-    <div class="onboarding-title">Qual idioma você quer dominar hoje?</div>
-    <div class="onboarding-sub">Escolha para liberar todas as ferramentas de treino:</div>
-    <div class="lang-grid">
-      <div class="lang-card-large" onclick="setLanguage('en')">
-        <span class="lang-flag">🇺🇸</span>
-        <div>
-          <div class="lang-name">Inglês (English)</div>
-          <div class="lang-desc">258 Padrões Nativos + Pronúncia Aportuguesada</div>
-        </div>
-      </div>
-      <div class="lang-card-large" onclick="setLanguage('es')">
-        <span class="lang-flag">🇪🇸</span>
-        <div>
-          <div class="lang-name">Espanhol (Español)</div>
-          <div class="lang-desc">258 Estruturas de conversação</div>
-        </div>
-      </div>
-      <div class="lang-card-large" onclick="setLanguage('fr')">
-        <span class="lang-flag">🇫🇷</span>
-        <div>
-          <div class="lang-name">Francês (Français)</div>
-          <div class="lang-desc">258 Expressões fluentes</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  <!-- Container Geral -->
   <div class="container">
 
-    <!-- 1. PADRÕES DE FRASES -->
-    <section id="patternsSection" class="section active">
-      <div class="card">
-        <div class="card-title">📚 Biblioteca de Padrões (<span id="patternCounter">258</span>)</div>
-        <p style="font-size:0.82rem; color:var(--text-muted);">Toque em qualquer padrão para abrir seu Guia Completo:</p>
-        <input type="text" id="searchInput" class="search-input" placeholder="🔍 Pesquisar padrão..." oninput="renderPatternList()" />
+    <!-- Seletor de Padrão -->
+    <div class="pattern-selector">
+      <select id="patternSelect" onchange="changePattern()">
+        <option value="are_you_interested_in">Are you interested in...?</option>
+        <option value="are_you_ready">Are you ready...?</option>
+      </select>
+    </div>
+
+    <!-- Card do Padrão Selecionado -->
+    <div class="main-card">
+      <div class="pattern-title" id="pTitle">Are you interested in...?</div>
+      <div class="pattern-pron" id="pPron">🗣️ (Ar yu íntrested in...?)</div>
+      <div class="pattern-pt" id="pPt">🇧🇷 Você está interessado(a) em...?</div>
+      <div class="pattern-desc" id="pDesc">
+        Usado para perguntar sobre o interesse de alguém em alguma proposta, objeto ou atividade.
       </div>
-      <div id="patternListContainer"></div>
-    </section>
+    </div>
 
-    <!-- 2. ESTUDO FOCADO (GUIA COMPLETO DINÂMICO DO PADRÃO) -->
-    <section id="focusedStudySection" class="section">
-      <button class="btn btn-secondary" onclick="showSection('patternsSection')" style="margin-bottom: 1rem;">
-        ← Voltar para Padrões
-      </button>
+    <!-- Botão da Matriz Temporal & Pronomes -->
+    <button class="matrix-trigger-btn" onclick="openMatrixModal()">
+      <span>🎛️</span>
+      <span>Abrir Matriz Temporal & Pronomes</span>
+    </button>
 
-      <!-- CABEÇALHO DO PADRÃO LIMPO -->
-      <div class="card">
-        <div class="badge-tag badge-cyan">Padrão Selecionado</div>
-        <div class="card-title" id="focusedPatternClean" style="font-size:1.4rem; color:var(--accent-cyan);"></div>
-        <div id="focusedPatternDesc" style="color:var(--text-muted); font-size:0.9rem; margin-top:4px;"></div>
-        <button class="btn btn-sm btn-secondary" style="margin-top:0.85rem;" onclick="speakCurrentCleanPattern()">🔊 Ouvir Padrão Limpo</button>
-      </div>
+    <!-- Exemplos Práticos Categorizados -->
+    <div class="section-card">
+      <div class="section-header">🧩 Exemplos Práticos por Contexto</div>
+      <div class="section-subtitle">Repetição focada nos cenários reais do dia a dia (5 por categoria):</div>
+      <div id="practicalExamplesContainer"></div>
+    </div>
 
-      <!-- EXPLICAÇÃO E APLICAÇÃO -->
-      <div class="card">
-        <div class="card-title">💡 Aplicação & Uso Prático</div>
-        <p style="font-size:0.88rem; color:var(--text-main); line-height:1.5;" id="focusedUsageText"></p>
-        <div style="margin-top:0.75rem; background:rgba(245, 158, 11, 0.1); border:1px solid rgba(245, 158, 11, 0.25); padding:0.75rem; border-radius:10px;">
-          <span style="color:var(--accent-yellow); font-weight:800; font-size:0.8rem;">⚠️ DICA DE USO:</span>
-          <p style="font-size:0.82rem; color:var(--text-main); margin-top:2px;" id="focusedProTip"></p>
+    <!-- Respostas Naturais da Vida Real -->
+    <div class="section-card">
+      <div class="section-header">💬 Respostas Naturais da Vida Real</div>
+      <div class="section-subtitle">Como os nativos reagem e respondem a este padrão:</div>
+      
+      <div class="responses-grid">
+        <div class="res-box positive">
+          <div class="res-title positive">✅ POSITIVAS</div>
+          <div id="posResponsesContainer"></div>
+        </div>
+        <div class="res-box negative">
+          <div class="res-title negative">❌ NEGATIVAS</div>
+          <div id="negResponsesContainer"></div>
         </div>
       </div>
+    </div>
 
-      <!-- EXEMPLOS PRÁTICOS COM PRONÚNCIA APORTUGUESADA -->
-      <div class="card">
-        <div class="card-title">🧩 Exemplos Práticos & Pronúncia</div>
-        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">Aprenda a pronúncia aportuguesada e ouça o áudio nativo:</p>
-        <div id="focusedExamplesContainer"></div>
-      </div>
-
-      <!-- RESPOSTAS NATURAIS -->
-      <div class="card">
-        <div class="card-title">💬 Respostas Naturais da Vida Real</div>
-        <div class="response-grid">
-          <div class="response-card" style="border-top: 3px solid var(--accent-green);">
-            <div class="response-title" style="color:var(--accent-green);">✅ Positivas</div>
-            <div id="focusedPosResponses" style="font-size:0.82rem; line-height:1.6;"></div>
-          </div>
-          <div class="response-card" style="border-top: 3px solid var(--accent-red);">
-            <div class="response-title" style="color:var(--accent-red);">❌ Negativas</div>
-            <div id="focusedNegResponses" style="font-size:0.82rem; line-height:1.6;"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- VARIAÇÕES NATIVAS -->
-      <div class="card">
-        <div class="card-title">🔄 Variações Nativas (Sinônimos)</div>
-        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">Outras formas que os nativos usam no lugar deste padrão:</p>
-        <div id="focusedVariationsList" style="font-size:0.85rem; line-height:1.6;"></div>
-      </div>
-
-      <!-- MATRIZ DE CONJUGAÇÃO -->
-      <div class="card">
-        <div class="card-title">🎛️ Matriz Temporal & Pronomes</div>
-        <label style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">1. PRONOME / PESSOA:</label>
-        <select id="focusedPersonSelect" onchange="renderMatrixVariations()">
-          <option value="I">Eu (I)</option>
-          <option value="You" selected>Você (You)</option>
-          <option value="He/She">Ele/Ela (He/She)</option>
-          <option value="We">Nós (We)</option>
-          <option value="They">Eles (They)</option>
-        </select>
-
-        <label style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">2. TEMPO VERBAL:</label>
-        <select id="focusedTenseSelect" onchange="renderMatrixVariations()">
-          <option value="present">Presente (Hábitos / Rotina)</option>
-          <option value="past">Passado (Ontem / Aconteceu)</option>
-          <option value="future">Futuro (Amanhã / Plano)</option>
-        </select>
-
-        <div id="matrixOutputContainer" style="margin-top:0.5rem;"></div>
-      </div>
-
-    </section>
-
-    <!-- 3. STORY BUILDER -->
-    <section id="storySection" class="section">
-      <div class="card">
-        <div class="card-title">🔗 Story Builder & Shadowing</div>
-        <p style="font-size:0.82rem; color:var(--text-muted);">Treine a junção dos padrões em blocos de fala contínua:</p>
-      </div>
-      <div id="storyListContainer"></div>
-    </section>
-
-    <!-- 4. REPETIÇÃO ESPAÇADA (SRS) -->
-    <section id="srsSection" class="section">
-      <div class="card">
-        <div class="card-title">🧠 Repetição Espaçada (SRS)</div>
-        <p style="font-size:0.82rem; color:var(--text-muted);">Revise os cards para fixar o vocabulário na memória de longo prazo:</p>
-      </div>
-
-      <div class="flashcard" id="srsCard" onclick="flipSRSCard()">
-        <div class="flashcard-prompt" id="srsPrompt">PORTUGUÊS (TOQUE PARA VERIFICAR)</div>
-        <div class="flashcard-content" id="srsContent">Toque aqui para começar o treino</div>
-      </div>
-
-      <div class="srs-btn-grid" id="srsControls" style="display:none;">
-        <button class="srs-btn" style="background:var(--accent-red);" onclick="rateSRS('again')">🔴 Errei</button>
-        <button class="srs-btn" style="background:var(--accent-yellow);" onclick="rateSRS('hard')">🟡 Difícil</button>
-        <button class="srs-btn" style="background:var(--accent-green);" onclick="rateSRS('easy')">🟢 Fácil</button>
-      </div>
-    </section>
-
-    <!-- 5. CONFIGURAÇÕES & BACKUP -->
-    <section id="configSection" class="section">
-      <div class="card">
-        <div class="card-title">⚙️ Backup & Dados</div>
-        <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem;">Exporte seu progresso ou sincronize seus padrões.</p>
-        <button class="btn btn-secondary" onclick="exportDataJSON()" style="margin-bottom:0.5rem;">📥 Exportar Backup (JSON)</button>
-        <button class="btn btn-secondary" onclick="alert('Sistema limpo e sincronizado com 258 padrões!')">🔄 Verificar Banco de Dados</button>
-      </div>
-    </section>
+    <!-- Variações Nativas (Sinônimos) -->
+    <div class="section-card">
+      <div class="section-header">🔄 Variações Nativas (Sinônimos)</div>
+      <div class="section-subtitle">Outras formas que os nativos usam no lugar deste padrão:</div>
+      <div id="synonymsContainer"></div>
+    </div>
 
   </div>
 
-  <!-- BOTTOM NAVIGATION -->
+  <!-- MODAL DEDICADO DA MATRIZ TEMPORAL & PRONOMES -->
+  <div class="modal-overlay" id="matrixModal">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">🎛️ Matriz Temporal & Pronomes</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);" id="modalPatternTitle">Padrão: Are you interested in...?</div>
+        </div>
+        <button class="btn-close" onclick="closeMatrixModal()">✕ Fechar</button>
+      </div>
+
+      <div class="pronoun-selector-label">1. ESCOLHA O PRONOME PESSOAL:</div>
+      <div class="pronoun-pills">
+        <button class="pronoun-pill" onclick="selectPronoun('I')">I (Eu)</button>
+        <button class="pronoun-pill active" onclick="selectPronoun('You')">You (Você)</button>
+        <button class="pronoun-pill" onclick="selectPronoun('He')">He (Ele)</button>
+        <button class="pronoun-pill" onclick="selectPronoun('She')">She (Ela)</button>
+        <button class="pronoun-pill" onclick="selectPronoun('It')">It (Coisa/Objeto)</button>
+        <button class="pronoun-pill" onclick="selectPronoun('We')">We (Nós)</button>
+        <button class="pronoun-pill" onclick="selectPronoun('They')">They (Eles/Elas)</button>
+      </div>
+
+      <!-- Área de Exibição Dinâmica (Aviso de Incompatibilidade OU os 4 Tempos Verbais) -->
+      <div id="matrixDisplayArea"></div>
+
+    </div>
+  </div>
+
+  <!-- Barra de Navegação Bottom -->
   <nav class="bottom-nav">
-    <div class="nav-item active" onclick="showSection('patternsSection')" id="nav-patterns">
-      <span class="nav-icon">📚</span> Padrões
-    </div>
-    <div class="nav-item" onclick="showSection('storySection')" id="nav-story">
-      <span class="nav-icon">🔗</span> Histórias
-    </div>
-    <div class="nav-item" onclick="showSection('srsSection')" id="nav-srs">
-      <span class="nav-icon">🧠</span> SRS
-    </div>
-    <div class="nav-item" onclick="showSection('configSection')" id="nav-config">
-      <span class="nav-icon">⚙️</span> Backup
-    </div>
+    <a href="#" class="nav-item active">
+      <span class="nav-icon">📚</span>
+      <span>Padrões</span>
+    </a>
+    <a href="#" class="nav-item">
+      <span class="nav-icon">🔗</span>
+      <span>Histórias</span>
+    </a>
+    <a href="#" class="nav-item">
+      <span class="nav-icon">🧠</span>
+      <span>SRS</span>
+    </a>
+    <a href="#" class="nav-item">
+      <span class="nav-icon">⚙️</span>
+      <span>Backup</span>
+    </a>
   </nav>
 
+  <!-- LÓGICA DO APP (JS) -->
   <script>
-    let currentLang = localStorage.getItem('nego_lang') || null;
-    let selectedPatternObj = null;
-    let srsDeck = [];
-    let srsIndex = 0;
-    let srsFlipped = false;
-
-    const langVoiceMap = { en: 'en-US', es: 'es-ES', fr: 'fr-FR' };
-    const langNames = { en: '🇺🇸 Inglês', es: '🇪🇸 Espanhol', fr: '🇫🇷 Francês' };
-
-    // SANITIZAÇÃO E LIMPEZA DE TEXTO / ÁUDIO
-    function getCleanPatternText(text) {
-      if (!text) return "";
-      return text.replace(/\[.*?\]/g, '').replace(/\(.*?\)/g, '').replace(/\?/g, '').trim();
+    // Sintetizador de Áudio Nativo (Web Speech API)
+    function speak(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel(); // Para áudio anterior
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+      } else {
+        alert('Seu navegador não suporta reprodução de voz.');
+      }
     }
 
-    function getDisplayPatternText(text) {
-      if (!text) return "";
-      return text.replace(/\[.*?\]/g, '...').trim();
-    }
+    // BASE DE DADOS COMPLETA DOS PADRÕES
+    const patternsData = {
+      are_you_interested_in: {
+        id: "are_you_interested_in",
+        title: "Are you interested in...?",
+        pronunciation: "Ar yu íntrested in...?",
+        portuguese: "Você está interessado(a) em...?",
+        description: "Usado para perguntar sobre o interesse de alguém em alguma proposta, objeto ou atividade.",
+        
+        // 5 Categorias x 5 Frases cada
+        examples: {
+          restaurant: {
+            title: "🍔 Restaurante",
+            items: [
+              { en: "Are you interested in dessert?", pron: "Ar yu íntrested in dizért?", pt: "Você está interessado(a) em sobremesa?" },
+              { en: "Are you interested in today’s special?", pron: "Ar yu íntrested in tudéis spéshal?", pt: "Você está interessado(a) no prato do dia?" },
+              { en: "Are you interested in another drink?", pron: "Ar yu íntrested in anóther drink?", pt: "Você está interessado(a) em outra bebida?" },
+              { en: "Are you interested in a table outside?", pron: "Ar yu íntrested in e téibol autsáid?", pt: "Você está interessado(a) em uma mesa lá fora?" },
+              { en: "Are you interested in trying our wine?", pron: "Ar yu íntrested in tráiying áuer wáin?", pt: "Você está interessado(a) em experimentar nosso vinho?" }
+            ]
+          },
+          store: {
+            title: "🛍️ Loja / Compras",
+            items: [
+              { en: "Are you interested in this jacket?", pron: "Ar yu íntrested in dhis djáket?", pt: "Você está interessado(a) nesta jaqueta?" },
+              { en: "Are you interested in a larger size?", pron: "Ar yu íntrested in e lárdjer sáiz?", pt: "Você está interessado(a) em um tamanho maior?" },
+              { en: "Are you interested in our promotion?", pron: "Ar yu íntrested in áuer promóushan?", pt: "Você está interessado(a) na nossa promoção?" },
+              { en: "Are you interested in a discount card?", pron: "Ar yu íntrested in e discáunt cárd?", pt: "Você está interessado(a) em um cartão de desconto?" },
+              { en: "Are you interested in seeing other colors?", pron: "Ar yu íntrested in síing óther cólors?", pt: "Você está interessado(a) em ver outras cores?" }
+            ]
+          },
+          work: {
+            title: "💼 Trabalho / Negócios",
+            items: [
+              { en: "Are you interested in this position?", pron: "Ar yu íntrested in dhis pozíshan?", pt: "Você está interessado(a) nesta vaga?" },
+              { en: "Are you interested in working overtime?", pron: "Ar yu íntrested in wórking óver-táim?", pt: "Você está interessado(a) em fazer hora extra?" },
+              { en: "Are you interested in joining our team?", pron: "Ar yu íntrested in djóining áuer tím?", pt: "Você está interessado(a) em se juntar ao nosso time?" },
+              { en: "Are you interested in leading this project?", pron: "Ar yu íntrested in líding dhis pródjekt?", pt: "Você está interessado(a) em liderar este projeto?" },
+              { en: "Are you interested in a full-time contract?", pron: "Ar yu íntrested in e fúl-táim cóntrakt?", pt: "Você está interessado(a) em um contrato em tempo integral?" }
+            ]
+          },
+          casual: {
+            title: "❤️ Conversa Casual / Dia a Dia",
+            items: [
+              { en: "Are you interested in going out tonight?", pron: "Ar yu íntrested in góing áut tunáit?", pt: "Você está interessado(a) em sair hoje à noite?" },
+              { en: "Are you interested in watching a movie?", pron: "Ar yu íntrested in wótching e múvi?", pt: "Você está interessado(a) em assistir a um filme?" },
+              { en: "Are you interested in traveling with us?", pron: "Ar yu íntrested in tráveling wíth as?", pt: "Você está interessado(a) em viajar conosco?" },
+              { en: "Are you interested in playing video games?", pron: "Ar yu íntrested in pléying vídio géims?", pt: "Você está interessado(a) em jogar video game?" },
+              { en: "Are you interested in grabbing a coffee?", pron: "Ar yu íntrested in grábing e cófi?", pt: "Você está interessado(a) em tomar um café?" }
+            ]
+          },
+          studies: {
+            title: "📚 Estudos / Desenvolvimento",
+            items: [
+              { en: "Are you interested in learning Spanish?", pron: "Ar yu íntrested in lérning spánish?", pt: "Você está interessado(a) em aprender espanhol?" },
+              { en: "Are you interested in improving your English?", pron: "Ar yu íntrested in imprúving yor ínglish?", pt: "Você está interessado(a) em melhorar seu inglês?" },
+              { en: "Are you interested in taking this course?", pron: "Ar yu íntrested in téiking dhis córs?", pt: "Você está interessado(a) em fazer este curso?" },
+              { en: "Are you interested in study groups?", pron: "Ar yu íntrested in stódi grúps?", pt: "Você está interessado(a) em grupos de estudo?" },
+              { en: "Are you interested in studying abroad?", pron: "Ar yu íntrested in stódying ebród?", pt: "Você está interessado(a) em estudar no exterior?" }
+            ]
+          }
+        },
 
-    // BANCO BRUTO DE 258 PADRÕES
-    const rawPatternsData = [
-      ["Are you [adjective]?", "Você está / é...?"],
-      ["Are you feeling [adjective]?", "Você está se sentindo...?"],
-      ["Are you interested in [noun/verb-ing]?", "Você está interessado(a) em...?"],
-      ["Are you still here?", "Você ainda está aqui?"],
-      ["Are you [verb]-ing...?", "Você está [verb-ando/endo]...?"],
-      ["Can I [verb]...?", "Eu posso [verbo]...?"],
-      ["Can I have [noun]?", "Posso tomar / comer / ter...?"],
-      ["Can we [verb]...?", "Nós podemos [verbo]...?"],
-      ["Can you [verb]...?", "Você pode [verbo]...?"],
-      ["Do you [verb]...?", "Você [verbo]...?"],
-      ["Do you enjoy [verb-ing]?", "Você gosta / aprecia [verb-ando/endo]...?"],
-      ["Do you feel [adjective/noun]?", "Você sente / se sente...?"],
-      ["Do you like [noun/verb-ing]?", "Você gosta de...?"],
-      ["Do you need [noun]?", "Você precisa de...?"],
-      ["Do you want [noun]?", "Você quer...?"],
-      ["How do you know...?", "Como você sabe...?"],
-      ["How is / was...?", "Como está / foi...?"],
-      ["How much does... cost?", "Quanto custa...?"],
-      ["How old are you?", "Quantos anos você tem?"],
-      ["How's the weather?", "Como está o tempo?"],
-      ["I don't have [noun]", "Eu não tenho..."],
-      ["I want [noun]", "Eu quero..."],
-      ["Is it [adjective]?", "Está / É...?"],
-      ["Is it raining...?", "Está chovendo...?"],
-      ["Is it still [adjective]?", "Ainda está...?"],
-      ["Is the [noun] [adjective]?", "O/A [substantivo] está/é...?"],
-      ["Is this [noun] yours?", "Este [substantivo] é seu?"],
-      ["Is this my / your / a [noun]?", "Este/a é meu/seu/um...?"],
-      ["Is this seat free?", "Este assento está livre?"],
-      ["Is your [noun] [adjective]?", "Seu/Sua [substantivo] está/é...?"],
-      ["It's too [adjective]", "Está / É demais / muito..."],
-      ["It's very [adjective]", "Está / É muito..."],
-      ["The [noun] is [adjective]", "O/A [substantivo] está/é..."],
-      ["The weather is [adjective]", "O tempo / clima está..."],
-      ["This [noun] is yours", "Este [substantivo] é seu."],
-      ["This is [adjective]", "Isto é / está..."],
-      ["This is called...", "Isto é chamado de... / Isso se chama..."],
-      ["This is for [someone]", "Isto é para [alguém]"],
-      ["This is the way", "Este é o caminho"],
-      ["What are you [verb-ing]?", "O que você está [verb-ando/endo]...?"],
-      ["What are your [noun]?", "Quais são os seus...?"],
-      ["What did you [verb]?", "O que você [verbo no passado]...?"],
-      ["What do you [verb]?", "O que você [verbo]...?"],
-      ["What is your [noun]?", "Qual é o seu...?"],
-      ["What time is it?", "Que horas são?"],
-      ["What's for [meal]?", "O que tem para o [refeição]?"],
-      ["Where are my [plural noun]?", "Onde estão minhas/meus...?"],
-      ["Where are we / you going?", "Para onde nós estamos / você está indo?"],
-      ["Where are you from?", "De onde você é?"],
-      ["Where can I [verb]?", "Onde eu posso [verbo]?"],
-      ["Where did you [verb]?", "Onde você [verbo no passado]?"],
-      ["Where do you [verb]?", "Onde você [verbo]?"],
-      ["Where is she from?", "De onde ela é?"],
-      ["Where is the / my / your [noun]?", "Onde está o/meu/seu...?"],
-      ["You can [verb]", "Você pode [verbo]"],
-      ["You need [noun]", "Você precisa de..."],
-      ["Be careful", "Tenha cuidado / Seja cuidadoso"],
-      ["Don't worry", "Não se preocupe"],
-      ["He / She is [adjective]", "Ele / Ela é / está..."],
-      ["He / She / You look(s) [adjective]", "Ele / Ela / Você parece..."],
-      ["He / We / You will [verb]", "Ele / Nós / Você vai [verbo]"],
-      ["How [adjective]!", "Quão [adjetivo]! / Que [adjetivo]!"],
-      ["How are you?", "Como você está?"],
-      ["I am [adjective/location]", "Eu sou / estou..."],
-      ["I can [verb]", "Eu posso [verbo]"],
-      ["I feel [adjective]", "Eu me sinto..."],
-      ["I / We have [noun]", "Eu tenho / Nós temos..."],
-      ["I love [someone/something]", "Eu amo / adoro..."],
-      ["I miss [someone]", "Eu sinto falta de..."],
-      ["I need [noun]", "Eu preciso de..."],
-      ["I trust [someone]", "Eu confio em..."],
-      ["I will [verb]", "Eu vou [verbo]"],
-      ["I / You know [someone/something]", "Eu / Você conhece..."],
-      ["Is [he/she] [location/adjective]?", "Ele / Ela está...?"],
-      ["Is that [yours/mine]?", "Isso é seu / meu?"],
-      ["It is [adjective]", "É / Está..."],
-      ["It is [yours/mine]", "É seu / meu"],
-      ["It was [adjective]", "Foi / Estava..."],
-      ["Take care", "Cuide-se"],
-      ["That is [adjective/pronoun]", "Isso é / está..."],
-      ["That's [adjective]", "Isso é..."],
-      ["They are [adjective/location]", "Eles são / estão..."],
-      ["Watch out / Look out", "Cuidado / Preste atenção"],
-      ["We are [adjective/location]", "Nós somos / estamos..."],
-      ["We need [noun]", "Nós precisamos de..."],
-      ["What a [noun]!", "Que [substantivo]!"],
-      ["What happened?", "O que aconteceu?"],
-      ["When is [noun/pronoun]?", "Quando é...?"],
-      ["Who did [this/that]?", "Quem fez isso?"],
-      ["Who is [that/this]?", "Quem é esse / essa?"],
-      ["Why is [that/this]?", "Por que isso...?"],
-      ["You are [adjective]", "Você é / está..."],
-      ["You feel [adjective]", "Você se sente..."],
-      ["You got this", "Você consegue"],
-      ["You / We / She want(s) [noun]", "Você / Nós / Ela quer..."],
-      ["Back in Brazil, I used to...", "Lá no Brasil, eu costumava..."],
-      ["Before coming here, I...", "Antes de vir para cá, eu..."],
-      ["I came here to...", "Eu vim para cá para..."],
-      ["I grew up in...", "Eu cresci em..."],
-      ["I have experience in...", "Tenho experiência em..."],
-      ["I'm working hard to...", "Estou trabalhando duro para..."],
-      ["I've been working with... for...", "Trabalho com... há..."],
-      ["My main goal is to...", "Meu objetivo principal é..."],
-      ["My plan is to...", "Meu plano é..."],
-      ["One of my dreams is to...", "Um dos meus sonhos é..."],
-      ["What brought me here was...", "O que me trouxe aqui foi..."],
-      ["Do you miss home?", "Você sente falta de casa?"],
-      ["How do you like working here?", "O que está achando de trabalhar aqui?"],
-      ["How long have you been here?", "Há quanto tempo você está aqui?"],
-      ["What are your plans for the future?", "Quais são seus planos para o futuro?"],
-      ["What brought you here?", "O que te trouxe aqui?"],
-      ["What did you do back home?", "O que você fazia no seu país?"],
-      ["Where did you grow up?", "Onde você cresceu?"],
-      ["Are you ready to order?", "Você está pronto para pedir?"],
-      ["Can I get you anything else?", "Posso te trazer mais alguma coisa?"],
-      ["Enjoy your meal!", "Aproveite a refeição! / Bom apetite!"],
-      ["Here is your...", "Aqui está o seu/sua..."],
-      ["How would you like your...?", "Como você gostaria do seu/sua...?"],
-      ["I'll be right back with...", "Já volto com..."],
-      ["Is everything okay with your...?", "Está tudo bem com o seu/sua...?"],
-      ["Let me check that for you.", "Deixe-me checar isso para você."],
-      ["Right this way, please.", "Por aqui, por favor."],
-      ["Would you like to try...?", "Você gostaria de experimentar...?"],
-      ["Clean up this area.", "Limpe esta área."],
-      ["Hand me the...", "Me passa o/a..."],
-      ["How long will this take?", "Quanto tempo isso vai levar?"],
-      ["Is this ready for...?", "Isso está pronto para...?"],
-      ["Make sure to...", "Certifique-se de..."],
-      ["Put on your...", "Coloque o seu/sua..."],
-      ["What's the next task?", "Qual é a próxima tarefa?"],
-      ["Where do I put this?", "Onde eu coloco isso?"],
-      ["Where is the safety gear?", "Onde está o equipamento de segurança?"],
-      ["You need to move this to...", "Você precisa mover isso para..."],
-      ["After we finish, we...", "Depois que terminarmos, nós..."],
-      ["All of us need...", "Todos nós precisamos de..."],
-      ["Are there any/more...?", "Há algum/mais...?"],
-      ["Are you still thinking about...?", "Você ainda está pensando em/sobre...?"],
-      ["Around here we...", "Por aqui nós..."],
-      ["As far as I...", "Até onde eu..."],
-      ["At least...", "Pelo menos..."],
-      ["At the moment...", "No momento..."],
-      ["Because of this we...", "Por causa disso nós..."],
-      ["Before that we...", "Antes disso nós..."],
-      ["Can / Could you..., please?", "Você pode / poderia..., por favor?"],
-      ["Can he [verb]...?", "Ele pode...?"],
-      ["Can we meet...?", "Podemos nos encontrar...?"],
-      ["Can we talk about...?", "Podemos conversar sobre...?"],
-      ["Can you tell me...?", "Você pode me dizer...?"],
-      ["Close to home we...", "Perto de casa nós..."],
-      ["Come here...", "Venha aqui..."],
-      ["Do they [verb]...?", "Eles/Elas...?"],
-      ["Do you even care...?", "Você sequer se importa...?"],
-      ["Do you have...?", "Você tem...?"],
-      ["Do you know the...?", "Você conhece o/a...?"],
-      ["Do you know...?", "Você conhece / sabe...?"],
-      ["Do you really think...?", "Você realmente acha/pensa...?"],
-      ["Does he [verb]...?", "Ele...?"],
-      ["Don't forget to...", "Não se esqueça de..."],
-      ["For this reason we...", "Por essa razão nós..."],
-      ["Generally it is...", "Geralmente é/está..."],
-      ["Hardly ever I [verb]", "Quase nunca eu..."],
-      ["He always forgets...", "Ele sempre esquece..."],
-      ["He might be... / Maybe he is...", "Ele pode estar/ser..."],
-      ["He needs to...", "Ele precisa..."],
-      ["He never eats...", "Ele nunca come..."],
-      ["He tried to explain...", "Ele tentou explicar..."],
-      ["He's not... yet", "Ele ainda não está/é..."],
-      ["Here is...", "Aqui está... / Eis..."],
-      ["Honestly, I do not...", "Sinceramente, eu não..."],
-      ["How do you feel...?", "Como você se sente...?"],
-      ["How does it feel to...?", "Como é a sensação de...?"],
-      ["How long will it...?", "Quanto tempo vai...?"],
-      ["I almost forgot...", "Eu quase esqueci..."],
-      ["I can help...", "Posso ajudar..."],
-      ["I can't wait to...", "Mal posso esperar para..."],
-      ["I choose...", "Eu escolho..."],
-      ["I didn't mean to...", "Eu não tive a intenção de..."],
-      ["I don't remember why...", "Não me lembro do porquê..."],
-      ["I don't want to...", "Não quero..."],
-      ["I feel good when...", "Eu me sinto bem quando..."],
-      ["I feel very [adjective]", "Me sinto muito..."],
-      ["I forget...", "Eu esqueço..."],
-      ["I guess it means...", "Acho que significa..."],
-      ["I have a...", "Eu tenho um/uma..."],
-      ["I haven't decided yet...", "Eu ainda não decidi..."],
-      ["I haven't seen...", "Eu não vi..."],
-      ["I heard...", "Eu ouvi..."],
-      ["I just saw...", "Acabei de ver..."],
-      ["I just want to...", "Eu só quero..."],
-      ["I like the/this...", "Eu gosto do/deste..."],
-      ["I like to...", "Gosto de..."],
-      ["I love to...", "Eu amo..."],
-      ["I need to understand...", "Eu preciso entender..."],
-      ["I need to...", "Eu preciso..."],
-      ["I need you to...", "Eu preciso que você..."],
-      ["I never imagined...", "Eu nunca imaginei..."],
-      ["I never liked...", "Eu nunca gostei de..."],
-      ["I plan to...", "Planejo... / Pretendo..."],
-      ["I remember when...", "Lembro-me de quando..."],
-      ["I used to...", "Eu costumava..."],
-      ["I wouldn't do that...", "Eu não faria isso..."],
-      ["I'm afraid of...", "Tenho medo de..."],
-      ["I'm glad you...", "Que bom que você..."],
-      ["I'm looking for...", "Estou procurando..."],
-      ["I'm not used to...", "Não estou acostumado com..."],
-      ["I'm trying to focus...", "Estou tentando focar..."],
-      ["If this works, we...", "Se isso funcionar, nós..."],
-      ["If you remember, you...", "Se você se lembrar, você..."],
-      ["In summary, we...", "Em resumo, nós..."],
-      ["In the end we...", "No final nós..."],
-      ["In the evening we...", "À noite nós..."],
-      ["Is there a...?", "Tem um/uma...?"],
-      ["Is there any chance...?", "Existe alguma chance...?"],
-      ["It could...", "Poderia... / Pode..."],
-      ["It doesn't make sense...", "Não faz sentido..."],
-      ["It had [past participle]", "Tinha [particípio]..."],
-      ["It has [past participle]", "Tem [particípio]..."],
-      ["It helps...", "Ajuda..."],
-      ["It proves...", "Prova..."],
-      ["It seems very...", "Parece muito..."],
-      ["It used to be...", "Costumava ser..."],
-      ["It will be...", "Vai ser/estar..."],
-      ["It's always the same...", "É sempre o mesmo..."],
-      ["It's hard to...", "É difícil..."],
-      ["It's not the same...", "Não é o mesmo..."],
-      ["It's probably too late...", "Provavelmente é tarde demais..."],
-      ["Let me see...", "Deixe-me ver..."],
-      ["Let me try...", "Deixe-me tentar..."],
-      ["Let's go to...", "Vamos ao/à..."],
-      ["Let's meet...", "Vamos nos encontrar..."],
-      ["Let's see what happens...", "Vamos ver o que acontece..."],
-      ["Most people...", "A maioria das pessoas..."],
-      ["My brother wants...", "Meu irmão quer..."],
-      ["No doubt it is...", "Sem dúvida é..."],
-      ["Nobody told me...", "Ninguém me contou..."],
-      ["Nothing else really matters...", "Nada realmente importa..."],
-      ["On average, it...", "Em média,..."],
-      ["Please don't...", "Por favor, não..."],
-      ["Sadly, I...", "Infelizmente, eu..."],
-      ["Shall we [verb]...?", "Vamos...?"],
-      ["She always goes to...", "Ela sempre vai ao/à..."],
-      ["She doesn't like...", "Ela não gosta de..."],
-      ["She doesn't want to...", "Ela não quer..."],
-      ["She is always trying to...", "Ela está sempre tentando..."],
-      ["She is learning...", "Ela está aprendendo..."],
-      ["She never told me...", "Ela nunca me contou..."],
-      ["Sit down and...", "Sente-se e..."],
-      ["Some people...", "Algumas pessoas..."],
-      ["Tell me...", "Diga-me... / Me conte..."],
-      ["Thanks to my...", "Graças ao meu/minha..."],
-      ["That reminds me of...", "Isso me lembra..."],
-      ["That was a...", "Isso foi um/uma..."],
-      ["That's what I heard...", "Foi isso que eu ouvi..."],
-      ["The main point is...", "O ponto principal é..."],
-      ["They didn't want to...", "Eles não queriam..."],
-      ["They love to...", "Eles adoram..."],
-      ["They might come back...", "Eles podem voltar..."],
-      ["They used to say...", "Eles costumavam dizer..."],
-      ["They usually [verb]", "Eles costumam..."],
-      ["This place...", "Este lugar..."],
-      ["Try not to...", "Tente não..."],
-      ["We all need...", "Todos nós precisamos..."],
-      ["We could try...", "Nós poderíamos tentar..."],
-      ["We hope to...", "Esperamos..."],
-      ["We need to...", "Precisamos..."],
-      ["We stayed...", "Ficamos hospedados..."],
-      ["We usually go...", "Geralmente vamos..."],
-      ["We were going to...", "Nós íamos..."],
-      ["We were talking...", "Estávamos conversando..."],
-      ["We weren't expecting...", "Não estávamos esperando..."],
-      ["We'll figure... out", "Nós vamos resolver..."],
-      ["Were they [verb]-ing...?", "Eles estavam...?"],
-      ["What are you doing...?", "O que você está fazendo...?"],
-      ["What if we don't...?", "E se nós não...?"],
-      ["When are we going...?", "Quando nós vamos...?"],
-      ["Why are you so...?", "Por que você está tão...?"],
-      ["Why didn't you tell...?", "Por que você não contou...?"],
-      ["Why don't you...?", "Por que você não...?"],
-      ["Why would you say...?", "Por que você diria...?"],
-      ["Will he [verb]...?", "Ele vai...?"],
-      ["Would you like...?", "Você gostaria de...?"],
-      ["Would you mind [verb]-ing?", "Você se importaria de...?"],
-      ["Would you rather...?", "Você prefere...?"],
-      ["You should have told me...", "Você deveria ter me dito..."],
-      ["You should try...", "Você deveria tentar..."],
-      ["You should...", "Você deveria..."]
-    ];
+        // Respostas Naturais com Áudio e Pronúncia
+        responses: {
+          positive: [
+            { en: "Yes, I am!", pron: "Iés, ái ém!", pt: "Sim, estou!" },
+            { en: "Totally!", pron: "Tótali!", pt: "Com certeza! / Totalmente!" },
+            { en: "Yes, for sure.", pron: "Iés, for shúr.", pt: "Sim, com certeza." },
+            { en: "I'd love to!", pron: "Áid láv tu!", pt: "Eu adoraria!" }
+          ],
+          negative: [
+            { en: "No, I'm not.", pron: "Nóu, áim nót.", pt: "Não, não estou." },
+            { en: "Not really.", pron: "Nót ríali.", pt: "Na verdade não." },
+            { en: "Not right now.", pron: "Nót ráit náu.", pt: "Agora não." },
+            { en: "Maybe later.", pron: "Méibi léiter.", pt: "Talvez mais tarde." }
+          ]
+        },
 
-    function buildDatabase() {
-      const db = { en: [], es: [], fr: [] };
-      rawPatternsData.forEach((item, idx) => {
-        const id = 'p_' + idx;
-        const rawName = item[0];
-        const descPt = item[1];
+        // Variações / Sinônimos
+        synonyms: [
+          { en: "Do you feel like...?", pron: "Du yu fíl láik...?", pt: "Estaria a fim de...?" },
+          { en: "Would you like to...?", pron: "Wúd yu láik tu...?", pt: "Gostaria de...?" },
+          { en: "Are you up for...?", pron: "Ar yu áp for...?", pt: "Topo / Tá a fim de...?" }
+        ],
 
-        db.en.push({ id: id + '_en', raw: rawName, display: getDisplayPatternText(rawName), clean: getCleanPatternText(rawName), desc: descPt });
-        db.es.push({ id: id + '_es', raw: rawName, display: `[ES] ${getDisplayPatternText(rawName)}`, clean: getCleanPatternText(rawName), desc: descPt });
-        db.fr.push({ id: id + '_fr', raw: rawName, display: `[FR] ${getDisplayPatternText(rawName)}`, clean: getCleanPatternText(rawName), desc: descPt });
-      });
-      return db;
-    }
-
-    const patternDatabase = buildDatabase();
-
-    const storyDatabase = {
-      en: [
-        {
-          title: '🔥 Trajetória e Ambição',
-          desc: 'Junção de histórias passadas com conectores nativos.',
-          textHTML: 'Back in Brazil, I used to work in sales, <mark class="connector">but</mark> I wanted a new challenge, <mark class="connector">so</mark> I came here to build a better life. <mark class="connector">Actually</mark>, I am working hard every day <mark class="connector">because</mark> my main goal is to get a great job.',
-          plainText: "Back in Brazil, I used to work in sales, but I wanted a new challenge, so I came here to build a better life. Actually, I am working hard every day because my main goal is to get a great job.",
-          pt: "No Brasil, eu costumava trabalhar em vendas, mas queria um novo desafio, então vim para cá para construir uma vida melhor. Na verdade, estou trabalhando duro todos os dias porque meu objetivo principal é conseguir um ótimo emprego.",
-          connectors: ["but (mas)", "so (então)", "actually (na verdade)", "because (porque)"]
+        // Matriz Temporal & Pronomes (Incluindo regra do 'It')
+        matrix: {
+          "I": {
+            valid: true,
+            tenses: {
+              present: { en: "Am I interested in this?", pron: "Em ái íntrested in dhis?", pt: "Eu estou interessado(a) nisso?" },
+              past: { en: "Was I interested in this?", pron: "Uóz ái íntrested in dhis?", pt: "Eu estava interessado(a) nisso?" },
+              future: { en: "Will I be interested in this?", pron: "Uíl ái bí íntrested in dhis?", pt: "Eu estarei interessado(a) nisso?" },
+              conditional: { en: "Would I be interested in this?", pron: "Uúd ái bí íntrested in dhis?", pt: "Eu estaria interessado(a) nisso?" }
+            }
+          },
+          "You": {
+            valid: true,
+            tenses: {
+              present: { en: "Are you interested in this?", pron: "Ar yu íntrested in dhis?", pt: "Você está interessado(a) nisso?" },
+              past: { en: "Were you interested in this?", pron: "Uér yu íntrested in dhis?", pt: "Você estava interessado(a) nisso?" },
+              future: { en: "Will you be interested in this?", pron: "Uíl yu bí íntrested in dhis?", pt: "Você estará interessado(a) nisso?" },
+              conditional: { en: "Would you be interested in this?", pron: "Uúd yu bí íntrested in dhis?", pt: "Você estaria interessado(a) nisso?" }
+            }
+          },
+          "He": {
+            valid: true,
+            tenses: {
+              present: { en: "Is he interested in this?", pron: "Iz hí íntrested in dhis?", pt: "Ele está interessado nisso?" },
+              past: { en: "Was he interested in this?", pron: "Uóz hí íntrested in dhis?", pt: "Ele estava interessado nisso?" },
+              future: { en: "Will he be interested in this?", pron: "Uíl hí bí íntrested in dhis?", pt: "Ele estará interessado nisso?" },
+              conditional: { en: "Would he be interested in this?", pron: "Uúd hí bí íntrested in dhis?", pt: "Ele estaria interessado nisso?" }
+            }
+          },
+          "She": {
+            valid: true,
+            tenses: {
+              present: { en: "Is she interested in this?", pron: "Iz shí íntrested in dhis?", pt: "Ela está interessada nisso?" },
+              past: { en: "Was she interested in this?", pron: "Uóz shí íntrested in dhis?", pt: "Ela estava interessada nisso?" },
+              future: { en: "Will she be interested in this?", pron: "Uíl shí bí íntrested in dhis?", pt: "Ela estará interessada nisso?" },
+              conditional: { en: "Would she be interested in this?", pron: "Uúd shí bí íntrested in dhis?", pt: "Ela estaria interessada nisso?" }
+            }
+          },
+          "It": {
+            valid: false,
+            reason: "O pronome 'It' refere-se a objetos, coisas inanimadas ou animais. Coisas não possuem sentimentos nem desejos próprios, por isso os nativos NUNCA dizem 'Is it interested in...?' (O objeto está interessado?).",
+            equivalentPattern: {
+              title: "Is it interesting...?",
+              explanation: "Para saber se algo (um filme, projeto, livro ou assunto) É INTERESSANTE, os nativos trocam 'interested in' (interessado em) por 'interesting' (interessante). Veja abaixo a estrutura correta para estudo:",
+              tenses: {
+                present: { en: "Is it interesting?", pron: "Iz it íntresting?", pt: "Isso é interessante?" },
+                past: { en: "Was it interesting?", pron: "Uóz it íntresting?", pt: "Isso foi / era interessante?" },
+                future: { en: "Will it be interesting?", pron: "Uíl it bí íntresting?", pt: "Isso será interessante?" },
+                conditional: { en: "Would it be interesting?", pron: "Uúd it bí íntresting?", pt: "Isso seria interessante?" }
+              }
+            }
+          },
+          "We": {
+            valid: true,
+            tenses: {
+              present: { en: "Are we interested in this?", pron: "Ar uí íntrested in dhis?", pt: "Nós estamos interessados(as) nisso?" },
+              past: { en: "Were we interested in this?", pron: "Uér uí íntrested in dhis?", pt: "Nós estávamos interessados(as) nisso?" },
+              future: { en: "Will we be interested in this?", pron: "Uíl uí bí íntrested in dhis?", pt: "Nós estaremos interessados(as) nisso?" },
+              conditional: { en: "Would we be interested in this?", pron: "Uúd uí bí íntrested in dhis?", pt: "Nós estaríamos interessados(as) nisso?" }
+            }
+          },
+          "They": {
+            valid: true,
+            tenses: {
+              present: { en: "Are they interested in this?", pron: "Ar dhéi íntrested in dhis?", pt: "Eles/Elas estão interessados(as) nisso?" },
+              past: { en: "Were they interested in this?", pron: "Uér dhéi íntrested in dhis?", pt: "Eles/Elas estavam interessados(as) nisso?" },
+              future: { en: "Will they be interested in this?", pron: "Uíl dhéi bí íntrested in dhis?", pt: "Eles/Elas estarão interessados(as) nisso?" },
+              conditional: { en: "Would they be interested in this?", pron: "Uúd dhéi bí íntrested in dhis?", pt: "Eles/Elas estariam interessados(as) nisso?" }
+            }
+          }
         }
-      ],
-      es: [], fr: []
+      },
+
+      are_you_ready: {
+        id: "are_you_ready",
+        title: "Are you ready...?",
+        pronunciation: "Ar yu rédi...?",
+        portuguese: "Você está pronto(a)...?",
+        description: "Usado para verificar se alguém está preparado para um evento, refeição ou ação imediata.",
+        examples: {
+          restaurant: {
+            title: "🍔 Restaurante",
+            items: [
+              { en: "Are you ready to order?", pron: "Ar yu rédi tu órder?", pt: "Você está pronto(a) para fazer o pedido?" },
+              { en: "Are you ready for the bill?", pron: "Ar yu rédi for dhe bil?", pt: "Você está pronto(a) para a conta?" },
+              { en: "Are you ready for dessert?", pron: "Ar yu rédi for dizért?", pt: "Você está pronto(a) para a sobremesa?" },
+              { en: "Are you ready to pay?", pron: "Ar yu rédi tu péi?", pt: "Você está pronto(a) para pagar?" },
+              { en: "Are you ready to leave?", pron: "Ar yu rédi tu lív?", pt: "Você está pronto(a) para ir embora?" }
+            ]
+          },
+          store: {
+            title: "🛍️ Loja / Compras",
+            items: [
+              { en: "Are you ready to checkout?", pron: "Ar yu rédi tu tchékaut?", pt: "Você está pronto(a) para pagar?" },
+              { en: "Are you ready to try this on?", pron: "Ar yu rédi tu trái dhis on?", pt: "Você está pronto(a) para provar isto?" },
+              { en: "Are you ready to choose?", pron: "Ar yu rédi tu tchúz?", pt: "Você está pronto(a) para escolher?" },
+              { en: "Are you ready for your receipt?", pron: "Ar yu rédi for yor risít?", pt: "Você está pronto(a) para o seu recibo?" },
+              { en: "Are you ready to go to the counter?", pron: "Ar yu rédi tu góu tu dhe cáunter?", pt: "Você está pronto(a) para ir ao balcão?" }
+            ]
+          },
+          work: {
+            title: "💼 Trabalho / Negócios",
+            items: [
+              { en: "Are you ready for the meeting?", pron: "Ar yu rédi for dhe míting?", pt: "Você está pronto(a) para a reunião?" },
+              { en: "Are you ready to present?", pron: "Ar yu rédi tu prizént?", pt: "Você está pronto(a) para apresentar?" },
+              { en: "Are you ready for the test?", pron: "Ar yu rédi for dhe tést?", pt: "Você está pronto(a) para o teste?" },
+              { en: "Are you ready to start the project?", pron: "Ar yu rédi tu stárt dhe pródjekt?", pt: "Você está pronto(a) para começar o projeto?" },
+              { en: "Are you ready to send the email?", pron: "Ar yu rédi tu sénd dhe iméil?", pt: "Você está pronto(a) para enviar o e-mail?" }
+            ]
+          },
+          casual: {
+            title: "❤️ Conversa Casual / Dia a Dia",
+            items: [
+              { en: "Are you ready to go?", pron: "Ar yu rédi tu góu?", pt: "Você está pronto(a) para ir?" },
+              { en: "Are you ready for the party?", pron: "Ar yu rédi for dhe párti?", pt: "Você está pronto(a) para a festa?" },
+              { en: "Are you ready to watch the game?", pron: "Ar yu rédi tu wótch dhe géim?", pt: "Você está pronto(a) para assistir ao jogo?" },
+              { en: "Are you ready for lunch?", pron: "Ar yu rédi for lántch?", pt: "Você está pronto(a) para o almoço?" },
+              { en: "Are you ready to head out?", pron: "Ar yu rédi tu héd áut?", pt: "Você está pronto(a) para partir?" }
+            ]
+          },
+          studies: {
+            title: "📚 Estudos / Desenvolvimento",
+            items: [
+              { en: "Are you ready for the exam?", pron: "Ar yu rédi for dhi egzám?", pt: "Você está pronto(a) para a prova?" },
+              { en: "Are you ready to practice?", pron: "Ar yu rédi tu práktis?", pt: "Você está pronto(a) para praticar?" },
+              { en: "Are you ready to learn?", pron: "Ar yu rédi tu lérn?", pt: "Você está pronto(a) para aprender?" },
+              { en: "Are you ready for chapter two?", pron: "Ar yu rédi for tchápter tú?", pt: "Você está pronto(a) para o capítulo dois?" },
+              { en: "Are you ready to speak English?", pron: "Ar yu rédi tu spík ínglish?", pt: "Você está pronto(a) para falar inglês?" }
+            ]
+          }
+        },
+        responses: {
+          positive: [
+            { en: "Yes, I'm ready!", pron: "Iés, áim rédi!", pt: "Sim, estou pronto(a)!" },
+            { en: "Born ready!", pron: "Bórn rédi!", pt: "Nasci pronto(a)!" },
+            { en: "All set, let's go!", pron: "Ól sét, léts góu!", pt: "Tudo pronto, vamos!" }
+          ],
+          negative: [
+            { en: "Give me a minute.", pron: "Gív mí e mínit.", pt: "Me dá um minuto." },
+            { en: "Not yet!", pron: "Nót iét!", pt: "Ainda não!" },
+            { en: "Almost ready.", pron: "Ólmoust rédi.", pt: "Quase pronto(a)." }
+          ]
+        },
+        synonyms: [
+          { en: "Is everything set?", pron: "Iz évrithing sét?", pt: "Está tudo certo/pronto?" },
+          { en: "Are you set?", pron: "Ar yu sét?", pt: "Você está pronto?" },
+          { en: "All set?", pron: "Ól sét?", pt: "Tudo pronto?" }
+        ],
+        matrix: {
+          "I": {
+            valid: true,
+            tenses: {
+              present: { en: "Am I ready?", pron: "Em ái rédi?", pt: "Eu estou pronto(a)?" },
+              past: { en: "Was I ready?", pron: "Uóz ái rédi?", pt: "Eu estava pronto(a)?" },
+              future: { en: "Will I be ready?", pron: "Uíl ái bí rédi?", pt: "Eu estarei pronto(a)?" },
+              conditional: { en: "Would I be ready?", pron: "Uúd ái bí rédi?", pt: "Eu estaria pronto(a)?" }
+            }
+          },
+          "You": {
+            valid: true,
+            tenses: {
+              present: { en: "Are you ready?", pron: "Ar yu rédi?", pt: "Você está pronto(a)?" },
+              past: { en: "Were you ready?", pron: "Uér yu rédi?", pt: "Você estava pronto(a)?" },
+              future: { en: "Will you be ready?", pron: "Uíl yu bí rédi?", pt: "Você estará pronto(a)?" },
+              conditional: { en: "Would you be ready?", pron: "Uúd yu bí rédi?", pt: "Você estaria pronto(a)?" }
+            }
+          },
+          "He": {
+            valid: true,
+            tenses: {
+              present: { en: "Is he ready?", pron: "Iz hí rédi?", pt: "Ele está pronto?" },
+              past: { en: "Was he ready?", pron: "Uóz hí rédi?", pt: "Ele estava pronto?" },
+              future: { en: "Will he be ready?", pron: "Uíl hí bí rédi?", pt: "Ele estará pronto?" },
+              conditional: { en: "Would he be ready?", pron: "Uúd hí bí rédi?", pt: "Ele estaria pronto?" }
+            }
+          },
+          "She": {
+            valid: true,
+            tenses: {
+              present: { en: "Is she ready?", pron: "Iz shí rédi?", pt: "Ela está pronta?" },
+              past: { en: "Was she ready?", pron: "Uóz shí rédi?", pt: "Ela estava pronta?" },
+              future: { en: "Will she be ready?", pron: "Uíl shí bí rédi?", pt: "Ela estará pronta?" },
+              conditional: { en: "Would she be ready?", pron: "Uúd shí bí rédi?", pt: "Ela estaria pronta?" }
+            }
+          },
+          "It": {
+            valid: true, // Para 'ready', IT é totalmente válido! Ex: comida/pedido pronto
+            tenses: {
+              present: { en: "Is it ready?", pron: "Iz it rédi?", pt: "Está pronto? (pedido/comida/objeto)" },
+              past: { en: "Was it ready?", pron: "Uóz it rédi?", pt: "Estava pronto?" },
+              future: { en: "Will it be ready?", pron: "Uíl it bí rédi?", pt: "Estará pronto?" },
+              conditional: { en: "Would it be ready?", pron: "Uúd it bí rédi?", pt: "Estaria pronto?" }
+            }
+          },
+          "We": {
+            valid: true,
+            tenses: {
+              present: { en: "Are we ready?", pron: "Ar uí rédi?", pt: "Nós estamos prontos(as)?" },
+              past: { en: "Were we ready?", pron: "Uér uí rédi?", pt: "Nós estávamos prontos(as)?" },
+              future: { en: "Will we be ready?", pron: "Uíl uí bí rédi?", pt: "Nós estaremos prontos(as)?" },
+              conditional: { en: "Would we be ready?", pron: "Uúd uí bí rédi?", pt: "Nós estaríamos prontos(as)?" }
+            }
+          },
+          "They": {
+            valid: true,
+            tenses: {
+              present: { en: "Are they ready?", pron: "Ar dhéi rédi?", pt: "Eles/Elas estão prontos(as)?" },
+              past: { en: "Were they ready?", pron: "Uér dhéi rédi?", pt: "Eles/Elas estavam prontos(as)?" },
+              future: { en: "Will they be ready?", pron: "Uíl dhéi bí rxédi?", pt: "Eles/Elas estarão prontos(as)?" },
+              conditional: { en: "Would they be ready?", pron: "Uúd dhéi bí rédi?", pt: "Eles/Elas estariam prontos(as)?" }
+            }
+          }
+        }
+      }
     };
 
-    function initApp() {
-      if (!currentLang) {
-        document.getElementById('onboardingOverlay').style.display = 'flex';
-      } else {
-        document.getElementById('onboardingOverlay').style.display = 'none';
-        document.getElementById('activeLangLabel').innerText = langNames[currentLang] || 'Idiomas';
-        renderPatternList();
-        renderStoryList();
-        setupSRSDeck();
-      }
+    let currentPatternKey = "are_you_interested_in";
+    let selectedPronoun = "You";
+
+    // Função de Troca de Padrão Principal
+    function changePattern() {
+      currentPatternKey = document.getElementById('patternSelect').value;
+      renderApp();
     }
 
-    function openLanguageSelector() {
-      document.getElementById('onboardingOverlay').style.display = 'flex';
+    // Renderização Geral
+    function renderApp() {
+      const data = patternsData[currentPatternKey];
+
+      // Header Card
+      document.getElementById('pTitle').innerText = data.title;
+      document.getElementById('pPron').innerText = `🗣️ (${data.pronunciation})`;
+      document.getElementById('pPt').innerText = `🇧🇷 ${data.portuguese}`;
+      document.getElementById('pDesc').innerText = data.description;
+
+      // Render Exemplos Categorizados
+      const exContainer = document.getElementById('practicalExamplesContainer');
+      exContainer.innerHTML = '';
+
+      Object.keys(data.examples).forEach(catKey => {
+        const cat = data.examples[catKey];
+        let categoryHTML = `
+          <div class="category-block">
+            <div class="category-title">${cat.title}</div>
+        `;
+
+        cat.items.forEach(item => {
+          categoryHTML += `
+            <div class="phrase-item">
+              <div class="phrase-top">
+                <span class="phrase-en">${item.en}</span>
+                <button class="btn-audio" onclick="speak('${item.en.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
+              </div>
+              <div class="phrase-pron">🗣️ (${item.pron})</div>
+              <div class="phrase-pt">🇧🇷 ${item.pt}</div>
+            </div>
+          `;
+        });
+
+        categoryHTML += `</div>`;
+        exContainer.innerHTML += categoryHTML;
+      });
+
+      // Render Respostas
+      const posContainer = document.getElementById('posResponsesContainer');
+      posContainer.innerHTML = '';
+      data.responses.positive.forEach(item => {
+        posContainer.innerHTML += `
+          <div class="phrase-item">
+            <div class="phrase-top">
+              <span class="phrase-en">${item.en}</span>
+              <button class="btn-audio" onclick="speak('${item.en.replace(/'/g, "\\'")}')">🔊</button>
+            </div>
+            <div class="phrase-pron">🗣️ (${item.pron})</div>
+            <div class="phrase-pt">🇧🇷 ${item.pt}</div>
+          </div>
+        `;
+      });
+
+      const negContainer = document.getElementById('negResponsesContainer');
+      negContainer.innerHTML = '';
+      data.responses.negative.forEach(item => {
+        negContainer.innerHTML += `
+          <div class="phrase-item">
+            <div class="phrase-top">
+              <span class="phrase-en">${item.en}</span>
+              <button class="btn-audio" onclick="speak('${item.en.replace(/'/g, "\\'")}')">🔊</button>
+            </div>
+            <div class="phrase-pron">🗣️ (${item.pron})</div>
+            <div class="phrase-pt">🇧🇷 ${item.pt}</div>
+          </div>
+        `;
+      });
+
+      // Render Sinônimos / Variações
+      const synContainer = document.getElementById('synonymsContainer');
+      synContainer.innerHTML = '';
+      data.synonyms.forEach(item => {
+        synContainer.innerHTML += `
+          <div class="phrase-item">
+            <div class="phrase-top">
+              <span class="phrase-en">👉 ${item.en}</span>
+              <button class="btn-audio" onclick="speak('${item.en.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
+            </div>
+            <div class="phrase-pron">🗣️ (${item.pron})</div>
+            <div class="phrase-pt">🇧🇷 ${item.pt}</div>
+          </div>
+        `;
+      });
     }
 
-    function setLanguage(lang) {
-      currentLang = lang;
-      localStorage.setItem('nego_lang', lang);
-      document.getElementById('onboardingOverlay').style.display = 'none';
-      document.getElementById('activeLangLabel').innerText = langNames[lang];
-      renderPatternList();
-      renderStoryList();
-      setupSRSDeck();
+    // ABRIR E FECHAR MODAL DA MATRIZ TEMPORAL
+    function openMatrixModal() {
+      document.getElementById('modalPatternTitle').innerText = `Padrão: ${patternsData[currentPatternKey].title}`;
+      document.getElementById('matrixModal').classList.add('active');
+      renderMatrixDisplay();
     }
 
-    function showSection(sectionId) {
-      if (!currentLang) {
-        openLanguageSelector();
+    function closeMatrixModal() {
+      document.getElementById('matrixModal').classList.remove('active');
+    }
+
+    // SELEÇÃO DE PRONOME NA MATRIZ
+    function selectPronoun(pronoun) {
+      selectedPronoun = pronoun;
+      
+      // Atualiza visual dos botões
+      const buttons = document.querySelectorAll('.pronoun-pill');
+      buttons.forEach(btn => {
+        if (btn.innerText.startsWith(pronoun)) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      renderMatrixDisplay();
+    }
+
+    // RENDERIZAÇÃO DA ÁREA DA MATRIZ (TRATA SE É VÁLIDO OU ALERTA SE FOR INCOMPATÍVEL)
+    function renderMatrixDisplay() {
+      const displayArea = document.getElementById('matrixDisplayArea');
+      const matrixData = patternsData[currentPatternKey].matrix[selectedPronoun];
+
+      displayArea.innerHTML = '';
+
+      // CASO DE INCOMPATIBILIDADE NATIVA (Ex: "It" com "Are you interested in...")
+      if (!matrixData.valid) {
+        const eq = matrixData.equivalentPattern;
+        displayArea.innerHTML = `
+          <div class="warning-box">
+            <div class="warning-title">⚠️ COMBINAÇÃO NÃO UTILIZADA POR NATIVOS</div>
+            <div class="warning-desc">${matrixData.reason}</div>
+            
+            <div class="equivalent-box">
+              <div class="equivalent-title">💡 PADRÃO EQUIVALENTE RECOMENDADO:</div>
+              <div style="font-size: 1.1rem; font-weight: 800; color: white; margin-bottom: 4px;">${eq.title}</div>
+              <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">${eq.explanation}</div>
+              
+              <div class="tenses-grid">
+                ${renderTenseCard("Presente", eq.tenses.present, "present")}
+                ${renderTenseCard("Passado", eq.tenses.past, "past")}
+                ${renderTenseCard("Futuro", eq.tenses.future, "future")}
+                ${renderTenseCard("Condicional", eq.tenses.conditional, "conditional")}
+              </div>
+            </div>
+          </div>
+        `;
         return;
       }
-      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      document.getElementById(sectionId).classList.add('active');
-      
-      const navMap = {
-        patternsSection: 'nav-patterns',
-        storySection: 'nav-story',
-        srsSection: 'nav-srs',
-        configSection: 'nav-config'
-      };
-      if (navMap[sectionId]) {
-        document.getElementById(navMap[sectionId]).classList.add('active');
-      }
-    }
 
-    function renderPatternList() {
-      const container = document.getElementById('patternListContainer');
-      const list = patternDatabase[currentLang] || [];
-      const query = (document.getElementById('searchInput').value || '').toLowerCase();
-
-      const filtered = list.filter(item => 
-        item.display.toLowerCase().includes(query) || 
-        item.desc.toLowerCase().includes(query)
-      );
-
-      document.getElementById('patternCounter').innerText = filtered.length;
-
-      if (filtered.length === 0) {
-        container.innerHTML = `<div class="card" style="color:var(--text-muted);">Nenhum padrão encontrado para essa busca.</div>`;
-        return;
-      }
-
-      container.innerHTML = filtered.map(item => `
-        <div class="pattern-card-item" onclick="openFocusedStudy('${item.id}')">
-          <div>
-            <div class="pattern-text-main">${item.display}</div>
-            <div class="pattern-text-sub">${item.desc}</div>
-          </div>
-          <span style="color:var(--accent-cyan); font-weight:bold;">➔</span>
-        </div>
-      `).join('');
-    }
-
-    // MOTOR DINÂMICO DE GERAÇÃO DE DETALHES, PRONÚNCIA APORTUGUESADA E EXEMPLOS
-    function getPatternDataDetails(patternObj) {
-      const raw = patternObj.raw || patternObj.display || "";
-      const clean = patternObj.clean || "";
-      const desc = patternObj.desc || "";
-
-      let usage = "Estrutura essencial para conversação fluente em situações do dia a dia, trabalho e viagens.";
-      let tip = "Atente-se à entonação e conecte as palavras de forma fluida sem pausas bruscas.";
-      let posResp = ["• Yes, absolutely.", "• Definitely!", "• Yes, I am."];
-      let negResp = ["• Not really.", "• No, I'm not.", "• Maybe another time."];
-      let variations = [
-        "👉 Formas mais formais ou diretas no dia a dia.",
-        "👉 Expressões equivalentes usadas por nativos."
-      ];
-      let examples = [];
-
-      // DIVERSIFICAÇÃO DINÂMICA BASEADA NO PADRÃO SELECIONADO
-      if (raw.includes("feeling")) {
-        usage = "Usado para perguntar sobre o estado físico ou emocional de alguém no momento.";
-        tip = "O 'g' no final de 'feeling' não é pronunciado fortemente na fala rápida de nativos.";
-        examples = [
-          { en: "Are you feeling better today?", ph: "Ar yu fílin bérer tudéi?", pt: "Você está se sentindo melhor hoje?" },
-          { en: "Are you feeling tired?", ph: "Ar yu fílin táierd?", pt: "Você está se sentindo cansado(a)?" },
-          { en: "Are you feeling good?", ph: "Ar yu fílin gúd?", pt: "Você está se sentindo bem?" }
-        ];
-        posResp = ["• Yes, I feel great!", "• Much better, thanks.", "• A little bit better."];
-        negResp = ["• No, not really.", "• Still feeling bad.", "• Not yet."];
-        variations = [
-          "👉 <b>How are you feeling?</b> (Como você está se sentindo?)",
-          "👉 <b>Are you doing okay?</b> (Você está bem?)"
-        ];
-      }
-      else if (raw.includes("interested in")) {
-        usage = "Usado para descobrir os gostos, interesses ou intenções de compra de alguém.";
-        tip = "Lembre-se: 'interested IN' (e nunca 'on'). Verbos após ele ganham a terminação -ING.";
-        examples = [
-          { en: "Are you interested in coffee?", ph: "Ar yu íntrested in kófi?", pt: "Você tem interesse em café?" },
-          { en: "Are you interested in learning English?", ph: "Ar yu íntrested in lérnin ínglish?", pt: "Você tem interesse em aprender inglês?" },
-          { en: "Are you interested in this project?", ph: "Ar yu íntrested in đis pródjekt?", pt: "Você tem interesse neste projeto?" }
-        ];
-        posResp = ["• Yes, absolutely!", "• Definitely, I am.", "• Yes, I'd love to!"];
-        negResp = ["• Not really.", "• No, I'm not interested.", "• Maybe another time."];
-        variations = [
-          "👉 <b>Would you be interested in...?</b> (Você teria interesse em...?)",
-          "👉 <b>Do you want to...?</b> (Você quer...?)",
-          "👉 <b>How about...?</b> (Que tal...?)"
-        ];
-      }
-      else if (raw.toLowerCase().includes("are you") && !raw.includes("feeling")) {
-        usage = "Usado para perguntar sobre características, estados atuais ou sentimentos de alguém.";
-        tip = "Na fala rápida, 'Are you' junta os sons parecendo 'Ar-yu'.";
-        examples = [
-          { en: "Are you ready?", ph: "Ar yu rédi?", pt: "Você está pronto(a)?" },
-          { en: "Are you hungry?", ph: "Ar yu rángri?", pt: "Você está com fome?" },
-          { en: "Are you sure?", ph: "Ar yu shúr?", pt: "Você tem certeza?" }
-        ];
-        posResp = ["• Yes, I am!", "• Totally.", "• Yes, for sure."];
-        negResp = ["• No, I'm not.", "• Not yet.", "• Not really."];
-        variations = [
-          "👉 <b>Is everything okay?</b> (Está tudo bem?)",
-          "👉 <b>Are you set?</b> (Está pronto / tudo certo?)"
-        ];
-      }
-      else if (raw.includes("Can I")) {
-        usage = "Padrão fundamental para fazer pedidos educados, pedir permissão ou oferecer ajuda.";
-        tip = "'Can I' emendado soa como 'Kén-ai'.";
-        examples = [
-          { en: "Can I have some water?", ph: "Kén ai rév sàm uóter?", pt: "Posso tomar um pouco de água?" },
-          { en: "Can I help you?", ph: "Kén ai rélp yu?", pt: "Posso te ajudar?" },
-          { en: "Can I pay by card?", ph: "Kén ai péi bai kárd?", pt: "Posso pagar no cartão?" }
-        ];
-        posResp = ["• Sure, go ahead!", "• Of course!", "• Yes, certainly."];
-        negResp = ["• Sorry, you can't.", "• No, unfortunately not.", "• I'm afraid not."];
-        variations = [
-          "👉 <b>Could I have...?</b> (Eu poderia ter...?)",
-          "👉 <b>May I...?</b> (Posso...? - mais formal)"
-        ];
-      }
-      else if (raw.includes("Where is") || raw.includes("Where are")) {
-        usage = "Usado para perguntar a localização de lugares, pessoas ou objetos.";
-        tip = "'Where is' vira frequentemente a contração 'Where's' (Uérz).";
-        examples = [
-          { en: "Where is the bathroom?", ph: "Uér iz đe bézrum?", pt: "Onde fica o banheiro?" },
-          { en: "Where is my phone?", ph: "Uér iz mai foun?", pt: "Onde está meu celular?" },
-          { en: "Where are we going?", ph: "Uér ar ui góuin?", pt: "Para onde estamos indo?" }
-        ];
-        posResp = ["• It's right over there.", "• Turn left.", "• Straight ahead."];
-        negResp = ["• I don't know.", "• I have no idea.", "• Sorry, I'm not from here."];
-        variations = [
-          "👉 <b>How do I get to...?</b> (Como eu chego em...?)",
-          "👉 <b>Do you know where... is?</b> (Você sabe onde fica...?)"
-        ];
-      }
-      else if (raw.includes("used to")) {
-        usage = "Usado para falar sobre hábitos ou situações do passado que você não faz mais hoje.";
-        tip = "'Used to' soa exatamente como 'iúst tu'. O 'd' é suave.";
-        examples = [
-          { en: "I used to live in Brazil.", ph: "Ai iúst tu lív in Braszíl.", pt: "Eu costumava morar no Brasil." },
-          { en: "I used to work here.", ph: "Ai iúst tu uérk ríer.", pt: "Eu costumava trabalhar aqui." },
-          { en: "I used to play soccer.", ph: "Ai iúst tu pléi sóker.", pt: "Eu costumava jogar futebol." }
-        ];
-        posResp = ["• Me too!", "• Really? That's cool.", "• I remember that."];
-        negResp = ["• I never did.", "• Not me.", "• I don't think so."];
-        variations = [
-          "👉 <b>In the past I would...</b> (No passado eu costumava...)",
-          "👉 <b>Back then, I...</b> (Naquela época, eu...)"
-        ];
-      }
-      else if (raw.includes("Do you want")) {
-        usage = "Usado para oferecer algo a alguém ou perguntar se a pessoa quer fazer algo.";
-        tip = "Nativos costumam falar 'Do you want' como 'Duju uónt' ou 'Wanna'.";
-        examples = [
-          { en: "Do you want some coffee?", ph: "Du yu uónt sàm kófi?", pt: "Você quer um pouco de café?" },
-          { en: "Do you want to come?", ph: "Du yu uónt tu kàm?", pt: "Você quer vir junto?" },
-          { en: "Do you want help?", ph: "Du yu uónt rélp?", pt: "Você quer ajuda?" }
-        ];
-        posResp = ["• Yes, please!", "• Sure, I'd love to.", "• That would be great!"];
-        negResp = ["• No, thank you.", "• I'm good, thanks.", "• Not right now."];
-        variations = [
-          "👉 <b>Would you like...?</b> (Você gostaria de...?)",
-          "👉 <b>Wanna get...?</b> (Quer pegar...?)"
-        ];
-      }
-      else {
-        // GERADOR INTELIGENTE DE RECURSO PARA QUALQUER UM DOS 258 PADRÕES
-        const cText = clean || "this";
-        const dText = desc || "essa estrutura";
-        examples = [
-          { en: `${cText} right now.`, ph: `(${cText} ráit náu)`, pt: `${dText} agora mesmo.` },
-          { en: `${cText} every day.`, ph: `(${cText} évri déi)`, pt: `${dText} todos os dias.` },
-          { en: `${cText} with me.`, ph: `(${cText} uiz mí)`, pt: `${dText} comigo.` }
-        ];
-        variations = [
-          `👉 Outra forma parecida: <b>${cText}...</b>`,
-          `👉 Expressão equivalente no dia a dia.`
-        ];
-      }
-
-      return { usage, tip, posResp, negResp, variations, examples };
-    }
-
-    // ABRIR O GUIA COMPLETO E RICO DO PADRÃO (DINÂMICO)
-    function openFocusedStudy(patternId) {
-      const list = patternDatabase[currentLang] || [];
-      selectedPatternObj = list.find(p => p.id === patternId) || list[0];
-      
-      const clean = selectedPatternObj.clean;
-      document.getElementById('focusedPatternClean').innerText = selectedPatternObj.display;
-      document.getElementById('focusedPatternDesc').innerText = `👉 Significado: ${selectedPatternObj.desc}`;
-
-      // BUSCA DETALHES ESPECÍFICOS DO PADRÃO SELECIONADO
-      const details = getPatternDataDetails(selectedPatternObj);
-
-      document.getElementById('focusedUsageText').innerText = details.usage;
-      document.getElementById('focusedProTip').innerText = details.tip;
-
-      // RENDERIZA EXEMPLOS PRÁTICOS COM PRONÚNCIA APORTUGUESADA
-      document.getElementById('focusedExamplesContainer').innerHTML = details.examples.map(ex => `
-        <div class="example-box">
-          <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-            <div class="example-en">✅ ${ex.en}</div>
-            <button class="btn btn-sm btn-secondary" onclick="speakText('${ex.en.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
-          </div>
-          <div class="example-ph">🗣️ <i>(${ex.ph})</i></div>
-          <div class="example-pt">🇧🇷 ${ex.pt}</div>
-        </div>
-      `).join('');
-
-      // RENDERIZA RESPOSTAS NATURAIS DINÂMICAS
-      document.getElementById('focusedPosResponses').innerHTML = details.posResp.join('<br>');
-      document.getElementById('focusedNegResponses').innerHTML = details.negResp.join('<br>');
-
-      // RENDERIZA VARIAÇÕES NATIVAS DINÂMICAS
-      document.getElementById('focusedVariationsList').innerHTML = details.variations.join('<br><br>');
-
-      renderMatrixVariations();
-      showSection('focusedStudySection');
-    }
-
-    function speakCurrentCleanPattern() {
-      if (selectedPatternObj) {
-        speakText(selectedPatternObj.clean);
-      }
-    }
-
-    function renderMatrixVariations() {
-      if (!selectedPatternObj) return;
-      const person = document.getElementById('focusedPersonSelect').value;
-      const tense = document.getElementById('focusedTenseSelect').value;
-      const container = document.getElementById('matrixOutputContainer');
-
-      const clean = selectedPatternObj.clean;
-
-      container.innerHTML = `
-        <div class="example-box" style="margin-top:0.5rem;">
-          <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-            <div class="example-en">${person} ➔ ${clean}</div>
-            <button class="btn btn-sm btn-secondary" onclick="speakText('${clean.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
-          </div>
-          <div class="example-pt">Forma conjugada e limpa para estudo</div>
+      // CASO VÁLIDO (Exibe os 4 Tempos Verbais Simultaneamente)
+      displayArea.innerHTML = `
+        <div class="tenses-grid">
+          ${renderTenseCard("Presente (Habitos / Estado Atual)", matrixData.tenses.present, "present")}
+          ${renderTenseCard("Passado (Ações Concluídas)", matrixData.tenses.past, "past")}
+          ${renderTenseCard("Futuro (Planos e Previsões)", matrixData.tenses.future, "future")}
+          ${renderTenseCard("Condicional (Hipóteses)", matrixData.tenses.conditional, "conditional")}
         </div>
       `;
     }
 
-    function renderStoryList() {
-      const container = document.getElementById('storyListContainer');
-      const list = storyDatabase[currentLang] || [];
-      if (list.length === 0) {
-        container.innerHTML = `<div class="card" style="color:var(--text-muted);">Histórias e treinos de conectores disponíveis. Escolha Inglês para experimentar.</div>`;
-        return;
-      }
-      container.innerHTML = list.map(story => `
-        <div class="card">
-          <div class="card-title">${story.title}</div>
-          <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">${story.desc}</p>
-          <div>${story.connectors.map(c => `<span class="connector-badge">${c}</span>`).join('')}</div>
-          
-          <div style="background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:0.85rem; border-radius:10px; margin:0.75rem 0;">
-            <div style="font-size:1.05rem; font-weight:600;">${story.textHTML}</div>
-            <div style="font-size:0.82rem; color:var(--text-muted); margin-top:0.5rem;">💡 <b>Tradução:</b> ${story.pt}</div>
+    // AUXILIAR PARA GERAR CARD DE TEMPO VERBAL
+    function renderTenseCard(label, tenseObj, className) {
+      return `
+        <div class="tense-card ${className}">
+          <span class="tense-tag">${label}</span>
+          <div class="phrase-top">
+            <span class="phrase-en" style="font-size: 1.05rem;">${tenseObj.en}</span>
+            <button class="btn-audio" onclick="speak('${tenseObj.en.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
           </div>
-
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
-            <button class="btn" onclick="speakText('${story.plainText.replace(/'/g, "\\'")}', 1.0)">🔊 Normal</button>
-            <button class="btn btn-secondary" onclick="speakText('${story.plainText.replace(/'/g, "\\'")}', 0.75)">🐢 Shadowing (0.75x)</button>
-          </div>
+          <div class="phrase-pron">🗣️ (${tenseObj.pron})</div>
+          <div class="phrase-pt">🇧🇷 ${tenseObj.pt}</div>
         </div>
-      `).join('');
+      `;
     }
 
-    function setupSRSDeck() {
-      srsDeck = patternDatabase[currentLang] || [];
-      srsIndex = 0;
-      srsFlipped = false;
-      renderSRSCard();
-    }
-
-    function renderSRSCard() {
-      if (srsDeck.length === 0) {
-        document.getElementById('srsContent').innerText = "Nenhum card disponível.";
-        return;
-      }
-      const item = srsDeck[srsIndex % srsDeck.length];
-      srsFlipped = false;
-      document.getElementById('srsPrompt').innerText = "PORTUGUÊS (TOQUE PARA REVELAR)";
-      document.getElementById('srsContent').innerText = item.desc;
-      document.getElementById('srsControls').style.display = 'none';
-    }
-
-    function flipSRSCard() {
-      if (srsDeck.length === 0) return;
-      const item = srsDeck[srsIndex % srsDeck.length];
-      if (!srsFlipped) {
-        srsFlipped = true;
-        document.getElementById('srsPrompt').innerText = "PADRÃO NO IDIOMA TARGET";
-        document.getElementById('srsContent').innerText = item.display;
-        document.getElementById('srsControls').style.display = 'grid';
-        speakText(item.clean);
-      }
-    }
-
-    function rateSRS(rating) {
-      srsIndex++;
-      renderSRSCard();
-    }
-
-    // VOZ LIMPA E NATURAL
-    function speakText(text, rate = 1.0) {
-      if (!('speechSynthesis' in window)) return;
-      window.speechSynthesis.cancel();
-      
-      const cleanVoiceText = getCleanPatternText(text);
-      const utterance = new SpeechSynthesisUtterance(cleanVoiceText);
-      utterance.lang = langVoiceMap[currentLang] || 'en-US';
-      utterance.rate = rate;
-      window.speechSynthesis.speak(utterance);
-    }
-
-    function exportDataJSON() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(patternDatabase));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", "negobom_258_patterns_clean_backup.json");
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-    }
-
-    window.onload = initApp;
+    // Inicializa o App
+    renderApp();
   </script>
 </body>
 </html>
