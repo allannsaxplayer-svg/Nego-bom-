@@ -103,7 +103,7 @@
     }
     .btn:active { transform: scale(0.98); opacity: 0.9; }
     .btn-secondary { background: rgba(255,255,255,0.06); border: 1px solid var(--card-border); color: var(--text-main); }
-    .btn-sm { padding: 0.45rem 0.75rem; font-size: 0.8rem; border-radius: 8px; width: auto; display: inline-flex; }
+    .btn-sm { padding: 0.4rem 0.65rem; font-size: 0.78rem; border-radius: 8px; width: auto; display: inline-flex; }
 
     /* ONBOARDING MODAL */
     #onboardingOverlay {
@@ -159,7 +159,26 @@
     }
     .badge-cyan { background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.3); }
 
-    /* BLOCO REGRA DO -ING */
+    /* CATEGORY HEADERS & EXAMPLES */
+    .category-block {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 0.9rem;
+      margin-top: 0.85rem;
+    }
+    .category-header {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px dashed var(--card-border);
+      padding-bottom: 4px;
+    }
+
     .ing-rule-card {
       background: var(--ing-bg);
       border: 1px solid var(--ing-border);
@@ -167,38 +186,58 @@
       padding: 1rem;
       margin-top: 0.75rem;
     }
-    .ing-rule-header {
-      color: #c084fc;
-      font-weight: 800;
-      font-size: 0.88rem;
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .ing-rule-text {
-      font-size: 0.82rem;
-      color: #e9d5ff;
-      line-height: 1.45;
-    }
+    .ing-rule-header { color: #c084fc; font-weight: 800; font-size: 0.88rem; margin-bottom: 4px; }
+    .ing-rule-text { font-size: 0.82rem; color: #e9d5ff; line-height: 1.45; }
 
     .example-box {
       background: rgba(255,255,255,0.03);
       border-left: 3px solid var(--accent-cyan);
-      border-radius: 10px;
-      padding: 0.85rem 1rem;
-      margin-top: 0.65rem;
+      border-radius: 8px;
+      padding: 0.75rem 0.85rem;
+      margin-top: 0.5rem;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 4px;
     }
-    .example-en { font-weight: 700; font-size: 1.05rem; color: var(--accent-cyan); }
-    .example-ph { font-size: 0.85rem; color: #fef08a; font-style: italic; }
-    .example-pt { font-size: 0.88rem; color: var(--text-main); }
+    .example-en { font-weight: 700; font-size: 0.98rem; color: var(--accent-cyan); }
+    .example-ph { font-size: 0.82rem; color: #fef08a; font-style: italic; }
+    .example-pt { font-size: 0.85rem; color: var(--text-main); }
 
-    .response-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 0.5rem; }
-    .response-card { background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 10px; padding: 0.75rem; }
-    .response-title { font-size: 0.75rem; font-weight: 800; margin-bottom: 0.4rem; text-transform: uppercase; }
+    /* RESPONSES & SYNONYMS GRID */
+    .interactive-card-item {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .warning-card {
+      border: 1px dashed var(--accent-yellow);
+      background: rgba(245, 158, 11, 0.1);
+      border-radius: 10px;
+      padding: 0.85rem;
+      margin-top: 0.65rem;
+    }
+    .warning-title { color: var(--accent-yellow); font-weight: 800; font-size: 0.82rem; margin-bottom: 4px; }
+    .warning-body { color: #fef3c7; font-size: 0.82rem; line-height: 1.4; }
+
+    /* STORY & SRS */
+    mark.connector { background: var(--connector-bg); color: var(--connector-text); padding: 2px 6px; border-radius: 4px; font-weight: 800; }
+    .connector-badge { display: inline-block; background: rgba(254, 240, 138, 0.15); color: #fef08a; border: 1px solid rgba(254, 240, 138, 0.3); font-size: 0.72rem; font-weight: 700; padding: 4px 8px; border-radius: 12px; margin-right: 4px; margin-bottom: 6px; }
+
+    .flashcard {
+      background: linear-gradient(145deg, #161e2e, #0d131f);
+      border: 1px solid var(--card-border);
+      min-height: 200px;
+      border-radius: 18px;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center; padding: 1.5rem; cursor: pointer;
+    }
+    .flashcard-prompt { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .flashcard-content { font-size: 1.3rem; font-weight: 700; color: #ffffff; }
+    .srs-btn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 1rem; }
+    .srs-btn { padding: 0.75rem; border-radius: 10px; border: none; font-weight: 800; font-size: 0.8rem; cursor: pointer; color: #000000; }
 
     select {
       width: 100%;
@@ -212,40 +251,6 @@
       margin-bottom: 0.85rem;
       outline: none;
     }
-
-    /* MATRIZ SELEÇÃO E AVISO */
-    .warning-card {
-      border: 1px dashed var(--accent-yellow);
-      background: rgba(245, 158, 11, 0.1);
-      border-radius: 10px;
-      padding: 0.85rem;
-      margin-top: 0.65rem;
-    }
-    .warning-title { color: var(--accent-yellow); font-weight: 800; font-size: 0.82rem; margin-bottom: 4px; }
-    .warning-body { color: #fef3c7; font-size: 0.82rem; line-height: 1.4; }
-
-    /* STORY BUILDER */
-    mark.connector { background: var(--connector-bg); color: var(--connector-text); padding: 2px 6px; border-radius: 4px; font-weight: 800; }
-    .connector-badge { display: inline-block; background: rgba(254, 240, 138, 0.15); color: #fef08a; border: 1px solid rgba(254, 240, 138, 0.3); font-size: 0.72rem; font-weight: 700; padding: 4px 8px; border-radius: 12px; margin-right: 4px; margin-bottom: 6px; }
-
-    /* SRS FLASHCARDS */
-    .flashcard {
-      background: linear-gradient(145deg, #161e2e, #0d131f);
-      border: 1px solid var(--card-border);
-      min-height: 200px;
-      border-radius: 18px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 1.5rem;
-      cursor: pointer;
-    }
-    .flashcard-prompt { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.5rem; }
-    .flashcard-content { font-size: 1.3rem; font-weight: 700; color: #ffffff; }
-    .srs-btn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 1rem; }
-    .srs-btn { padding: 0.75rem; border-radius: 10px; border: none; font-weight: 800; font-size: 0.8rem; cursor: pointer; color: #000000; }
 
     /* BOTTOM NAV */
     nav.bottom-nav {
@@ -308,13 +313,13 @@
     <section id="patternsSection" class="section active">
       <div class="card">
         <div class="card-title">📚 Biblioteca de Padrões (<span id="patternCounter">258</span>)</div>
-        <p style="font-size:0.82rem; color:var(--text-muted);">Toque em qualquer padrão para abrir seu Guia Completo:</p>
+        <p style="font-size:0.82rem; color:var(--text-muted);">Toque em qualquer padrão para abrir seu Guia Completo Categorizado:</p>
         <input type="text" id="searchInput" class="search-input" placeholder="🔍 Pesquisar padrão..." oninput="renderPatternList()" />
       </div>
       <div id="patternListContainer"></div>
     </section>
 
-    <!-- 2. ESTUDO FOCADO (GUIA COMPLETO DINÂMICO DO PADRÃO) -->
+    <!-- 2. ESTUDO FOCADO (GUIA CATEGORIZADO DO PADRÃO) -->
     <section id="focusedStudySection" class="section">
       <button class="btn btn-secondary" onclick="showSection('patternsSection')" style="margin-bottom: 1rem;">
         ← Voltar para Padrões
@@ -342,33 +347,34 @@
         </div>
       </div>
 
-      <!-- EXEMPLOS PRÁTICOS COM PRONÚNCIA APORTUGUESADA -->
+      <!-- EXEMPLOS PRÁTICOS CATEGORIZADOS (NOVO UPGRADE) -->
       <div class="card">
-        <div class="card-title">🧩 Exemplos Práticos & Pronúncia</div>
-        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">Aprenda a pronúncia aportuguesada e ouça o áudio nativo:</p>
-        <div id="focusedExamplesContainer"></div>
+        <div class="card-title">🧩 Exemplos Práticos Categorizados</div>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">Domine o padrão em 5 contextos reais da vida cotidiana:</p>
+        <div id="focusedCategorizedExamplesContainer"></div>
       </div>
 
-      <!-- RESPOSTAS NATURAIS -->
+      <!-- RESPOSTAS NATURAIS (COM ÁUDIO E PRONÚNCIA) -->
       <div class="card">
         <div class="card-title">💬 Respostas Naturais da Vida Real</div>
-        <div class="response-grid">
-          <div class="response-card" style="border-top: 3px solid var(--accent-green);">
-            <div class="response-title" style="color:var(--accent-green);">✅ Positivas</div>
-            <div id="focusedPosResponses" style="font-size:0.82rem; line-height:1.6;"></div>
-          </div>
-          <div class="response-card" style="border-top: 3px solid var(--accent-red);">
-            <div class="response-title" style="color:var(--accent-red);">❌ Negativas</div>
-            <div id="focusedNegResponses" style="font-size:0.82rem; line-height:1.6;"></div>
-          </div>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">Aprenda a responder com pronúncia e áudio nativo:</p>
+        
+        <div style="margin-bottom:1rem;">
+          <div style="font-size:0.82rem; font-weight:800; color:var(--accent-green); margin-bottom:0.4rem;">✅ Respostas Positivas:</div>
+          <div id="focusedPosResponses"></div>
+        </div>
+
+        <div>
+          <div style="font-size:0.82rem; font-weight:800; color:var(--accent-red); margin-bottom:0.4rem;">❌ Respostas Negativas:</div>
+          <div id="focusedNegResponses"></div>
         </div>
       </div>
 
-      <!-- VARIAÇÕES NATIVAS -->
+      <!-- VARIAÇÕES NATIVAS (COM ÁUDIO E PRONÚNCIA) -->
       <div class="card">
         <div class="card-title">🔄 Variações Nativas (Sinônimos)</div>
-        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">Outras formas que os nativos usam no lugar deste padrão:</p>
-        <div id="focusedVariationsList" style="font-size:0.85rem; line-height:1.6;"></div>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">Outras formas que os nativos usam com áudio e pronúncia:</p>
+        <div id="focusedVariationsList"></div>
       </div>
 
       <!-- MATRIZ DE CONJUGAÇÃO E PRONOMES -->
@@ -464,7 +470,6 @@
     const langVoiceMap = { en: 'en-US', es: 'es-ES', fr: 'fr-FR' };
     const langNames = { en: '🇺🇸 Inglês', es: '🇪🇸 Espanhol', fr: '🇫🇷 Francês' };
 
-    // SANITIZAÇÃO E LIMPEZA DE TEXTO / ÁUDIO
     function getCleanPatternText(text) {
       if (!text) return "";
       return text.replace(/\[.*?\]/g, '').replace(/\(.*?\)/g, '').replace(/\?/g, '').trim();
@@ -475,7 +480,7 @@
       return text.replace(/\[.*?\]/g, '...').trim();
     }
 
-    // BANCO BRUTO DE 258 PADRÕES COMPLETO
+    // LISTA COMPLETA DOS 258 PADRÕES
     const rawPatternsData = [
       ["Are you [adjective]?", "Você está / é...?"],
       ["Are you feeling [adjective]?", "Você está se sentindo...?"],
@@ -770,9 +775,7 @@
     function buildDatabase() {
       const saved = localStorage.getItem('polyglot_db_258');
       if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch(e) { console.error(e); }
+        try { return JSON.parse(saved); } catch(e) { console.error(e); }
       }
 
       const db = { en: [], es: [], fr: [] };
@@ -877,7 +880,7 @@
       `).join('');
     }
 
-    // MOTOR DINÂMICO DE DETALHES + REGRA -ING
+    // NOVO GERADOR CATEGORIZADO RICO + PRONÚNCIA E ÁUDIO EM RESPOSTAS E SINÔNIMOS
     function getPatternDataDetails(patternObj) {
       const raw = patternObj.raw || patternObj.display || "";
       const clean = patternObj.clean || "";
@@ -885,75 +888,157 @@
 
       let usage = "Estrutura essencial para conversação fluente em situações do dia a dia, trabalho e viagens.";
       let tip = "Atente-se à entonação e conecte as palavras de forma fluida sem pausas bruscas.";
-      let posResp = ["• Yes, absolutely.", "• Definitely!", "• Yes, I am."];
-      let negResp = ["• Not really.", "• No, I'm not.", "• Maybe another time."];
-      let variations = [
-        "👉 Formas mais formais ou diretas no dia a dia.",
-        "👉 Expressões equivalentes usadas por nativos."
-      ];
-      let examples = [];
+      
+      let posResp = [];
+      let negResp = [];
+      let variations = [];
+      let categories = [];
       let ingRule = null;
 
-      // VERIFICA SE O PADRÃO EXIGE REGRA DO -ING
       if (raw.toLowerCase().includes("interested in") || raw.toLowerCase().includes("enjoy") || raw.toLowerCase().includes("verb-ing") || raw.toLowerCase().includes("about")) {
         ingRule = {
           title: "⚡ REGRA DO -ING (GERÚNDIO APÓS PREPOSIÇÃO / VERBO):",
-          text: "Em inglês, quando usamos uma preposição (ex: <b>in, about, for</b>) ou verbos como <b>enjoy</b>, qualquer VERBO a seguir entra obrigatoriamente no gerúndio (<b>-ING</b>). Se for apenas um substantivo (objeto), usa-se normal sem -ING."
+          text: "Em inglês, após preposições (ex: <b>in, about, for</b>) ou verbos como <b>enjoy</b>, todo VERBO que vem depois entra obrigatoriamente no gerúndio (<b>-ING</b>)."
         };
       }
 
-      // DIVERSIFICAÇÃO DINÂMICA
+      // PADRÃO ESPECÍFICO DE DEMONSTRAÇÃO COMPLETA: "Are you interested in...?"
       if (raw.includes("interested in")) {
         usage = "Usado para perguntar se alguém tem interesse em algo (substantivo) ou em FAZER algo (verbo + -ing).";
-        tip = "Lembre-se: 'interested IN' (nunca 'on'). Verbos após ele ganham -ING.";
-        examples = [
-          { category: "📦 Substantivo (Sem -ING)", en: "Are you interested in coffee?", ph: "Ar yu íntrested in kófi?", pt: "Você está interessado(a) em café?" },
-          { category: "⚡ Verbo no Gerúndio (Com -ING)", en: "Are you interested in buying a car?", ph: "Ar yu íntrested in bái-iŋ e cár?", pt: "Você está interessado(a) em comprar um carro?" },
-          { category: "⚡ Verbo no Gerúndio (Com -ING)", en: "Are you interested in joining us?", ph: "Ar yu íntrested in djóiniŋ ás?", pt: "Você está interessado(a) em se juntar a nós?" }
+        tip = "Sempre use 'interested IN' (nunca 'on'). Se colocar um verbo depois, adicione -ING.";
+        
+        categories = [
+          {
+            title: "🍔 Restaurante & Alimentação",
+            examples: [
+              { en: "Are you interested in dessert?", ph: "Ar yu íntrested in dizért?", pt: "Você está interessado(a) em sobremesa?" },
+              { en: "Are you interested in today's special?", ph: "Ar yu íntrested in tudéis spéshal?", pt: "Você está interessado(a) no prato do dia?" },
+              { en: "Are you interested in another drink?", ph: "Ar yu íntrested in anáđer drínk?", pt: "Você está interessado(a) em outra bebida?" },
+              { en: "Are you interested in trying our wine?", ph: "Ar yu íntrested in trái-iŋ áuer uáin?", pt: "Você está interessado(a) em experimentar nosso vinho?" },
+              { en: "Are you interested in a table outside?", ph: "Ar yu íntrested in e téibol áut-sáid?", pt: "Você está interessado(a) em uma mesa do lado de fora?" }
+            ]
+          },
+          {
+            title: "🛍️ Loja & Compras",
+            examples: [
+              { en: "Are you interested in this jacket?", ph: "Ar yu íntrested in đis djáket?", pt: "Você está interessado(a) nesta jaqueta?" },
+              { en: "Are you interested in a larger size?", ph: "Ar yu íntrested in e lárdjer sáiz?", pt: "Você está interessado(a) em um tamanho maior?" },
+              { en: "Are you interested in our promotion?", ph: "Ar yu íntrested in áuer promóushan?", pt: "Você está interessado(a) na nossa promoção?" },
+              { en: "Are you interested in trying it on?", ph: "Ar yu íntrested in trái-iŋ it ón?", pt: "Você está interessado(a) em experimentar?" },
+              { en: "Are you interested in buying this set?", ph: "Ar yu íntrested in bái-iŋ đis sét?", pt: "Você está interessado(a) em comprar este conjunto?" }
+            ]
+          },
+          {
+            title: "💼 Trabalho & Negócios",
+            examples: [
+              { en: "Are you interested in this position?", ph: "Ar yu íntrested in đis pozíshan?", pt: "Você está interessado(a) nesta vaga/posição?" },
+              { en: "Are you interested in working overtime?", ph: "Ar yu íntrested in uérkiŋ óuver-táim?", pt: "Você está interessado(a) em fazer hora extra?" },
+              { en: "Are you interested in joining our team?", ph: "Ar yu íntrested in djóiniŋ áuer tím?", pt: "Você está interessado(a) em se juntar à nossa equipe?" },
+              { en: "Are you interested in leading the project?", ph: "Ar yu íntrested in lídiŋ đe pródjekt?", pt: "Você está interessado(a) em liderar o projeto?" },
+              { en: "Are you interested in a new offer?", ph: "Ar yu íntrested in e níu ófer?", pt: "Você está interessado(a) em uma nova proposta?" }
+            ]
+          },
+          {
+            title: "❤️ Conversa Casual & Social",
+            examples: [
+              { en: "Are you interested in going out tonight?", ph: "Ar yu íntrested in góuiŋ áut tunáit?", pt: "Você está interessado(a) em sair hoje à noite?" },
+              { en: "Are you interested in watching a movie?", ph: "Ar yu íntrested in uótchiŋ e múvi?", pt: "Você está interessado(a) em assistir a um filme?" },
+              { en: "Are you interested in traveling with us?", ph: "Ar yu íntrested in tráveliŋ uíđ ás?", pt: "Você está interessado(a) em viajar com a gente?" },
+              { en: "Are you interested in grabbing coffee?", ph: "Ar yu íntrested in grábiŋ kófi?", pt: "Você está interessado(a) em tomar um café?" },
+              { en: "Are you interested in coming over?", ph: "Ar yu íntrested in kámiŋ óuver?", pt: "Você está interessado(a) em vir aqui em casa?" }
+            ]
+          },
+          {
+            title: "📚 Estudos & Desenvolvimento",
+            examples: [
+              { en: "Are you interested in learning Spanish?", ph: "Ar yu íntrested in lérniŋ spánish?", pt: "Você está interessado(a) em aprender espanhol?" },
+              { en: "Are you interested in improving your English?", ph: "Ar yu íntrested in imprúviŋ iór ínglish?", pt: "Você está interessado(a) em melhorar seu inglês?" },
+              { en: "Are you interested in taking this course?", ph: "Ar yu íntrested in téikiŋ đis kórs?", pt: "Você está interessado(a) em fazer este curso?" },
+              { en: "Are you interested in reading this book?", ph: "Ar yu íntrested in rídiŋ đis búk?", pt: "Você está interessado(a) em ler este livro?" },
+              { en: "Are you interested in joining the study group?", ph: "Ar yu íntrested in djóiniŋ đe stódi grúp?", pt: "Você está interessado(a) em entrar no grupo de estudos?" }
+            ]
+          }
         ];
-        posResp = ["• Yes, absolutely!", "• Definitely, I am.", "• Yes, I'd love to!"];
-        negResp = ["• Not really.", "• No, I'm not interested.", "• Maybe another time."];
+
+        posResp = [
+          { en: "Yes, I'm very interested!", ph: "Iés, áim véri íntrested!", pt: "Sim, estou muito interessado(a)!" },
+          { en: "Definitely, let's do it!", ph: "Définitli, léts dú it!", pt: "Com certeza, vamos fazer isso!" },
+          { en: "Sure, tell me more about it.", ph: "Shúr, tél mí mór ebáut it.", pt: "Claro, me conte mais sobre isso." }
+        ];
+
+        negResp = [
+          { en: "Not really, thank you.", ph: "Nót ríali, tÉnk yu.", pt: "Na verdade não, obrigado(a)." },
+          { en: "No, I'm good for now.", ph: "Nóu, áim gúd fór náu.", pt: "Não, estou de boa por enquanto." },
+          { en: "Maybe another time.", ph: "Méibi anáđer táim.", pt: "Talvez em outro momento." }
+        ];
+
         variations = [
-          "👉 <b>Would you be interested in...?</b> (Você teria interesse em...?)",
-          "👉 <b>Do you want to...?</b> (Você quer...?)"
+          { en: "Would you be interested in...?", ph: "Uúd yu bí íntrested in...?", pt: "Você teria interesse em...?" },
+          { en: "Do you want to...?", ph: "Dú yu uónt tú...?", pt: "Você quer...?" },
+          { en: "Are you up for...?", ph: "Ar yu áp fór...?", pt: "Você está a fim de...?" }
         ];
-      }
-      else if (raw.includes("feeling")) {
-        usage = "Usado para perguntar sobre o estado físico ou emocional de alguém no momento.";
-        tip = "O 'g' no final de 'feeling' não é pronunciado fortemente na fala rápida.";
-        examples = [
-          { category: "😊 Sentimento / Estado", en: "Are you feeling better today?", ph: "Ar yu fílin bérer tudéi?", pt: "Você está se sentindo melhor hoje?" },
-          { category: "🥱 Cansaço", en: "Are you feeling tired?", ph: "Ar yu fílin táierd?", pt: "Você está se sentindo cansado(a)?" }
-        ];
-        posResp = ["• Yes, I feel great!", "• Much better, thanks."];
-        negResp = ["• No, not really.", "• Still feeling bad."];
-        variations = ["👉 <b>How are you feeling?</b>", "👉 <b>Are you doing okay?</b>"];
-      }
-      else if (raw.includes("Can I")) {
-        usage = "Padrão fundamental para fazer pedidos educados, pedir permissão ou oferecer ajuda.";
-        tip = "'Can I' emendado soa como 'Kén-ai'.";
-        examples = [
-          { category: "🥤 Pedido", en: "Can I have some water?", ph: "Kén ai rév sàm uóter?", pt: "Posso tomar um pouco de água?" },
-          { category: "💳 Pagamento", en: "Can I pay by card?", ph: "Kén ai péi bai kárd?", pt: "Posso pagar no cartão?" }
-        ];
-        posResp = ["• Sure, go ahead!", "• Of course!"];
-        negResp = ["• Sorry, you can't.", "• I'm afraid not."];
-        variations = ["👉 <b>Could I have...?</b>", "👉 <b>May I...?</b>"];
-      }
-      else {
+
+      } else {
+        // DEMAIS PADRÕES: GERADOR DINÂMICO CATEGORIZADO AUTOMÁTICO
         const cText = clean || "this";
-        const dText = desc || "essa estrutura";
-        examples = [
-          { category: "📍 Exemplo Geral 1", en: `${cText} right now.`, ph: `(${cText} ráit náu)`, pt: `${dText} agora mesmo.` },
-          { category: "📍 Exemplo Geral 2", en: `${cText} every day.`, ph: `(${cText} évri déi)`, pt: `${dText} todos os dias.` }
+        categories = [
+          {
+            title: "🍔 Restaurante & Alimentação",
+            examples: [
+              { en: `${cText} food here?`, ph: `(${cText} fúd hír?)`, pt: `${desc} comida aqui?` },
+              { en: `${cText} the bill, please?`, ph: `(${cText} đe bíl, plíz?)`, pt: `${desc} a conta, por favor?` }
+            ]
+          },
+          {
+            title: "🛍️ Loja & Compras",
+            examples: [
+              { en: `${cText} this discount?`, ph: `(${cText} đis dískaunt?)`, pt: `${desc} este desconto?` },
+              { en: `${cText} in cash or card?`, ph: `(${cText} in kásh ór kárd?)`, pt: `${desc} em dinheiro ou cartão?` }
+            ]
+          },
+          {
+            title: "💼 Trabalho & Negócios",
+            examples: [
+              { en: `${cText} the meeting today?`, ph: `(${cText} đe mítiŋ tudéi?)`, pt: `${desc} a reunião hoje?` },
+              { en: `${cText} this project report?`, ph: `(${cText} đis pródjekt ripórt?)`, pt: `${desc} este relatório de projeto?` }
+            ]
+          },
+          {
+            title: "❤️ Conversa Casual & Social",
+            examples: [
+              { en: `${cText} with us tonight?`, ph: `(${cText} uíđ ás tunáit?)`, pt: `${desc} conosco hoje à noite?` },
+              { en: `${cText} weekend plans?`, ph: `(${cText} uík-end pláns?)`, pt: `${desc} planos para o fim de semana?` }
+            ]
+          },
+          {
+            title: "📚 Estudos & Vida Diária",
+            examples: [
+              { en: `${cText} to practice English?`, ph: `(${cText} tú práktis ínglish?)`, pt: `${desc} para praticar inglês?` },
+              { en: `${cText} the exercise now?`, ph: `(${cText} đe éksersaiz náu?)`, pt: `${desc} o exercício agora?` }
+            ]
+          }
         ];
-        variations = [`👉 Outra forma parecida: <b>${cText}...</b>`];
+
+        posResp = [
+          { en: "Yes, absolutely!", ph: "Iés, ábsolutli!", pt: "Sim, com certeza!" },
+          { en: "Sure, sound great!", ph: "Shúr, sáund gréit!", pt: "Claro, parece ótimo!" }
+        ];
+
+        negResp = [
+          { en: "No, not right now.", ph: "Nóu, nót ráit náu.", pt: "Não, agora não." },
+          { en: "Sorry, I can't.", ph: "Sóri, ái kánt.", pt: "Desculpe, eu não posso." }
+        ];
+
+        variations = [
+          { en: `How about ${cText}?`, ph: `(Háu ebáut ${cText}?)`, pt: `Que tal ${desc}?` },
+          { en: `Can we ${cText}?`, ph: `(Kén uí ${cText}?)`, pt: `Podemos ${desc}?` }
+        ];
       }
 
-      return { usage, tip, posResp, negResp, variations, examples, ingRule };
+      return { usage, tip, posResp, negResp, variations, categories, ingRule };
     }
 
-    // ABRIR O GUIA COMPLETO E RICO DO PADRÃO
+    // ABRIR O GUIA CATEGORIZADO COMPLETO
     function openFocusedStudy(patternId) {
       const list = patternDatabase[currentLang] || [];
       selectedPatternObj = list.find(p => p.id === patternId) || list[0];
@@ -966,7 +1051,7 @@
       document.getElementById('focusedUsageText').innerText = details.usage;
       document.getElementById('focusedProTip').innerText = details.tip;
 
-      // RENDERIZA REGRA DO -ING SE HOUVER
+      // RENDERIZA REGRA DO -ING
       const ingBox = document.getElementById('ingRuleContainer');
       if (details.ingRule) {
         ingBox.innerHTML = `
@@ -979,22 +1064,59 @@
         ingBox.innerHTML = "";
       }
 
-      // RENDERIZA EXEMPLOS PRÁTICOS
-      document.getElementById('focusedExamplesContainer').innerHTML = details.examples.map(ex => `
-        <div class="example-box">
-          ${ex.category ? `<div style="font-size:0.75rem; color:var(--accent-purple); font-weight:800;">${ex.category}</div>` : ''}
-          <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-            <div class="example-en">✅ ${ex.en}</div>
-            <button class="btn btn-sm btn-secondary" onclick="speakText('${ex.en.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
-          </div>
-          <div class="example-ph">🗣️ <i>(${ex.ph})</i></div>
-          <div class="example-pt">🇧🇷 ${ex.pt}</div>
+      // RENDERIZA EXEMPLOS PRÁTICOS CATEGORIZADOS (NOVO UPGRADE)
+      const examplesContainer = document.getElementById('focusedCategorizedExamplesContainer');
+      examplesContainer.innerHTML = details.categories.map(cat => `
+        <div class="category-block">
+          <div class="category-header">${cat.title}</div>
+          ${cat.examples.map(ex => `
+            <div class="example-box">
+              <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                <div class="example-en">• ${ex.en}</div>
+                <button class="btn btn-sm btn-secondary" onclick="speakText('${ex.en.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
+              </div>
+              <div class="example-ph">🗣️ <i>(${ex.ph})</i></div>
+              <div class="example-pt">🇧🇷 ${ex.pt}</div>
+            </div>
+          `).join('')}
         </div>
       `).join('');
 
-      document.getElementById('focusedPosResponses').innerHTML = details.posResp.join('<br>');
-      document.getElementById('focusedNegResponses').innerHTML = details.negResp.join('<br>');
-      document.getElementById('focusedVariationsList').innerHTML = details.variations.join('<br><br>');
+      // RENDERIZA RESPOSTAS POSITIVAS COM ÁUDIO E PRONÚNCIA
+      document.getElementById('focusedPosResponses').innerHTML = details.posResp.map(item => `
+        <div class="interactive-card-item">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-weight:700; color:var(--accent-green);">${item.en}</div>
+            <button class="btn btn-sm btn-secondary" onclick="speakText('${item.en.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
+          </div>
+          <div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ (${item.ph})</div>
+          <div style="font-size:0.82rem; color:var(--text-main); margin-top:2px;">🇧🇷 ${item.pt}</div>
+        </div>
+      `).join('');
+
+      // RENDERIZA RESPOSTAS NEGATIVAS COM ÁUDIO E PRONÚNCIA
+      document.getElementById('focusedNegResponses').innerHTML = details.negResp.map(item => `
+        <div class="interactive-card-item">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-weight:700; color:var(--accent-red);">${item.en}</div>
+            <button class="btn btn-sm btn-secondary" onclick="speakText('${item.en.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
+          </div>
+          <div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ (${item.ph})</div>
+          <div style="font-size:0.82rem; color:var(--text-main); margin-top:2px;">🇧🇷 ${item.pt}</div>
+        </div>
+      `).join('');
+
+      // RENDERIZA VARIAÇÕES/SINÔNIMOS COM ÁUDIO E PRONÚNCIA
+      document.getElementById('focusedVariationsList').innerHTML = details.variations.map(item => `
+        <div class="interactive-card-item">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-weight:700; color:var(--accent-cyan);">${item.en}</div>
+            <button class="btn btn-sm btn-secondary" onclick="speakText('${item.en.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
+          </div>
+          <div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ (${item.ph})</div>
+          <div style="font-size:0.82rem; color:var(--text-main); margin-top:2px;">🇧🇷 ${item.pt}</div>
+        </div>
+      `).join('');
 
       renderMatrixVariations();
       showSection('focusedStudySection');
@@ -1006,7 +1128,7 @@
       }
     }
 
-    // GERADOR REAL DA MATRIZ DE CONJUGAÇÃO (6 PRONOMES X 3 TEMPOS)
+    // CONJUGAÇÃO MATRIZ TEMPORAL (6 PRONOMES X 3 TEMPOS)
     function renderMatrixVariations() {
       if (!selectedPatternObj) return;
       const person = document.getElementById('focusedPersonSelect').value;
@@ -1019,7 +1141,6 @@
       let outputPt = "";
       let warningHtml = "";
 
-      // VERIFICA ALERTA DE OBJETO SEM SENTIMENTO (IT)
       const isEmotionPattern = raw.includes("interested") || raw.includes("feeling") || raw.includes("hungry") || raw.includes("tired");
       if (person === "It" && isEmotionPattern) {
         warningHtml = `
@@ -1030,7 +1151,6 @@
         `;
       }
 
-      // CONJUGAÇÃO INTELIGENTE
       if (raw.includes("interested in")) {
         if (person === "I") {
           if (tense === "present") { outputEn = "Am I interested in buying this?"; outputPh = "Ém ái íntrested in bái-iŋ đis?"; outputPt = "Eu estou interessado(a) em comprar isso?"; }
@@ -1058,7 +1178,6 @@
           else { outputEn = "Will they be interested in moving?"; outputPh = "Uíl đéi bí íntrested in múviŋ?"; outputPt = "Eles estarão interessados em se mudar?"; }
         }
       } else {
-        // GERADOR GENÉRICO PARA DEMAIS PADRÕES
         const verbStem = selectedPatternObj.clean;
         if (tense === "present") {
           outputEn = `${person} ➔ ${verbStem}`;
@@ -1161,7 +1280,6 @@
       window.speechSynthesis.speak(utterance);
     }
 
-    // EXPORTAÇÃO E IMPORTAÇÃO DE BACKUP
     function exportDataJSON() {
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(patternDatabase, null, 2));
       const downloadAnchor = document.createElement('a');
