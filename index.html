@@ -1,230 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Estudo de Padrões e Matriz Atemporal</title>
-  <style>
-    :root {
-      --primary: #4f46e5;
-      --primary-hover: #4338ca;
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text: #1e293b;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --warning-bg: #fffbebf5;
-      --warning-border: #fef3c7;
-      --warning-text: #b45309;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .container {
-      max-width: 900px;
-      width: 100%;
-    }
-
-    /* Caixa do Padrão Selecionado */
-    .pattern-box {
-      background: var(--card-bg);
-      border: 2px solid var(--primary);
-      border-radius: 12px;
-      padding: 1.2rem;
-      text-align: center;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }
-
-    .pattern-box h3 {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      letter-spacing: 0.05em;
-      margin-bottom: 0.4rem;
-    }
-
-    .pattern-box .pattern-title {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
-
-    /* Botão de Acesso à Matriz */
-    .action-area {
-      margin-top: 1rem;
-      margin-bottom: 1.5rem;
-      display: flex;
-      justify-content: center;
-    }
-
-    .btn-matriz {
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      padding: 0.8rem 1.4rem;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: 8px;
-      cursor: pointer;
-      width: 100%;
-      box-shadow: 0 2px 4px rgba(79, 70, 229, 0.3);
-    }
-
-    /* Sistema de Abas */
-    .tab-navigation {
-      display: flex;
-      gap: 0.5rem;
-      border-bottom: 2px solid var(--border);
-      margin-bottom: 1.5rem;
-    }
-
-    .tab-btn {
-      flex: 1;
-      background: none;
-      border: none;
-      padding: 0.8rem;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      margin-bottom: -2px;
-      text-align: center;
-    }
-
-    .tab-btn.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-    }
-
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    /* Seleção de Pronomes */
-    .pronoun-selector {
-      display: flex;
-      justify-content: center;
-      gap: 0.4rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
-
-    .pronoun-btn {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border);
-      padding: 0.5rem 0.9rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    .pronoun-btn.active {
-      background-color: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
-
-    /* Alerta de Incoerência */
-    .explanation-card {
-      background-color: var(--warning-bg);
-      border: 1px solid var(--warning-border);
-      border-left: 4px solid var(--warning-text);
-      padding: 1rem;
-      border-radius: 8px;
-      margin-bottom: 1.5rem;
-    }
-
-    .explanation-card h4 {
-      color: var(--warning-text);
-      margin-bottom: 0.4rem;
-    }
-
-    .explanation-card p {
-      font-size: 0.9rem;
-      color: #78350f;
-    }
-
-    .explanation-card .equivalent-box {
-      margin-top: 0.6rem;
-      padding-top: 0.5rem;
-      border-top: 1px dashed var(--warning-border);
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-
-    /* Grid dos Tempos Verbais */
-    .tenses-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0.8rem;
-    }
-
-    .tense-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1rem;
-    }
-
-    .tense-card h4 {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      margin-bottom: 0.4rem;
-    }
-
-    .tense-card .phrase {
-      font-size: 1rem;
-      font-weight: 600;
-    }
-  </style>
-</head>
-<body>
-
-<div class="container">
-
-  <!-- 1. Caixa do Padrão Selecionado (Topo) -->
-  <div class="pattern-box">
-    <h3>Padrão Selecionado</h3>
-    <div class="pattern-title" id="selectedPatternText">Need to clean the house</div>
-  </div>
-
-  <!-- 2. Botão diretamente abaixo do Padrão Selecionado -->
-  <div class="action-area">
-    <button class="btn-matriz" onclick="openMatrizTab()">
-      ⚡ Abrir Matriz Atemporal & Pronomes
-    </button>
-  </div>
-
-  <!-- Navegação por Abas -->
-  <div class="tab-navigation">
-    <button class="tab-btn active" id="tabMainBtn" onclick="switchTab('main')">Visão Geral</button>
-    <button class="tab-btn" id="tabMatrizBtn" onclick="switchTab('matriz')">Matriz Atemporal & Pronomes</button>
-  </div>
-
-  <!-- ABA 1: CONTEÚDO ORIGINAL DO SEU APP -->
-  <div id="mainView" class="tab-content <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Nego Bom Polyglot - Dark Edition Pro</title>
@@ -383,6 +159,85 @@
     }
     .badge-cyan { background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.3); }
 
+    /* SUB-NAVIGATION DE ABAS DENTRO DO ESTUDO FOCADO */
+    .sub-tab-nav {
+      display: flex;
+      border-bottom: 2px solid var(--card-border);
+      margin-bottom: 1.25rem;
+      gap: 0.5rem;
+    }
+    .sub-tab-btn {
+      flex: 1;
+      padding: 0.75rem 0.5rem;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .sub-tab-btn.active {
+      color: var(--accent-cyan);
+      border-bottom-color: var(--accent-cyan);
+    }
+
+    .sub-tab-content { display: none; }
+    .sub-tab-content.active { display: block; }
+
+    /* SELETOR DE PRONOMES EM BOTÕES */
+    .pronoun-grid {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+      justify-content: center;
+    }
+    .pronoun-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 0.55rem 0.85rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      flex: 1;
+      min-width: 50px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .pronoun-btn.active {
+      background: var(--accent-cyan);
+      color: #0b0f17;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+    }
+
+    /* GRID DE TEMPOS VERBAIS NA MATRIZ */
+    .tense-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.85rem;
+    }
+    .tense-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1rem;
+    }
+    .tense-card-label {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.4rem;
+    }
+
     /* CATEGORY HEADERS & EXAMPLES */
     .category-block {
       background: rgba(255, 255, 255, 0.02);
@@ -441,7 +296,7 @@
       background: rgba(245, 158, 11, 0.1);
       border-radius: 10px;
       padding: 0.85rem;
-      margin-top: 0.65rem;
+      margin-bottom: 1rem;
     }
     .warning-title { color: var(--accent-yellow); font-weight: 800; font-size: 0.82rem; margin-bottom: 4px; }
     .warning-body { color: #fef3c7; font-size: 0.82rem; line-height: 1.4; }
@@ -462,19 +317,6 @@
     .flashcard-content { font-size: 1.3rem; font-weight: 700; color: #ffffff; }
     .srs-btn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 1rem; }
     .srs-btn { padding: 0.75rem; border-radius: 10px; border: none; font-weight: 800; font-size: 0.8rem; cursor: pointer; color: #000000; }
-
-    select {
-      width: 100%;
-      background: #161e2e;
-      color: var(--text-main);
-      border: 1px solid var(--card-border);
-      padding: 0.85rem;
-      border-radius: 10px;
-      font-weight: 600;
-      margin-top: 0.35rem;
-      margin-bottom: 0.85rem;
-      outline: none;
-    }
 
     /* BOTTOM NAV */
     nav.bottom-nav {
@@ -543,85 +385,105 @@
       <div id="patternListContainer"></div>
     </section>
 
-    <!-- 2. ESTUDO FOCADO (GUIA CATEGORIZADO DO PADRÃO) -->
+    <!-- 2. ESTUDO FOCADO (GUIA CATEGORIZADO + MATRIZ ATEMPORAL) -->
     <section id="focusedStudySection" class="section">
       <button class="btn btn-secondary" onclick="showSection('patternsSection')" style="margin-bottom: 1rem;">
         ← Voltar para Padrões
       </button>
 
-      <!-- CABEÇALHO DO PADRÃO LIMPO -->
+      <!-- CABEÇALHO DO PADRÃO SELECIONADO -->
       <div class="card">
-        <div class="badge-tag badge-cyan">Padrão Selecionado</div>
+        <div class="badge-tag badge-cyan">PADRÃO SELECIONADO</div>
         <div class="card-title" id="focusedPatternClean" style="font-size:1.4rem; color:var(--accent-cyan);"></div>
         <div id="focusedPatternDesc" style="color:var(--text-muted); font-size:0.9rem; margin-top:4px;"></div>
         <button class="btn btn-sm btn-secondary" style="margin-top:0.85rem;" onclick="speakCurrentCleanPattern()">🔊 Ouvir Padrão Limpo</button>
       </div>
 
-      <!-- EXPLICAÇÃO E APLICAÇÃO -->
-      <div class="card">
-        <div class="card-title">💡 Aplicação & Uso Prático</div>
-        <p style="font-size:0.88rem; color:var(--text-main); line-height:1.5;" id="focusedUsageText"></p>
+      <!-- BOTÃO DIRETO DE ACESSO À MATRIZ -->
+      <div style="margin-bottom:1.25rem;">
+        <button class="btn" style="background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));" onclick="switchSubTab('matriz')">
+          ⚡ Abrir Matriz Atemporal & Pronomes
+        </button>
+      </div>
+
+      <!-- SISTEMA DE ABAS DA TELA DE ESTUDO -->
+      <div class="sub-tab-nav">
+        <button class="sub-tab-btn active" id="subTabVisaoBtn" onclick="switchSubTab('visao')">Visão Geral</button>
+        <button class="sub-tab-btn" id="subTabMatrizBtn" onclick="switchSubTab('matriz')">Matriz Atemporal & Pronomes</button>
+      </div>
+
+      <!-- ABA 1: VISÃO GERAL (CONTEÚDO COMPLETO DO APP) -->
+      <div id="subTabVisaoView" class="sub-tab-content active">
         
-        <!-- CARD DA REGRA DO -ING (QUANDO APLICÁVEL) -->
-        <div id="ingRuleContainer"></div>
+        <!-- EXPLICAÇÃO E APLICAÇÃO -->
+        <div class="card">
+          <div class="card-title">💡 Aplicação & Uso Prático</div>
+          <p style="font-size:0.88rem; color:var(--text-main); line-height:1.5;" id="focusedUsageText"></p>
+          
+          <!-- CARD DA REGRA DO -ING (QUANDO APLICÁVEL) -->
+          <div id="ingRuleContainer"></div>
 
-        <div style="margin-top:0.75rem; background:rgba(245, 158, 11, 0.1); border:1px solid rgba(245, 158, 11, 0.25); padding:0.75rem; border-radius:10px;">
-          <span style="color:var(--accent-yellow); font-weight:800; font-size:0.8rem;">⚠️ DICA DE USO NATIVO:</span>
-          <p style="font-size:0.82rem; color:var(--text-main); margin-top:2px;" id="focusedProTip"></p>
-        </div>
-      </div>
-
-      <!-- EXEMPLOS PRÁTICOS CATEGORIZADOS (NOVO UPGRADE) -->
-      <div class="card">
-        <div class="card-title">🧩 Exemplos Práticos Categorizados</div>
-        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">Domine o padrão em 5 contextos reais da vida cotidiana:</p>
-        <div id="focusedCategorizedExamplesContainer"></div>
-      </div>
-
-      <!-- RESPOSTAS NATURAIS (COM ÁUDIO E PRONÚNCIA) -->
-      <div class="card">
-        <div class="card-title">💬 Respostas Naturais da Vida Real</div>
-        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">Aprenda a responder com pronúncia e áudio nativo:</p>
-        
-        <div style="margin-bottom:1rem;">
-          <div style="font-size:0.82rem; font-weight:800; color:var(--accent-green); margin-bottom:0.4rem;">✅ Respostas Positivas:</div>
-          <div id="focusedPosResponses"></div>
+          <div style="margin-top:0.75rem; background:rgba(245, 158, 11, 0.1); border:1px solid rgba(245, 158, 11, 0.25); padding:0.75rem; border-radius:10px;">
+            <span style="color:var(--accent-yellow); font-weight:800; font-size:0.8rem;">⚠️ DICA DE USO NATIVO:</span>
+            <p style="font-size:0.82rem; color:var(--text-main); margin-top:2px;" id="focusedProTip"></p>
+          </div>
         </div>
 
-        <div>
-          <div style="font-size:0.82rem; font-weight:800; color:var(--accent-red); margin-bottom:0.4rem;">❌ Respostas Negativas:</div>
-          <div id="focusedNegResponses"></div>
+        <!-- EXEMPLOS PRÁTICOS CATEGORIZADOS -->
+        <div class="card">
+          <div class="card-title">🧩 Exemplos Práticos Categorizados</div>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">Domine o padrão em 5 contextos reais da vida cotidiana:</p>
+          <div id="focusedCategorizedExamplesContainer"></div>
         </div>
+
+        <!-- RESPOSTAS NATURAIS -->
+        <div class="card">
+          <div class="card-title">💬 Respostas Naturais da Vida Real</div>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">Aprenda a responder com pronúncia e áudio nativo:</p>
+          
+          <div style="margin-bottom:1rem;">
+            <div style="font-size:0.82rem; font-weight:800; color:var(--accent-green); margin-bottom:0.4rem;">✅ Respostas Positivas:</div>
+            <div id="focusedPosResponses"></div>
+          </div>
+
+          <div>
+            <div style="font-size:0.82rem; font-weight:800; color:var(--accent-red); margin-bottom:0.4rem;">❌ Respostas Negativas:</div>
+            <div id="focusedNegResponses"></div>
+          </div>
+        </div>
+
+        <!-- VARIAÇÕES NATIVAS -->
+        <div class="card">
+          <div class="card-title">🔄 Variações Nativas (Sinônimos)</div>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">Outras formas que os nativos usam com áudio e pronúncia:</p>
+          <div id="focusedVariationsList"></div>
+        </div>
+
       </div>
 
-      <!-- VARIAÇÕES NATIVAS (COM ÁUDIO E PRONÚNCIA) -->
-      <div class="card">
-        <div class="card-title">🔄 Variações Nativas (Sinônimos)</div>
-        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">Outras formas que os nativos usam com áudio e pronúncia:</p>
-        <div id="focusedVariationsList"></div>
-      </div>
+      <!-- ABA 2: MATRIZ ATEMPORAL & PRONOMES -->
+      <div id="subTabMatrizView" class="sub-tab-content">
+        <div class="card">
+          <div class="card-title">🎛️ Matriz Atemporal & 7 Pronomes</div>
+          <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem;">Selecione um pronome para ver a conjugação instantânea nos 4 tempos verbais principais:</p>
 
-      <!-- MATRIZ DE CONJUGAÇÃO E PRONOMES -->
-      <div class="card">
-        <div class="card-title">🎛️ Matriz Temporal & 6 Pronomes</div>
-        <label style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">1. PRONOME / PESSOA:</label>
-        <select id="focusedPersonSelect" onchange="renderMatrixVariations()">
-          <option value="I">Eu (I)</option>
-          <option value="You" selected>Você (You)</option>
-          <option value="He/She">Ele / Ela (He / She)</option>
-          <option value="It">Objeto / Coisa (It)</option>
-          <option value="We">Nós (We)</option>
-          <option value="They">Eles / Elas (They)</option>
-        </select>
+          <!-- SELETOR DE PRONOMES -->
+          <div class="pronoun-grid">
+            <button class="pronoun-btn" onclick="selectMatrixPronoun('I')">I</button>
+            <button class="pronoun-btn active" onclick="selectMatrixPronoun('You')">You</button>
+            <button class="pronoun-btn" onclick="selectMatrixPronoun('He')">He</button>
+            <button class="pronoun-btn" onclick="selectMatrixPronoun('She')">She</button>
+            <button class="pronoun-btn" onclick="selectMatrixPronoun('It')">It</button>
+            <button class="pronoun-btn" onclick="selectMatrixPronoun('We')">We</button>
+            <button class="pronoun-btn" onclick="selectMatrixPronoun('They')">They</button>
+          </div>
 
-        <label style="font-size:0.75rem; font-weight:700; color:var(--text-muted);">2. TEMPO VERBAL:</label>
-        <select id="focusedTenseSelect" onchange="renderMatrixVariations()">
-          <option value="present">Presente (Hábitos / Estado Atual)</option>
-          <option value="past">Passado (Aconteceu / Concluído)</option>
-          <option value="future">Futuro (Amanhã / Plano)</option>
-        </select>
+          <!-- CONTAINER DE ALERTA DE INCOERÊNCIA (EX: IT COM AÇÕES HUMANAS) -->
+          <div id="matrixWarningContainer"></div>
 
-        <div id="matrixOutputContainer" style="margin-top:0.5rem;"></div>
+          <!-- GRID DOS 4 TEMPOS VERBAIS -->
+          <div class="tense-grid" id="matrixTensesContainer"></div>
+        </div>
       </div>
 
     </section>
@@ -687,6 +549,7 @@
   <script>
     let currentLang = localStorage.getItem('nego_lang') || null;
     let selectedPatternObj = null;
+    let selectedPronoun = 'You';
     let srsDeck = [];
     let srsIndex = 0;
     let srsFlipped = false;
@@ -1076,6 +939,19 @@
       }
     }
 
+    function switchSubTab(tabName) {
+      document.querySelectorAll('.sub-tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.sub-tab-btn').forEach(el => el.classList.remove('active'));
+
+      if (tabName === 'matriz') {
+        document.getElementById('subTabMatrizView').classList.add('active');
+        document.getElementById('subTabMatrizBtn').classList.add('active');
+      } else {
+        document.getElementById('subTabVisaoView').classList.add('active');
+        document.getElementById('subTabVisaoBtn').classList.add('active');
+      }
+    }
+
     function renderPatternList() {
       const container = document.getElementById('patternListContainer');
       const list = patternDatabase[currentLang] || [];
@@ -1104,7 +980,6 @@
       `).join('');
     }
 
-    // NOVO GERADOR CATEGORIZADO RICO + PRONÚNCIA E ÁUDIO EM RESPOSTAS E SINÔNIMOS
     function getPatternDataDetails(patternObj) {
       const raw = patternObj.raw || patternObj.display || "";
       const clean = patternObj.clean || "";
@@ -1126,7 +1001,6 @@
         };
       }
 
-      // PADRÃO ESPECÍFICO DE DEMONSTRAÇÃO COMPLETA: "Are you interested in...?"
       if (raw.includes("interested in")) {
         usage = "Usado para perguntar se alguém tem interesse em algo (substantivo) ou em FAZER algo (verbo + -ing).";
         tip = "Sempre use 'interested IN' (nunca 'on'). Se colocar um verbo depois, adicione -ING.";
@@ -1203,7 +1077,6 @@
         ];
 
       } else {
-        // DEMAIS PADRÕES: GERADOR DINÂMICO CATEGORIZADO AUTOMÁTICO
         const cText = clean || "this";
         categories = [
           {
@@ -1262,7 +1135,6 @@
       return { usage, tip, posResp, negResp, variations, categories, ingRule };
     }
 
-    // ABRIR O GUIA CATEGORIZADO COMPLETO
     function openFocusedStudy(patternId) {
       const list = patternDatabase[currentLang] || [];
       selectedPatternObj = list.find(p => p.id === patternId) || list[0];
@@ -1275,7 +1147,7 @@
       document.getElementById('focusedUsageText').innerText = details.usage;
       document.getElementById('focusedProTip').innerText = details.tip;
 
-      // RENDERIZA REGRA DO -ING
+      // REGRA DO -ING
       const ingBox = document.getElementById('ingRuleContainer');
       if (details.ingRule) {
         ingBox.innerHTML = `
@@ -1288,7 +1160,7 @@
         ingBox.innerHTML = "";
       }
 
-      // RENDERIZA EXEMPLOS PRÁTICOS CATEGORIZADOS (NOVO UPGRADE)
+      // EXEMPLOS CATEGORIZADOS
       const examplesContainer = document.getElementById('focusedCategorizedExamplesContainer');
       examplesContainer.innerHTML = details.categories.map(cat => `
         <div class="category-block">
@@ -1306,7 +1178,7 @@
         </div>
       `).join('');
 
-      // RENDERIZA RESPOSTAS POSITIVAS COM ÁUDIO E PRONÚNCIA
+      // RESPOSTAS POSITIVAS
       document.getElementById('focusedPosResponses').innerHTML = details.posResp.map(item => `
         <div class="interactive-card-item">
           <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -1318,7 +1190,7 @@
         </div>
       `).join('');
 
-      // RENDERIZA RESPOSTAS NEGATIVAS COM ÁUDIO E PRONÚNCIA
+      // RESPOSTAS NEGATIVAS
       document.getElementById('focusedNegResponses').innerHTML = details.negResp.map(item => `
         <div class="interactive-card-item">
           <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -1330,7 +1202,7 @@
         </div>
       `).join('');
 
-      // RENDERIZA VARIAÇÕES/SINÔNIMOS COM ÁUDIO E PRONÚNCIA
+      // VARIAÇÕES NATIVAS
       document.getElementById('focusedVariationsList').innerHTML = details.variations.map(item => `
         <div class="interactive-card-item">
           <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -1342,6 +1214,9 @@
         </div>
       `).join('');
 
+      // PADRÃO DE ABA INICIAL: VISÃO GERAL
+      switchSubTab('visao');
+      selectedPronoun = 'You';
       renderMatrixVariations();
       showSection('focusedStudySection');
     }
@@ -1352,81 +1227,149 @@
       }
     }
 
-    // CONJUGAÇÃO MATRIZ TEMPORAL (6 PRONOMES X 3 TEMPOS)
+    function selectMatrixPronoun(pronoun) {
+      selectedPronoun = pronoun;
+      document.querySelectorAll('.pronoun-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.innerText.trim().toLowerCase() === pronoun.toLowerCase());
+      });
+      renderMatrixVariations();
+    }
+
+    // CONJUGAÇÃO MATRIZ TEMPORAL (7 PRONOMES X 4 TEMPOS VERBAIS DEDICADOS)
     function renderMatrixVariations() {
       if (!selectedPatternObj) return;
-      const person = document.getElementById('focusedPersonSelect').value;
-      const tense = document.getElementById('focusedTenseSelect').value;
-      const container = document.getElementById('matrixOutputContainer');
-      const raw = selectedPatternObj.raw.toLowerCase();
+      const raw = (selectedPatternObj.raw || selectedPatternObj.clean || "").toLowerCase();
+      const clean = selectedPatternObj.clean || "";
+      
+      const warningContainer = document.getElementById('matrixWarningContainer');
+      const tensesContainer = document.getElementById('matrixTensesContainer');
 
-      let outputEn = "";
-      let outputPh = "";
-      let outputPt = "";
-      let warningHtml = "";
+      let present = "", past = "", future = "", conditional = "";
+      let presentPh = "", pastPh = "", futurePh = "", conditionalPh = "";
+      let presentPt = "", pastPt = "", futurePt = "", conditionalPt = "";
+      
+      let isThirdPerson = (selectedPronoun === 'He' || selectedPronoun === 'She' || selectedPronoun === 'It');
+      let isHumanAction = raw.includes("clean") || raw.includes("interested") || raw.includes("want") || raw.includes("need to") || raw.includes("feel");
 
-      const isEmotionPattern = raw.includes("interested") || raw.includes("feeling") || raw.includes("hungry") || raw.includes("tired");
-      if (person === "It" && isEmotionPattern) {
-        warningHtml = `
+      // VERIFICAÇÃO DE INCOERÊNCIA/SENTIDO PARA O PRONOME "IT"
+      if (selectedPronoun === 'It' && isHumanAction) {
+        warningContainer.innerHTML = `
           <div class="warning-card">
-            <div class="warning-title">⚠️ ALERTA DE USO NATIVO (IT / OBJETOS):</div>
-            <div class="warning-body">Coisas e objetos não têm sentimentos. Para objetos, usa-se a forma passiva ou neutra (ex: <b>Is it interesting?</b> em vez de <i>Is it interested?</i>).</div>
+            <div class="warning-title">⚠️ Observação de Sentido & Coerência</div>
+            <div class="warning-body">
+              O pronome <strong>'It'</strong> é usado para objetos ou coisas inanimadas. Usá-lo diretamente com ações ou emoções humanas atribui uma intenção consciente a um objeto.<br>
+              <div style="margin-top:6px; font-weight:700; color:#fef08a;">
+                💡 Frase equivalente natural: "The house needs to be cleaned" ou "It needs cleaning"
+              </div>
+            </div>
           </div>
         `;
-      }
-
-      if (raw.includes("interested in")) {
-        if (person === "I") {
-          if (tense === "present") { outputEn = "Am I interested in buying this?"; outputPh = "Ém ái íntrested in bái-iŋ đis?"; outputPt = "Eu estou interessado(a) em comprar isso?"; }
-          else if (tense === "past") { outputEn = "Was I interested in buying this?"; outputPh = "Uóz ái íntrested in bái-iŋ đis?"; outputPt = "Eu estava interessado(a) em comprar isso?"; }
-          else { outputEn = "Will I be interested in buying this?"; outputPh = "Uíl ái bí íntrested in bái-iŋ đis?"; outputPt = "Eu estarei interessado(a) em comprar isso?"; }
-        } else if (person === "You") {
-          if (tense === "present") { outputEn = "Are you interested in joining us?"; outputPh = "Ar yu íntrested in djóiniŋ ás?"; outputPt = "Você está interessado(a) em se juntar a nós?"; }
-          else if (tense === "past") { outputEn = "Were you interested in joining us?"; outputPh = "Uér yu íntrested in djóiniŋ ás?"; outputPt = "Você estava interessado(a) em se juntar a nós?"; }
-          else { outputEn = "Will you be interested in joining us?"; outputPh = "Uíl yu bí íntrested in djóiniŋ ás?"; outputPt = "Você estará interessado(a) em se juntar a nós?"; }
-        } else if (person === "He/She") {
-          if (tense === "present") { outputEn = "Is he/she interested in working here?"; outputPh = "Iz hí/shí íntrested in uérkiŋ hír?"; outputPt = "Ele/Ela está interessado(a) em trabalhar aqui?"; }
-          else if (tense === "past") { outputEn = "Was he/she interested in working here?"; outputPh = "Uóz hí/shí íntrested in uérkiŋ hír?"; outputPt = "Ele/Ela estava interessado(a) em trabalhar aqui?"; }
-          else { outputEn = "Will he/she be interested in working here?"; outputPh = "Uíl hí/shí bí íntrested in uérkiŋ hír?"; outputPt = "Ele/Ela estará interessado(a) em trabalhar aqui?"; }
-        } else if (person === "It") {
-          if (tense === "present") { outputEn = "Is it interesting?"; outputPh = "Iz it íntrestiŋ?"; outputPt = "Isso é interessante?"; }
-          else if (tense === "past") { outputEn = "Was it interesting?"; outputPh = "Uóz it íntrestiŋ?"; outputPt = "Isso foi interessante?"; }
-          else { outputEn = "Will it be interesting?"; outputPh = "Uíl it bí íntrestiŋ?"; outputPt = "Isso será interessante?"; }
-        } else if (person === "We") {
-          if (tense === "present") { outputEn = "Are we interested in this project?"; outputPh = "Ar uí íntrested in đis pródjekt?"; outputPt = "Nós estamos interessados neste projeto?"; }
-          else if (tense === "past") { outputEn = "Were we interested in this project?"; outputPh = "Uér uí íntrested in đis pródjekt?"; outputPt = "Nós estávamos interessados neste projeto?"; }
-          else { outputEn = "Will we be interested in this project?"; outputPh = "Uíl uí bí íntrested in đis pródjekt?"; outputPt = "Nós estaremos interessados neste projeto?"; }
-        } else if (person === "They") {
-          if (tense === "present") { outputEn = "Are they interested in moving?"; outputPh = "Ar đéi íntrested in múviŋ?"; outputPt = "Eles estão interessados em se mudar?"; }
-          else if (tense === "past") { outputEn = "Were they interested in moving?"; outputPh = "Uér đéi íntrested in múviŋ?"; outputPt = "Eles estavam interessados em se mudar?"; }
-          else { outputEn = "Will they be interested in moving?"; outputPh = "Uíl đéi bí íntrested in múviŋ?"; outputPt = "Eles estarão interessados em se mudar?"; }
-        }
       } else {
-        const verbStem = selectedPatternObj.clean;
-        if (tense === "present") {
-          outputEn = `${person} ➔ ${verbStem}`;
-          outputPh = `(${person} ${verbStem})`;
-          outputPt = `Forma no Presente com ${person}`;
-        } else if (tense === "past") {
-          outputEn = `[Passado] ${person} ➔ ${verbStem}`;
-          outputPh = `(Past form with ${person})`;
-          outputPt = `Forma no Passado com ${person}`;
-        } else {
-          outputEn = `Will ${person} ➔ ${verbStem}`;
-          outputPh = `(Uíl ${person}...)`;
-          outputPt = `Forma no Futuro com ${person}`;
-        }
+        warningContainer.innerHTML = "";
       }
 
-      container.innerHTML = `
-        ${warningHtml}
-        <div class="example-box" style="margin-top:0.65rem;">
-          <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
-            <div class="example-en">${outputEn}</div>
-            <button class="btn btn-sm btn-secondary" onclick="speakText('${outputEn.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
+      // MONTAGEM DINÂMICA DOS 4 TEMPOS VERBAIS
+      if (raw.includes("need to clean") || raw.includes("need to")) {
+        let action = clean.replace(/i need to/i, '').replace(/you need to/i, '').replace(/need to/i, '').trim() || "clean the house";
+        
+        let pVerb = isThirdPerson ? "needs to" : "need to";
+        present = `${selectedPronoun} ${pVerb} ${action}`;
+        presentPh = `(${selectedPronoun} ${pVerb} ${action})`;
+        presentPt = `${selectedPronoun} precisa limpas/organizar...`;
+
+        past = `${selectedPronoun} needed to ${action}`;
+        pastPh = `(${selectedPronoun} níded tú ${action})`;
+        pastPt = `${selectedPronoun} precisava / precisou...`;
+
+        future = `${selectedPronoun} will need to ${action}`;
+        futurePh = `(${selectedPronoun} uíl níd tú ${action})`;
+        futurePt = `${selectedPronoun} vai precisar...`;
+
+        conditional = `${selectedPronoun} would need to ${action}`;
+        conditionalPh = `(${selectedPronoun} uúd níd tú ${action})`;
+        conditionalPt = `${selectedPronoun} precisaria...`;
+
+      } else if (raw.includes("interested in")) {
+        let pAux = isThirdPerson ? (selectedPronoun === 'It' ? 'Is it' : `Is ${selectedPronoun.toLowerCase()}`) : (selectedPronoun === 'I' ? 'Am I' : `Are ${selectedPronoun.toLowerCase()}`);
+        let pastAux = (selectedPronoun === 'I' || isThirdPerson) ? `Was ${selectedPronoun.toLowerCase()}` : `Were ${selectedPronoun.toLowerCase()}`;
+
+        present = `${pAux} interested in this?`;
+        presentPh = `(${pAux} íntrested in đis?)`;
+        presentPt = `${selectedPronoun} está interessado(a) nisso?`;
+
+        past = `${pastAux} interested in this?`;
+        pastPh = `(${pastAux} íntrested in đis?)`;
+        pastPt = `${selectedPronoun} estava interessado(a) nisso?`;
+
+        future = `Will ${selectedPronoun.toLowerCase()} be interested in this?`;
+        futurePh = `(Uíl ${selectedPronoun.toLowerCase()} bí íntrested in đis?)`;
+        futurePt = `${selectedPronoun} estará interessado(a) nisso?`;
+
+        conditional = `Would ${selectedPronoun.toLowerCase()} be interested in this?`;
+        conditionalPh = `(Uúd ${selectedPronoun.toLowerCase()} bí íntrested in đis?)`;
+        conditionalPt = `${selectedPronoun} estaria interessado(a) nisso?`;
+
+      } else {
+        // GERADOR GENÉRICO PARA DEMAIS PADRÕES
+        let baseVerb = clean.replace(/^(are you|do you|can i|i want|you need|i am|it's|is it)\s+/i, '');
+        if (!baseVerb) baseVerb = clean;
+
+        present = isThirdPerson ? `${selectedPronoun} ${baseVerb}s` : `${selectedPronoun} ${baseVerb}`;
+        presentPh = `(${selectedPronoun} ${baseVerb})`;
+        presentPt = `Presente com ${selectedPronoun}`;
+
+        past = `${selectedPronoun} ${baseVerb}ed`;
+        pastPh = `(${selectedPronoun} ${baseVerb}ed)`;
+        pastPt = `Passado com ${selectedPronoun}`;
+
+        future = `${selectedPronoun} will ${baseVerb}`;
+        futurePh = `(${selectedPronoun} uíl ${baseVerb})`;
+        futurePt = `Futuro com ${selectedPronoun}`;
+
+        conditional = `${selectedPronoun} would ${baseVerb}`;
+        conditionalPh = `(${selectedPronoun} uúd ${baseVerb})`;
+        conditionalPt = `Condicional com ${selectedPronoun}`;
+      }
+
+      tensesContainer.innerHTML = `
+        <div class="tense-card">
+          <div class="tense-card-label">Presente Simple</div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-weight:700; color:var(--accent-cyan);">${present}</div>
+            <button class="btn btn-sm btn-secondary" onclick="speakText('${present.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
           </div>
-          <div class="example-ph">🗣️ ${outputPh}</div>
-          <div class="example-pt">🇧🇷 ${outputPt}</div>
+          <div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ ${presentPh}</div>
+          <div style="font-size:0.82rem; color:var(--text-main); margin-top:2px;">🇧🇷 ${presentPt}</div>
+        </div>
+
+        <div class="tense-card">
+          <div class="tense-card-label">Passado Simple</div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-weight:700; color:var(--accent-cyan);">${past}</div>
+            <button class="btn btn-sm btn-secondary" onclick="speakText('${past.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
+          </div>
+          <div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ ${pastPh}</div>
+          <div style="font-size:0.82rem; color:var(--text-main); margin-top:2px;">🇧🇷 ${pastPt}</div>
+        </div>
+
+        <div class="tense-card">
+          <div class="tense-card-label">Futuro Simple</div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-weight:700; color:var(--accent-cyan);">${future}</div>
+            <button class="btn btn-sm btn-secondary" onclick="speakText('${future.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
+          </div>
+          <div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ ${futurePh}</div>
+          <div style="font-size:0.82rem; color:var(--text-main); margin-top:2px;">🇧🇷 ${futurePt}</div>
+        </div>
+
+        <div class="tense-card">
+          <div class="tense-card-label">Condicional (Would)</div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-weight:700; color:var(--accent-cyan);">${conditional}</div>
+            <button class="btn btn-sm btn-secondary" onclick="speakText('${conditional.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
+          </div>
+          <div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ ${conditionalPh}</div>
+          <div style="font-size:0.82rem; color:var(--text-main); margin-top:2px;">🇧🇷 ${conditionalPt}</div>
         </div>
       `;
     }
@@ -1533,163 +1476,5 @@
 
     window.onload = initApp;
   </script>
-</body>
-</html>
-  </div>
-
-  <!-- ABA 2: MATRIZ ATEMPORAL & PRONOMES -->
-  <div id="matrizView" class="tab-content">
-    
-    <!-- Seletor de Pronomes -->
-    <div class="pronoun-selector">
-      <button class="pronoun-btn" onclick="selectPronoun('I')">I</button>
-      <button class="pronoun-btn" onclick="selectPronoun('you')">You</button>
-      <button class="pronoun-btn" onclick="selectPronoun('he')">He</button>
-      <button class="pronoun-btn" onclick="selectPronoun('she')">She</button>
-      <button class="pronoun-btn active" onclick="selectPronoun('it')">It</button>
-      <button class="pronoun-btn" onclick="selectPronoun('we')">We</button>
-      <button class="pronoun-btn" onclick="selectPronoun('they')">They</button>
-    </div>
-
-    <!-- Explicação Dinâmica para Incoerências -->
-    <div class="explanation-card" id="explanationBlock">
-      <h4>⚠️ Observação de Sentido & Coerência</h4>
-      <p id="explanationText"></p>
-      <div class="equivalent-box" id="equivalentText"></div>
-    </div>
-
-    <!-- 4 Tempos Verbais Simultâneos -->
-    <div class="tenses-grid">
-      <div class="tense-card">
-        <h4>Presente Simple</h4>
-        <div class="phrase" id="tensePresent"></div>
-      </div>
-
-      <div class="tense-card">
-        <h4>Passado Simple</h4>
-        <div class="phrase" id="tensePast"></div>
-      </div>
-
-      <div class="tense-card">
-        <h4>Futuro Simple</h4>
-        <div class="phrase" id="tenseFuture"></div>
-      </div>
-
-      <div class="tense-card">
-        <h4>Condicional</h4>
-        <div class="phrase" id="tenseConditional"></div>
-      </div>
-    </div>
-
-  </div>
-
-</div>
-
-<script>
-  let currentPronoun = 'it';
-  
-  const patternData = {
-    verbBase: "need to clean the house",
-    pronouns: {
-      "I": {
-        hasSense: true,
-        present: "I need to clean the house",
-        past: "I needed to clean the house",
-        future: "I will need to clean the house",
-        conditional: "I would need to clean the house"
-      },
-      "you": {
-        hasSense: true,
-        present: "You need to clean the house",
-        past: "You needed to clean the house",
-        future: "You will need to clean the house",
-        conditional: "You would need to clean the house"
-      },
-      "he": {
-        hasSense: true,
-        present: "He needs to clean the house",
-        past: "He needed to clean the house",
-        future: "He will need to clean the house",
-        conditional: "He would need to clean the house"
-      },
-      "she": {
-        hasSense: true,
-        present: "She needs to clean the house",
-        past: "She needed to clean the house",
-        future: "She will need to clean the house",
-        conditional: "She would need to clean the house"
-      },
-      "it": {
-        hasSense: false,
-        explanation: "O pronome <strong>'It'</strong> é usado para objetos ou coisas inanimadas. Usá-lo diretamente com 'clean the house' atribui uma ação humana consciente a algo inanimado.",
-        equivalent: "💡 Frase equivalente natural: 'The house needs to be cleaned' ou 'It needs cleaning'",
-        present: "It needs to clean the house",
-        past: "It needed to clean the house",
-        future: "It will need to clean the house",
-        conditional: "It would need to clean the house"
-      },
-      "we": {
-        hasSense: true,
-        present: "We need to clean the house",
-        past: "We needed to clean the house",
-        future: "We will need to clean the house",
-        conditional: "We would need to clean the house"
-      },
-      "they": {
-        hasSense: true,
-        present: "They need to clean the house",
-        past: "They needed to clean the house",
-        future: "They will need to clean the house",
-        conditional: "They would need to clean the house"
-      }
-    }
-  };
-
-  function switchTab(tabName) {
-    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-
-    if (tabName === 'matriz') {
-      document.getElementById('matrizView').classList.add('active');
-      document.getElementById('tabMatrizBtn').classList.add('active');
-    } else {
-      document.getElementById('mainView').classList.add('active');
-      document.getElementById('tabMainBtn').classList.add('active');
-    }
-  }
-
-  function openMatrizTab() {
-    switchTab('matriz');
-  }
-
-  function selectPronoun(pronoun) {
-    currentPronoun = pronoun;
-    document.querySelectorAll('.pronoun-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.innerText.toLowerCase() === pronoun.toLowerCase());
-    });
-    renderMatriz();
-  }
-
-  function renderMatriz() {
-    const data = patternData.pronouns[currentPronoun];
-
-    document.getElementById('tensePresent').innerText = data.present;
-    document.getElementById('tensePast').innerText = data.past;
-    document.getElementById('tenseFuture').innerText = data.future;
-    document.getElementById('tenseConditional').innerText = data.conditional;
-
-    const explanationBlock = document.getElementById('explanationBlock');
-    if (!data.hasSense) {
-      document.getElementById('explanationText').innerHTML = data.explanation;
-      document.getElementById('equivalentText').innerHTML = data.equivalent;
-      explanationBlock.style.display = 'block';
-    } else {
-      explanationBlock.style.display = 'none';
-    }
-  }
-
-  renderMatriz();
-</script>
-
 </body>
 </html>
