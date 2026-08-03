@@ -863,6 +863,288 @@
       `).join('');
     }
 
+    // ===== MOTOR DE FONÉTICA "APORTUGUESADA" (para shadowing) =====
+    const PH_DICT = {
+      'i':'ái','you':'iú','he':'rí','she':'chí','it':'ít','we':'uí','they':'đei','me':'mi','him':'rim','her':'rer','us':'ás','them':'đem',
+      'am':'ém','is':'iz','are':'ár','was':'uóz','were':'uér','be':'bí','been':'bín','being':'bíin',
+      'do':'du','does':'dáz','did':'did','doing':'dúin',
+      'have':'rév','has':'réz','had':'réd','having':'révin',
+      'will':'uíl',"won't":'uónt','would':'uúd',"wouldn't":'uúdent','can':'kén',"can't":'kánt','could':'kúd','should':'chúd','shall':'chél','may':'méi','might':'máit','must':'mást',
+      'not':'nót',"don't":'dont',"doesn't":'dázent',"didn't":'dídent',
+      'to':'tú','the':'đe','a':'ei','an':'én','and':'end','or':'ór','but':'bát','if':'if','so':'sou',
+      'this':'đis','that':'đát',"that's":'đéts','these':'đíz','those':'đóuz',
+      'here':'hír','there':'đér','now':'náu','today':'tudéi','tonight':'tunáit','still':'stíl','yet':'iét','already':'olrédi',
+      'good':'gud','well':'uél','bad':'béd','great':'gréit','nice':'náis','happy':'répi','sad':'séd','tired':'táierd','hungry':'rángri',
+      'ready':'rédi','right':'ráit','sure':'chúr','sorry':'sóri','absolutely':'ábsolutli','really':'ríali',
+      'need':'níd','needs':'níds','needed':'nídid','want':'uónt','wants':'uónts','wanted':'uóntid',
+      'like':'láik','likes':'láiks','liked':'láikt','love':'láv','loves':'lávs','loved':'lávd',
+      'know':'nóu','knows':'nóuz','knew':'níu','feel':'fíl','feels':'fíls','felt':'félt','feeling':'fílin',
+      'miss':'mís','misses':'mísiz','missed':'míst',
+      'work':'uórk','works':'uórks','worked':'uórkt','working':'uórkin',
+      'look':'luk','looks':'luks','looked':'lukt','got':'gót','get':'guét','gets':'guéts',
+      'help':'rélp','helps':'rélps','helped':'rélpt',
+      'start':'stárt','starts':'stárts','started':'stártid',
+      'money':'máni','coffee':'kófi','water':'uóter','music':'miúzik','home':'róum',
+      'time':'táim','table':'téibol','car':'kár','house':'ráus','room':'rúm','place':'pléis',
+      'family':'fémili','friend':'frénd','friends':'fréndz','people':'pípol',
+      'smart':'smárt','cold':'kóuld','hot':'rrót','open':'óupen','free':'frí','clean':'klín',
+      'anything':'énifin','something':'sámfin','everything':'évrifin','nothing':'náfin',
+      'else':'éls','more':'mór','very':'véri','too':'tú',
+      'swimming':'suímin','construction':'konstrákchon','experience':'ekspíriens',
+      'confident':'kánfident','nervous':'nérvos','excited':'iksáitid','motivated':'móutiveitid',
+      'weekend':'uíkend','deadline':'dédlain','deadlines':'dédlainz',
+      'able':'éibol','outside':'áutsaid','raining':'réinin',
+      'mine':'máin','yours':'iúrs','your':'iór','my':'mái','our':'áuer',
+      'what':'uót','where':'uér','when':'uén','who':'rú','why':'uái','how':'ráu',
+      'about':'ebáut','tell':'tél','interested':'íntrested','in':'in',
+      'arrivals':'erráivols','ask':'ésk','at':'ét','before':'bifór','bit':'bit','browsing':'bráuzin','by':'bái',
+      'call':'kól','card':'kárd','checkout':'tchékáut','class':'klés','company':'kámpani','day':'déi',
+      'different':'díferent','discount':'dískaunt','dishes':'díchiz','early':'érli','eating':'ítin','every':'évri',
+      'finding':'fáindin','finish':'fínich','for':'for','fun':'fán','going':'góuin','hang':'réng','hanging':'rénguin',
+      'meal':'míl','meeting':'mítin','menu':'ménhiu','new':'níu','off':'óf','office':'áfis','order':'órder','out':'áut',
+      'overtime':'óvertaim','overwhelmed':'óverwélmd','pay':'péi','practice':'préctis','practicing':'préctisin',
+      'price':'práis','report':'ripórt','restaurant':'réstorant','reviewing':'rivíuin','satisfied':'sétisfáid',
+      'size':'sáiz','some':'sám','special':'spéchol','store':'stór','study':'stádi','tasks':'tésks','test':'tést',
+      'textbook':'tékstbuk','try':'trái','trying':'tráin','two':'tú','unsure':'ánchur','vocabulary':'voukébiuléri',
+      'with':'uíd','anything else':'énifin éls'
+    };
+    function phWord(w) {
+      const lw = w.toLowerCase();
+      if (PH_DICT[lw]) return PH_DICT[lw];
+      let s = lw;
+      s = s.replace(/tion\b/, 'chion').replace(/sion\b/, 'jon').replace(/ck/g, 'k').replace(/th/g, 'đ')
+           .replace(/ee|ea/g, 'í').replace(/oo/g, 'ú').replace(/ai|ay/g, 'éi').replace(/oa/g, 'óu')
+           .replace(/ing\b/, 'in').replace(/y\b/, 'i').replace(/([bcdfgjklmnpqrstvwxz])e\b/, '$1')
+           .replace(/^w/, 'u').replace(/qu/g, 'ku');
+      return s;
+    }
+    function phSentence(en) {
+      if (!en) return '';
+      const parts = en.match(/[A-Za-z']+|[^A-Za-z']+/g) || [];
+      const out = parts.map(tok => /[A-Za-z]/.test(tok) ? phWord(tok) : tok).join('');
+      return out.charAt(0).toUpperCase() + out.slice(1);
+    }
+    // ===== FIM DO MOTOR DE FONÉTICA =====
+
+    // ===== MOTOR DE EXEMPLOS CONTEXTUAIS (corrige bug #2/#3) =====
+    const PREFIX_META = {
+      "Are you feeling ": { type:"adjective", pt:"Você está se sentindo " },
+      "Are you ": { type:"adjective", pt:"Você está / é " },
+      "Are you ready ": { type:"fixed" },
+      "Are you still ": { type:"place_time", pt:"Você ainda está " },
+      "Are you working ": { type:"place_time", pt:"Você está trabalhando " },
+      "Back in Brazil, I used to ": { type:"verb_base", pt:"Lá no Brasil, eu costumava " },
+      "Be ": { type:"adjective", pt:"Seja / Tenha " },
+      "Before coming here, I ": { type:"fixed" },
+      "Can I get you ": { type:"noun", pt:"Posso te trazer " },
+      "Can I have ": { type:"noun", pt:"Posso ter/tomar " },
+      "Can I help ": { type:"fixed" },
+      "Can we start ": { type:"place_time", pt:"Nós podemos começar " },
+      "Can you help ": { type:"fixed" },
+      "Clean up ": { type:"noun", pt:"Limpe " },
+      "Do you enjoy ": { type:"gerund", pt:"Você gosta de " },
+      "Do you feel ": { type:"adjective", pt:"Você se sente " },
+      "Do you like ": { type:"noun", pt:"Você gosta de " },
+      "Do you miss ": { type:"noun", pt:"Você sente falta de " },
+      "Do you need ": { type:"noun", pt:"Você precisa de " },
+      "Do you want ": { type:"noun", pt:"Você quer " },
+      "Do you work ": { type:"place_time", pt:"Você trabalha " },
+      "Don't ": { type:"verb_base", pt:"Não " },
+      "Enjoy ": { type:"noun", pt:"Aproveite " },
+      "Hand me ": { type:"noun", pt:"Me passa " },
+      "He is ": { type:"adjective", pt:"Ele é/está " },
+      "Here is ": { type:"noun", pt:"Aqui está " },
+      "How are ": { type:"fixed" },
+      "How do you know ": { type:"fixed" },
+      "How do you like ": { type:"gerund", pt:"O que você acha de " },
+      "How long have you been ": { type:"place_time", pt:"Há quanto tempo você está " },
+      "How long will ": { type:"fixed" },
+      "How much does ": { type:"fixed" },
+      "How ": { type:"adjective", pt:"Que " },
+      "How old are ": { type:"fixed" },
+      "How was ": { type:"noun", pt:"Como foi " },
+      "How would you like ": { type:"noun", pt:"Como você gostaria de " },
+      "How's ": { type:"noun", pt:"Como está " },
+      "I am ": { type:"adjective", pt:"Eu estou/sou " },
+      "I came here to ": { type:"verb_base", pt:"Eu vim para cá para " },
+      "I can ": { type:"verb_base", pt:"Eu posso " },
+      "I don't have ": { type:"noun", pt:"Eu não tenho " },
+      "I feel ": { type:"adjective", pt:"Eu me sinto " },
+      "I grew up in ": { type:"fixed" },
+      "I have ": { type:"noun", pt:"Eu tenho " },
+      "I have experience in ": { type:"gerund", pt:"Eu tenho experiência em " },
+      "I know ": { type:"noun", pt:"Eu conheço " },
+      "I love ": { type:"noun", pt:"Eu amo " },
+      "I miss ": { type:"noun", pt:"Eu sinto falta de " },
+      "I need ": { type:"noun", pt:"Eu preciso de " },
+      "I trust ": { type:"fixed" },
+      "I want ": { type:"noun", pt:"Eu quero " },
+      "I will call ": { type:"fixed" },
+      "I'll be right back with ": { type:"noun", pt:"Já volto com " },
+      "I'm working hard to ": { type:"verb_base", pt:"Estou me esforçando para " },
+      "I've been working with ": { type:"fixed" },
+      "Is everything okay with ": { type:"noun", pt:"Está tudo bem com " },
+      "Is it ": { type:"adjective", pt:"Está / É " },
+      "Is it raining ": { type:"place_time", pt:"Está chovendo " },
+      "Is it still ": { type:"adjective", pt:"Ainda está " },
+      "Is she ": { type:"adjective", pt:"Ela está " },
+      "Is that ": { type:"noun", pt:"Isso é " },
+      "Is the car ": { type:"adjective", pt:"O carro está " },
+      "Is this phone ": { type:"fixed" },
+      "Is this ready for ": { type:"noun", pt:"Isso está pronto para " },
+      "Is this seat ": { type:"adjective", pt:"Este assento está " },
+      "Is this your ": { type:"noun", pt:"Esta é a sua " },
+      "Is your car ": { type:"adjective", pt:"Seu carro está " },
+      "It is ": { type:"adjective", pt:"Está / É " },
+      "It was ": { type:"adjective", pt:"Foi / Estava " },
+      "It's too ": { type:"adjective", pt:"Está muito " },
+      "It's very ": { type:"adjective", pt:"Está muito " },
+      "Let me check ": { type:"fixed" },
+      "Make sure to ": { type:"verb_base", pt:"Certifique-se de " },
+      "My main goal is to ": { type:"verb_base", pt:"Meu objetivo principal é " },
+      "My plan is to ": { type:"verb_base", pt:"Meu plano é " },
+      "One of my dreams is to ": { type:"verb_base", pt:"Um dos meus sonhos é " },
+      "Put on ": { type:"noun", pt:"Coloque " },
+      "Right this way, ": { type:"fixed" },
+      "Take ": { type:"noun", pt:"Tenha " },
+      "That is ": { type:"adjective", pt:"Isso é " },
+      "That's ": { type:"adjective", pt:"Isso é " },
+      "The car is ": { type:"adjective", pt:"O carro é " },
+      "The weather is ": { type:"adjective", pt:"O tempo está " },
+      "They are ": { type:"adjective", pt:"Eles estão " },
+      "This book is ": { type:"fixed" },
+      "This is called ": { type:"fixed" },
+      "This is ": { type:"fixed" },
+      "This is for ": { type:"fixed" },
+      "Watch ": { type:"fixed" },
+      "We are ": { type:"adjective", pt:"Nós estamos " },
+      "We need ": { type:"noun", pt:"Nós precisamos de " },
+      "We will start ": { type:"place_time", pt:"Nós vamos começar " },
+      "What a ": { type:"noun", pt:"Que " },
+      "What are you ": { type:"fixed" },
+      "What are your ": { type:"fixed" },
+      "What are your plans for ": { type:"fixed" },
+      "What brought me here was ": { type:"fixed" },
+      "What brought you ": { type:"fixed" },
+      "What did you ": { type:"fixed" },
+      "What did you do ": { type:"fixed" },
+      "What do you ": { type:"fixed" },
+      "What ": { type:"fixed" },
+      "What is your ": { type:"fixed" },
+      "What time ": { type:"fixed" },
+      "What's for ": { type:"fixed" },
+      "What's ": { type:"fixed" },
+      "When is ": { type:"fixed" },
+      "Where are my ": { type:"fixed" },
+      "Where are you ": { type:"fixed" },
+      "Where can I ": { type:"verb_base", pt:"Onde eu posso " },
+      "Where did you ": { type:"fixed" },
+      "Where do I ": { type:"fixed" },
+      "Where do you ": { type:"fixed" },
+      "Where is my ": { type:"fixed" },
+      "Where is she ": { type:"fixed" },
+      "Where is ": { type:"fixed" },
+      "Who did ": { type:"fixed" },
+      "Who is ": { type:"fixed" },
+      "Why is this ": { type:"fixed" },
+      "Would you like to try ": { type:"fixed" },
+      "You are ": { type:"adjective", pt:"Você é/está " },
+      "You can ": { type:"verb_base", pt:"Você pode " },
+      "You feel ": { type:"adjective", pt:"Você se sente " },
+      "You got ": { type:"fixed" },
+      "You look ": { type:"adjective", pt:"Você parece " },
+      "You need ": { type:"noun", pt:"Você precisa de " },
+      "You need to move this to ": { type:"fixed" },
+      "You want ": { type:"noun", pt:"Você quer " }
+    };
+
+    const CONTEXT_BANKS = {
+      adjective: {
+        restaurant: [["hungry","com fome"], ["satisfied with the meal","satisfeito(a) com a refeição"]],
+        shopping:   [["unsure about the size","em dúvida sobre o tamanho"], ["happy with the price","satisfeito(a) com o preço"]],
+        work:       [["confident","confiante"], ["overwhelmed with tasks","sobrecarregado(a) de tarefas"]],
+        social:     [["excited","animado(a)"], ["a bit nervous","um pouco nervoso(a)"]],
+        study:      [["motivated","motivado(a)"], ["confident about the test","confiante sobre a prova"]]
+      },
+      noun: {
+        restaurant: [["the menu","o cardápio"], ["a table for two","uma mesa para dois"]],
+        shopping:   [["a discount","um desconto"], ["a different size","um tamanho diferente"]],
+        work:       [["more time","mais tempo"], ["a day off","uma folga"]],
+        social:     [["some company","companhia"], ["a fun weekend","um fim de semana divertido"]],
+        study:      [["more practice","mais prática"], ["a good textbook","um bom livro de estudo"]]
+      },
+      gerund: {
+        restaurant: [["trying new dishes","experimentar pratos novos"], ["eating out","comer fora"]],
+        shopping:   [["finding good deals","encontrar boas ofertas"], ["browsing new arrivals","dar uma olhada nas novidades"]],
+        work:       [["meeting deadlines","cumprir prazos"], ["working overtime","fazer hora extra"]],
+        social:     [["hanging out with friends","sair com os amigos"], ["going out tonight","sair hoje à noite"]],
+        study:      [["practicing every day","praticar todos os dias"], ["reviewing vocabulary","revisar o vocabulário"]]
+      },
+      verb_base: {
+        restaurant: [["order now","pedir agora"], ["try the special","experimentar o prato do dia"]],
+        shopping:   [["pay by card","pagar com cartão"], ["ask for a discount","pedir um desconto"]],
+        work:       [["start early","começar cedo"], ["finish the report","terminar o relatório"]],
+        social:     [["hang out tonight","sair hoje à noite"], ["call a friend","ligar para um amigo"]],
+        study:      [["study every day","estudar todos os dias"], ["practice more","praticar mais"]]
+      },
+      place_time: {
+        restaurant: [["at the restaurant","no restaurante"], ["before we order","antes de pedirmos"]],
+        shopping:   [["at the store","na loja"], ["before checkout","antes de pagar"]],
+        work:       [["at the office","no escritório"], ["before the meeting","antes da reunião"]],
+        social:     [["tonight","hoje à noite"], ["this weekend","neste fim de semana"]],
+        study:      [["in class","na aula"], ["before the test","antes da prova"]]
+      }
+    };
+
+    const CATEGORY_META = [
+      { key: "restaurant", title: "🍔 Restaurante & Alimentação" },
+      { key: "shopping", title: "🛍️ Loja & Compras" },
+      { key: "work", title: "💼 Trabalho & Negócios" },
+      { key: "social", title: "❤️ Conversa Casual & Social" },
+      { key: "study", title: "📚 Estudos & Vida Diária" }
+    ];
+
+    function parsePatternSlot(raw) {
+      const m = raw.match(/^(.*?)\[(.*?)\](.*)$/);
+      if (!m) return null;
+      return { prefix: m[1], slot: m[2], suffix: m[3] };
+    }
+    function cleanPunct(str) { return str.replace(/\s+([?.!])/g, '$1'); }
+
+    function fixPtContractions(str) {
+      return str
+        .replace(/\bde o\b/gi, 'do').replace(/\bde a\b/gi, 'da')
+        .replace(/\bde os\b/gi, 'dos').replace(/\bde as\b/gi, 'das')
+        .replace(/\bem o\b/gi, 'no').replace(/\bem a\b/gi, 'na')
+        .replace(/\bem os\b/gi, 'nos').replace(/\bem as\b/gi, 'nas');
+    }
+
+    function buildSmartCategories(raw) {
+      const parsed = parsePatternSlot(raw);
+      if (!parsed) return { status: "no-bracket" };
+      const { prefix, suffix } = parsed;
+      const meta = PREFIX_META[prefix];
+      if (!meta || meta.type === "fixed") return { status: "fixed" };
+
+      const bank = CONTEXT_BANKS[meta.type];
+      const categories = CATEGORY_META.map(cat => {
+        const fillers = bank[cat.key];
+        return {
+          title: cat.title,
+          examples: fillers.map(([fillerEn, fillerPt]) => {
+            const enFull = cleanPunct(`${prefix}${fillerEn}${suffix}`);
+            return {
+              en: enFull,
+              ph: phSentence(enFull),
+              pt: fixPtContractions(cleanPunct(`${meta.pt}${fillerPt}${suffix}`))
+            };
+          })
+        };
+      });
+      return { status: "ok", categories };
+    }
+    // ===== FIM DO MOTOR DE EXEMPLOS CONTEXTUAIS =====
+
     function getPatternDataDetails(patternObj) {
       const raw = patternObj.raw || patternObj.clean || "";
       const clean = patternObj.clean || "";
@@ -960,44 +1242,22 @@
         ];
 
       } else {
-        const cText = clean || "this";
-        categories = [
-          {
-            title: "🍔 Restaurante & Alimentação",
-            examples: [
-              { en: `${cText} food here?`, ph: `(${cText} fúd hír?)`, pt: `${desc} comida aqui?` },
-              { en: `${cText} the bill, please?`, ph: `(${cText} đe bíl, plíz?)`, pt: `${desc} a conta, por favor?` }
-            ]
-          },
-          {
-            title: "🛍️ Loja & Compras",
-            examples: [
-              { en: `${cText} this discount?`, ph: `(${cText} đis dískaunt?)`, pt: `${desc} este desconto?` },
-              { en: `${cText} in cash or card?`, ph: `(${cText} in kásh ór kárd?)`, pt: `${desc} em dinheiro ou cartão?` }
-            ]
-          },
-          {
-            title: "💼 Trabalho & Negócios",
-            examples: [
-              { en: `${cText} the meeting today?`, ph: `(${cText} đe mítiŋ tudéi?)`, pt: `${desc} a reunião hoje?` },
-              { en: `${cText} this project report?`, ph: `(${cText} đis pródjekt ripórt?)`, pt: `${desc} este relatório de projeto?` }
-            ]
-          },
-          {
-            title: "❤️ Conversa Casual & Social",
-            examples: [
-              { en: `${cText} with us tonight?`, ph: `(${cText} uíđ ás tunáit?)`, pt: `${desc} conosco hoje à noite?` },
-              { en: `${cText} weekend plans?`, ph: `(${cText} uík-end pláns?)`, pt: `${desc} planos para o fim de semana?` }
-            ]
-          },
-          {
-            title: "📚 Estudos & Vida Diária",
-            examples: [
-              { en: `${cText} to practice English?`, ph: `(${cText} tú práktis ínglish?)`, pt: `${desc} para praticar inglês?` },
-              { en: `${cText} the exercise now?`, ph: `(${cText} đe éksersaiz náu?)`, pt: `${desc} o exercício agora?` }
-            ]
-          }
-        ];
+        const smart = buildSmartCategories(raw);
+
+        if (smart.status === "ok") {
+          categories = smart.categories;
+        } else {
+          // Estrutura idiomática/fixa - ainda sem exemplos contextuais revisados.
+          // Evita gerar frase quebrada; mostra 1 card honesto em vez de 5 inventados.
+          categories = [{
+            title: "🔧 Em revisão",
+            examples: [{
+              en: raw.replace(/\[/g, '').replace(/\]/g, ''),
+              ph: phSentence(raw.replace(/\[/g, '').replace(/\]/g, '')),
+              pt: desc
+            }]
+          }];
+        }
 
         posResp = [
           { en: "Yes, absolutely!", ph: "Iés, ábsolutli!", pt: "Sim, com certeza!" },
@@ -1010,8 +1270,8 @@
         ];
 
         variations = [
-          { en: `How about ${cText}?`, ph: `(Háu ebáut ${cText}?)`, pt: `Que tal ${desc}?` },
-          { en: `Can we ${cText}?`, ph: `(Kén uí ${cText}?)`, pt: `Podemos ${desc}?` }
+          { en: "Really?", ph: "Ríali?", pt: "Sério? / É mesmo?" },
+          { en: "Tell me more about that.", ph: "Tél mi mór ebáut đát.", pt: "Me conta mais sobre isso." }
         ];
       }
 
@@ -1054,7 +1314,7 @@
                 <div class="example-en">• ${ex.en}</div>
                 <button class="btn btn-sm btn-secondary" onclick="speakText('${ex.en.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
               </div>
-              <div class="example-ph">🗣️ <i>(${ex.ph})</i></div>
+              ${ex.ph ? `<div class="example-ph">🗣️ <i>(${ex.ph})</i></div>` : ''}
               <div class="example-pt">🇧🇷 ${ex.pt}</div>
             </div>
           `).join('')}
@@ -1118,10 +1378,253 @@
       renderMatrixVariations();
     }
 
+    // ===== MOTOR DE CONJUGAÇÃO DA MATRIZ (corrige bug de pronome duplicado / verbo faltando / sufixo colado) =====
+    const MTX_SUBJ_PT = { I:'Eu', you:'Você', he:'Ele', she:'Ela', it:'Isso', we:'Nós', they:'Eles' };
+    const MTX_REFLEX_PT = { I:'me', you:'se', he:'se', she:'se', it:'se', we:'nos', they:'se' };
+    const MTX_FUT_SUF  = { I:'ei', you:'á', he:'á', she:'á', it:'á', we:'emos', they:'ão' };
+    const MTX_COND_SUF = { I:'ia', you:'ia', he:'ia', she:'ia', it:'ia', we:'íamos', they:'iam' };
+
+    const MTX_ESTAR_PT = {
+      present: { I:'estou', you:'está', he:'está', she:'está', it:'está', we:'estamos', they:'estão' },
+      past:    { I:'estava', you:'estava', he:'estava', she:'estava', it:'estava', we:'estávamos', they:'estavam' }
+    };
+    const MTX_SER_PT = {
+      present: { I:'sou', you:'é', he:'é', she:'é', it:'é', we:'somos', they:'são' },
+      past:    { I:'era', you:'era', he:'era', she:'era', it:'era', we:'éramos', they:'eram' }
+    };
+    const MTX_BE_EN = {
+      present: { I:'am', you:'are', he:'is', she:'is', it:'is', we:'are', they:'are' },
+      past:    { I:'was', you:'were', he:'was', she:'was', it:'was', we:'were', they:'were' }
+    };
+    const MTX_DO_EN = { present: { I:'do', you:'do', he:'does', she:'does', it:'does', we:'do', they:'do' } };
+    const MTX_PODER_PT = {
+      present: { I:'posso', you:'pode', he:'pode', she:'pode', it:'pode', we:'podemos', they:'podem' },
+      past:    { I:'pude', you:'pôde', he:'pôde', she:'pôde', it:'pôde', we:'pudemos', they:'puderam' }
+    };
+
+    const MTX_VERB_TABLE = {
+      feel: { s:'feels', past:'felt', infStem:'sentir', tail:'', reflexive:true,
+        pt: {I:'me sinto',you:'se sente',he:'se sente',she:'se sente',it:'se sente',we:'nos sentimos',they:'se sentem'},
+        ptPast: {I:'me senti',you:'se sentiu',he:'se sentiu',she:'se sentiu',it:'se sentiu',we:'nos sentimos',they:'se sentiram'} },
+      have: { s:'has', past:'had', infStem:'ter', tail:'', reflexive:false,
+        pt: {I:'tenho',you:'tem',he:'tem',she:'tem',it:'tem',we:'temos',they:'têm'},
+        ptPast: {I:'tive',you:'teve',he:'teve',she:'teve',it:'teve',we:'tivemos',they:'tiveram'} },
+      know: { s:'knows', past:'knew', infStem:'conhecer', tail:'', reflexive:false,
+        pt: {I:'conheço',you:'conhece',he:'conhece',she:'conhece',it:'conhece',we:'conhecemos',they:'conhecem'},
+        ptPast: {I:'conheci',you:'conheceu',he:'conheceu',she:'conheceu',it:'conheceu',we:'conhecemos',they:'conheceram'} },
+      love: { s:'loves', past:'loved', infStem:'amar', tail:'', reflexive:false,
+        pt: {I:'amo',you:'ama',he:'ama',she:'ama',it:'ama',we:'amamos',they:'amam'},
+        ptPast: {I:'amei',you:'amou',he:'amou',she:'amou',it:'amou',we:'amamos',they:'amaram'} },
+      miss: { s:'misses', past:'missed', infStem:'sentir', tail:' falta de', reflexive:false,
+        pt: {I:'sinto falta de',you:'sente falta de',he:'sente falta de',she:'sente falta de',it:'sente falta de',we:'sentimos falta de',they:'sentem falta de'},
+        ptPast: {I:'senti falta de',you:'sentiu falta de',he:'sentiu falta de',she:'sentiu falta de',it:'sentiu falta de',we:'sentimos falta de',they:'sentiram falta de'} },
+      need: { s:'needs', past:'needed', infStem:'precisar', tail:' de', reflexive:false,
+        pt: {I:'preciso de',you:'precisa de',he:'precisa de',she:'precisa de',it:'precisa de',we:'precisamos de',they:'precisam de'},
+        ptPast: {I:'precisei de',you:'precisou de',he:'precisou de',she:'precisou de',it:'precisou de',we:'precisamos de',they:'precisaram de'} },
+      want: { s:'wants', past:'wanted', infStem:'querer', tail:'', reflexive:false,
+        pt: {I:'quero',you:'quer',he:'quer',she:'quer',it:'quer',we:'queremos',they:'querem'},
+        ptPast: {I:'quis',you:'quis',he:'quis',she:'quis',it:'quis',we:'quisemos',they:'quiseram'} },
+      look: { s:'looks', past:'looked', infStem:'parecer', tail:'', reflexive:false,
+        pt: {I:'pareço',you:'parece',he:'parece',she:'parece',it:'parece',we:'parecemos',they:'parecem'},
+        ptPast: {I:'pareci',you:'pareceu',he:'pareceu',she:'pareceu',it:'pareceu',we:'parecemos',they:'pareceram'} }
+    };
+
+    const MTX_DO_Q_VERB_MAP = {
+      gostar:      { infStem:'gostar', tail:' de', pt: {I:'gosto de',you:'gosta de',he:'gosta de',she:'gosta de',it:'gosta de',we:'gostamos de',they:'gostam de'},
+                     ptPast: {I:'gostei de',you:'gostou de',he:'gostou de',she:'gostou de',it:'gostou de',we:'gostamos de',they:'gostaram de'} },
+      sentirfalta: { infStem:'sentir', tail:' falta de', pt: MTX_VERB_TABLE.miss.pt, ptPast: MTX_VERB_TABLE.miss.ptPast },
+      precisar:    { infStem:'precisar', tail:' de', pt: MTX_VERB_TABLE.need.pt, ptPast: MTX_VERB_TABLE.need.ptPast },
+      querer:      { infStem:'querer', tail:'', pt: MTX_VERB_TABLE.want.pt, ptPast: MTX_VERB_TABLE.want.ptPast },
+      trabalhar:   { infStem:'trabalhar', tail:'', pt: {I:'trabalho',you:'trabalha',he:'trabalha',she:'trabalha',it:'trabalha',we:'trabalhamos',they:'trabalham'},
+                     ptPast: {I:'trabalhei',you:'trabalhou',he:'trabalhou',she:'trabalhou',it:'trabalhou',we:'trabalhamos',they:'trabalharam'} },
+      feel:        { infStem:'sentir', tail:'', reflexive:true, pt: MTX_VERB_TABLE.feel.pt, ptPast: MTX_VERB_TABLE.feel.ptPast }
+    };
+
+    const MTX_PT = {
+      "Are you feeling [good]?": { complement: "sentindo-se bem", beType:"estar" },
+      "Are you [happy]?": { complement: "feliz", beType:"estar" },
+      "Are you ready [to order]?": { complement: "pronto(a) para pedir", beType:"estar" },
+      "Are you still [here]?": { complement: "aqui", beType:"estar", adverbFirst:"ainda" },
+      "Are you working [now]?": { complement: "trabalhando agora", beType:"estar" },
+      "Is it [cold]?": { complement: "frio", beType:"estar" },
+      "Is it raining [outside]?": { complement: "chovendo lá fora", beType:"estar" },
+      "Is it still [open]?": { complement: "aberto", beType:"estar", adverbFirst:"ainda" },
+      "Is she [ready]?": { complement: "pronta", beType:"estar" },
+      "Can I get you [anything else]?": { complementInf: "trazer mais alguma coisa" },
+      "Can I have [a coffee]?": { complementInf: "tomar um café" },
+      "Can I help [you]?": { complementInf: "te ajudar" },
+      "Can we start [now]?": { complementInf: "começar agora" },
+      "Can you help [me]?": { complementInf: "me ajudar" },
+      "Do you enjoy [swimming]?": { verb:"gostar", complement: "nadar" },
+      "Do you feel [tired]?": { verb:"feel", complement: "cansado(a)" },
+      "Do you like [music]?": { verb:"gostar", complement: "música" },
+      "Do you miss [home]?": { verb:"sentirfalta", complement: "casa" },
+      "Do you need [help]?": { verb:"precisar", complement: "ajuda" },
+      "Do you want [water]?": { verb:"querer", complement: "água" },
+      "Do you work [here]?": { verb:"trabalhar", complement: "aqui" },
+      "He is [happy].": { complement: "feliz.", beType:"estar" },
+      "I am [ready].": { complement: "pronto(a).", beType:"estar" },
+      "It is [cold].": { complement: "frio.", beType:"estar" },
+      "It is [mine].": { complement: "meu(minha).", beType:"ser" },
+      "They are [ready].": { complement: "prontos(as).", beType:"estar" },
+      "We are [ready].": { complement: "prontos(as).", beType:"estar" },
+      "You are [smart].": { complement: "inteligente.", beType:"ser" },
+      "I feel [good].": { verb:"feel", complement: "bem." },
+      "I have [a car].": { verb:"have", complement: "um carro." },
+      "I have experience in [construction].": { verb:"have", complement: "experiência em construção." },
+      "I know [this place].": { verb:"know", complement: "este lugar." },
+      "I love [music].": { verb:"love", complement: "música." },
+      "I miss [my family].": { verb:"miss", complement: "minha família." },
+      "I need [help].": { verb:"need", complement: "ajuda." },
+      "I want [coffee].": { verb:"want", complement: "café." },
+      "We need [time].": { verb:"need", complement: "tempo." },
+      "You feel [tired].": { verb:"feel", complement: "cansado(a)." },
+      "You look [tired].": { verb:"look", complement: "cansado(a)." },
+      "You need [help].": { verb:"need", complement: "ajuda." },
+      "You want [coffee].": { verb:"want", complement: "café." },
+      "You need to move this to [the table].": { verb:"needInf", complement: "mover isso para a mesa." }
+    };
+
+    function mtxFixContractions(str) {
+      return str
+        .replace(/\bde o\b/gi,'do').replace(/\bde a\b/gi,'da').replace(/\bde os\b/gi,'dos').replace(/\bde as\b/gi,'das')
+        .replace(/\bde minha\b/gi,'da minha').replace(/\bde meu\b/gi,'do meu')
+        .replace(/\bem o\b/gi,'no').replace(/\bem a\b/gi,'na').replace(/\bem os\b/gi,'nos').replace(/\bem as\b/gi,'nas');
+    }
+    const mtxCap = w => w.charAt(0).toUpperCase() + w.slice(1);
+
+    function mtxAnalyzePattern(rawInput) {
+      const clean = rawInput.replace(/\[/g,'').replace(/\]/g,'').trim();
+      let m;
+      if ((m = clean.match(/^(Am|Is|Are|Was|Were)\s+(I|you|he|she|it|we|they)\s+(.*)$/i)))
+        return { form:'be_q', complement: m[3], rawKey: rawInput };
+      if ((m = clean.match(/^(Do|Does|Did)\s+(I|you|he|she|it|we|they)\s+(.*)$/i)))
+        return { form:'do_q', complement: m[3], rawKey: rawInput };
+      if ((m = clean.match(/^Can\s+(I|you|he|she|it|we|they)\s+(.*)$/i)))
+        return { form:'modal_can_q', complement: m[2], rawKey: rawInput };
+      if ((m = clean.match(/^(I|You|He|She|It|We|They)\s+(am|is|are)\s+(.*)$/i)))
+        return { form:'statement_be', complement: m[3], rawKey: rawInput };
+      if ((m = clean.match(/^(I|You|He|She|It|We|They)\s+(\w+)\s*(.*)$/i))) {
+        const verb = m[2].toLowerCase();
+        if (MTX_VERB_TABLE[verb]) return { form:'statement_verb', verb, complement: m[3], rawKey: rawInput };
+      }
+      return { form:'not_applicable' };
+    }
+
+    function mtxFuturePt(infStem, tail, key, reflexive) {
+      const verbForm = infStem + MTX_FUT_SUF[key] + tail;
+      return reflexive ? `${MTX_REFLEX_PT[key]} ${verbForm}` : verbForm;
+    }
+    function mtxConditionalPt(infStem, tail, key, reflexive) {
+      const verbForm = infStem + MTX_COND_SUF[key] + tail;
+      return reflexive ? `${MTX_REFLEX_PT[key]} ${verbForm}` : verbForm;
+    }
+
+    function mtxBuildTenses(rawInput, pronoun) {
+      const info = mtxAnalyzePattern(rawInput);
+      if (info.form === 'not_applicable') return { notApplicable: true };
+
+      const key = pronoun === 'I' ? 'I' : pronoun.toLowerCase();
+      const subjEn = pronoun === 'I' ? 'I' : mtxCap(pronoun.toLowerCase());
+      const subjPt = MTX_SUBJ_PT[key];
+      const ptData = MTX_PT[info.rawKey] || {};
+      const out = { form: info.form };
+
+      if (info.form === 'be_q') {
+        const subj = key==='I' ? 'I' : subjEn.toLowerCase();
+        out.present = `${mtxCap(MTX_BE_EN.present[key])} ${subj} ${info.complement}`;
+        out.past    = `${mtxCap(MTX_BE_EN.past[key])} ${subj} ${info.complement}`;
+        out.future  = `Will ${subj} be ${info.complement}`;
+        out.conditional = `Would ${subj} be ${info.complement}`;
+
+        const beTbl = ptData.beType === 'ser' ? MTX_SER_PT : MTX_ESTAR_PT;
+        const infStem = ptData.beType === 'ser' ? 'ser' : 'estar';
+        const comp = mtxFixContractions(ptData.complement || info.complement);
+        const adv = ptData.adverbFirst ? `${ptData.adverbFirst} ` : '';
+        out.presentPt = `${subjPt} ${adv}${beTbl.present[key]} ${comp}?`;
+        out.pastPt    = `${subjPt} ${adv}${beTbl.past[key]} ${comp}?`;
+        out.futurePt  = `${subjPt} ${adv}${mtxFuturePt(infStem,'',key,false)} ${comp}?`;
+        out.conditionalPt = `${subjPt} ${adv}${mtxConditionalPt(infStem,'',key,false)} ${comp}?`;
+      }
+
+      if (info.form === 'do_q') {
+        const subj = key==='I' ? 'I' : subjEn.toLowerCase();
+        out.present = `${mtxCap(MTX_DO_EN.present[key])} ${subj} ${info.complement}`;
+        out.past    = `Did ${subj} ${info.complement}`;
+        out.future  = `Will ${subj} ${info.complement}`;
+        out.conditional = `Would ${subj} ${info.complement}`;
+
+        const vd = MTX_DO_Q_VERB_MAP[ptData.verb] || MTX_DO_Q_VERB_MAP.feel;
+        const comp = mtxFixContractions(ptData.complement || '');
+        out.presentPt = mtxFixContractions(`${subjPt} ${vd.pt[key]} ${comp}?`);
+        out.pastPt    = mtxFixContractions(`${subjPt} ${vd.ptPast[key]} ${comp}?`);
+        out.futurePt  = mtxFixContractions(`${subjPt} ${mtxFuturePt(vd.infStem, vd.tail, key, vd.reflexive)} ${comp}?`);
+        out.conditionalPt = mtxFixContractions(`${subjPt} ${mtxConditionalPt(vd.infStem, vd.tail, key, vd.reflexive)} ${comp}?`);
+      }
+
+      if (info.form === 'modal_can_q') {
+        const subj = key==='I' ? 'I' : subjEn.toLowerCase();
+        out.present = `Can ${subj} ${info.complement}`;
+        out.past    = `Could ${subj} ${info.complement}`;
+        out.future  = `Will ${subj} be able to ${info.complement}`;
+        out.conditional = `Would ${subj} be able to ${info.complement}`;
+
+        const inf = ptData.complementInf || '';
+        out.presentPt = `${subjPt} ${MTX_PODER_PT.present[key]} ${inf}?`;
+        out.pastPt    = `${subjPt} ${MTX_PODER_PT.past[key]} ${inf}?`;
+        out.futurePt  = `${subjPt} ${mtxFuturePt('conseguir','',key,false)} ${inf}?`;
+        out.conditionalPt = `${subjPt} ${mtxConditionalPt('conseguir','',key,false)} ${inf}?`;
+      }
+
+      if (info.form === 'statement_be') {
+        out.present = `${subjEn} ${MTX_BE_EN.present[key]} ${info.complement}`;
+        out.past    = `${subjEn} ${MTX_BE_EN.past[key]} ${info.complement}`;
+        out.future  = `${subjEn} will be ${info.complement}`;
+        out.conditional = `${subjEn} would be ${info.complement}`;
+
+        const beTbl = ptData.beType === 'ser' ? MTX_SER_PT : MTX_ESTAR_PT;
+        const infStem = ptData.beType === 'ser' ? 'ser' : 'estar';
+        const comp = mtxFixContractions(ptData.complement || info.complement);
+        out.presentPt = `${subjPt} ${beTbl.present[key]} ${comp}`;
+        out.pastPt    = `${subjPt} ${beTbl.past[key]} ${comp}`;
+        out.futurePt  = `${subjPt} ${mtxFuturePt(infStem,'',key,false)} ${comp}`;
+        out.conditionalPt = `${subjPt} ${mtxConditionalPt(infStem,'',key,false)} ${comp}`;
+      }
+
+      if (info.form === 'statement_verb') {
+        const isThird = (key==='he'||key==='she'||key==='it');
+        const v = MTX_VERB_TABLE[info.verb];
+        const presentVerb = isThird ? v.s : info.verb;
+        out.present = `${subjEn} ${presentVerb} ${info.complement}`.trim();
+        out.past    = `${subjEn} ${v.past} ${info.complement}`.trim();
+        out.future  = `${subjEn} will ${info.verb} ${info.complement}`.trim();
+        out.conditional = `${subjEn} would ${info.verb} ${info.complement}`.trim();
+
+        const comp = mtxFixContractions(ptData.complement || '');
+        if (ptData.verb === 'needInf') {
+          const needInfPt = {I:'preciso',you:'precisa',he:'precisa',she:'precisa',it:'precisa',we:'precisamos',they:'precisam'}[key];
+          const needInfPast = {I:'precisei',you:'precisou',he:'precisou',she:'precisou',it:'precisou',we:'precisamos',they:'precisaram'}[key];
+          out.presentPt = `${subjPt} ${needInfPt} ${comp}`;
+          out.pastPt    = `${subjPt} ${needInfPast} ${comp}`;
+          out.futurePt  = `${subjPt} ${mtxFuturePt('precisar','',key,false)} ${comp}`;
+          out.conditionalPt = `${subjPt} ${mtxConditionalPt('precisar','',key,false)} ${comp}`;
+        } else {
+          out.presentPt = mtxFixContractions(`${subjPt} ${v.pt[key]} ${comp}`);
+          out.pastPt    = mtxFixContractions(`${subjPt} ${v.ptPast[key]} ${comp}`);
+          out.futurePt  = mtxFixContractions(`${subjPt} ${mtxFuturePt(v.infStem, v.tail, key, v.reflexive)} ${comp}`);
+          out.conditionalPt = mtxFixContractions(`${subjPt} ${mtxConditionalPt(v.infStem, v.tail, key, v.reflexive)} ${comp}`);
+        }
+      }
+
+      return out;
+    }
+    // ===== FIM DO MOTOR DE CONJUGAÇÃO DA MATRIZ =====
+
     // CONJUGAÇÃO MATRIZ TEMPORAL (7 PRONOMES X 4 TEMPOS VERBAIS DEDICADOS)
     function renderMatrixVariations() {
       if (!selectedPatternObj) return;
       const raw = (selectedPatternObj.raw || selectedPatternObj.clean || "").toLowerCase();
+      const rawOriginal = selectedPatternObj.raw || selectedPatternObj.clean || "";
       const clean = selectedPatternObj.clean || "";
       
       const warningContainer = document.getElementById('matrixWarningContainer');
@@ -1130,6 +1633,7 @@
       let present = "", past = "", future = "", conditional = "";
       let presentPh = "", pastPh = "", futurePh = "", conditionalPh = "";
       let presentPt = "", pastPt = "", futurePt = "", conditionalPt = "";
+      let matrixNotApplicable = false;
       
       let isThirdPerson = (selectedPronoun === 'He' || selectedPronoun === 'She' || selectedPronoun === 'It');
       let isHumanAction = raw.includes("clean") || raw.includes("interested") || raw.includes("want") || raw.includes("need to") || raw.includes("feel");
@@ -1193,25 +1697,31 @@
         conditionalPt = `${selectedPronoun} estaria interessado(a) nisso?`;
 
       } else {
-        // GERADOR GENÉRICO PARA DEMAIS PADRÕES
-        let baseVerb = clean.replace(/^(are you|do you|can i|i want|you need|i am|it's|is it)\s+/i, '');
-        if (!baseVerb) baseVerb = clean;
+        const mtx = mtxBuildTenses(rawOriginal, selectedPronoun);
 
-        present = isThirdPerson ? `${selectedPronoun} ${baseVerb}s` : `${selectedPronoun} ${baseVerb}`;
-        presentPh = `(${selectedPronoun} ${baseVerb})`;
-        presentPt = `Presente com ${selectedPronoun}`;
+        if (mtx.notApplicable) {
+          matrixNotApplicable = true;
+        } else {
+          present = mtx.present; past = mtx.past; future = mtx.future; conditional = mtx.conditional;
+          presentPt = mtx.presentPt; pastPt = mtx.pastPt; futurePt = mtx.futurePt; conditionalPt = mtx.conditionalPt;
+          presentPh = phSentence(mtx.present); pastPh = phSentence(mtx.past);
+          futurePh = phSentence(mtx.future); conditionalPh = phSentence(mtx.conditional);
+        }
+      }
 
-        past = `${selectedPronoun} ${baseVerb}ed`;
-        pastPh = `(${selectedPronoun} ${baseVerb}ed)`;
-        pastPt = `Passado com ${selectedPronoun}`;
-
-        future = `${selectedPronoun} will ${baseVerb}`;
-        futurePh = `(${selectedPronoun} uíl ${baseVerb})`;
-        futurePt = `Futuro com ${selectedPronoun}`;
-
-        conditional = `${selectedPronoun} would ${baseVerb}`;
-        conditionalPh = `(${selectedPronoun} uúd ${baseVerb})`;
-        conditionalPt = `Condicional com ${selectedPronoun}`;
+      if (matrixNotApplicable) {
+        tensesContainer.innerHTML = `
+          <div class="warning-card">
+            <div class="warning-title">🔧 Este padrão não muda por pronome</div>
+            <div class="warning-body">
+              A estrutura desta frase (comando, pergunta com "onde/quando/o quê", ou sujeito fixo como "o carro"/"o tempo") não tem um sujeito pessoal para trocar por <strong>${selectedPronoun}</strong>.<br>
+              <div style="margin-top:6px; font-weight:700; color:#fef08a;">
+                💡 Estude este padrão na aba "Padrões" na forma original — a Matriz de Pronomes funciona melhor com frases tipo "Eu preciso...", "Você gosta...", "Ele é...".
+              </div>
+            </div>
+          </div>
+        `;
+        return;
       }
 
       tensesContainer.innerHTML = `
@@ -1221,7 +1731,7 @@
             <div style="font-weight:700; color:var(--accent-cyan);">${present}</div>
             <button class="btn btn-sm btn-secondary" onclick="speakText('${present.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
           </div>
-          <div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ ${presentPh}</div>
+          ${presentPh ? `<div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ ${presentPh}</div>` : ''}
           <div style="font-size:0.82rem; color:var(--text-main); margin-top:2px;">🇧🇷 ${presentPt}</div>
         </div>
 
@@ -1231,7 +1741,7 @@
             <div style="font-weight:700; color:var(--accent-cyan);">${past}</div>
             <button class="btn btn-sm btn-secondary" onclick="speakText('${past.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
           </div>
-          <div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ ${pastPh}</div>
+          ${pastPh ? `<div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ ${pastPh}</div>` : ''}
           <div style="font-size:0.82rem; color:var(--text-main); margin-top:2px;">🇧🇷 ${pastPt}</div>
         </div>
 
@@ -1241,7 +1751,7 @@
             <div style="font-weight:700; color:var(--accent-cyan);">${future}</div>
             <button class="btn btn-sm btn-secondary" onclick="speakText('${future.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
           </div>
-          <div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ ${futurePh}</div>
+          ${futurePh ? `<div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ ${futurePh}</div>` : ''}
           <div style="font-size:0.82rem; color:var(--text-main); margin-top:2px;">🇧🇷 ${futurePt}</div>
         </div>
 
@@ -1251,7 +1761,7 @@
             <div style="font-weight:700; color:var(--accent-cyan);">${conditional}</div>
             <button class="btn btn-sm btn-secondary" onclick="speakText('${conditional.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
           </div>
-          <div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ ${conditionalPh}</div>
+          ${conditionalPh ? `<div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ ${conditionalPh}</div>` : ''}
           <div style="font-size:0.82rem; color:var(--text-main); margin-top:2px;">🇧🇷 ${conditionalPt}</div>
         </div>
       `;
