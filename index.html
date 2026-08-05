@@ -490,6 +490,14 @@
           <div id="focusedVariationsList"></div>
         </div>
 
+        <!-- MARCAR COMO ESTUDADO (ENTRA NO SRS) -->
+        <div class="card" style="text-align:center;">
+          <button class="btn" id="markStudiedBtn" style="width:100%; background: linear-gradient(135deg, var(--accent-green), #16a34a); font-size:1rem;" onclick="markAsStudied()">
+            ✅ Marcar como Estudado
+          </button>
+          <p id="markStudiedStatus" style="font-size:0.78rem; color:var(--text-muted); margin-top:0.5rem;"></p>
+        </div>
+
       </div>
 
       <!-- ABA 2: MATRIZ ATEMPORAL & PRONOMES -->
@@ -523,16 +531,72 @@
     <section id="storySection" class="section">
       <div class="card">
         <div class="card-title">🔗 Story Builder & Shadowing</div>
-        <p style="font-size:0.82rem; color:var(--text-muted);">Treine a junção dos padrões em blocos de fala contínua:</p>
+        <p style="font-size:0.82rem; color:var(--text-muted);">Histórias com IA pra treinar seus padrões em contexto real:</p>
+        <div id="geminiWarning" style="display:none; background:rgba(248,113,113,0.1); border:1px solid #f87171; padding:0.6rem; border-radius:8px; font-size:0.8rem; margin-top:0.5rem;">
+          ⚠️ Configure sua chave do Gemini na aba Backup pra gerar histórias.
+        </div>
       </div>
-      <div id="storyListContainer"></div>
+
+      <div class="sub-tabs" style="display:flex; gap:0.4rem; margin-bottom:0.75rem;">
+        <button class="sub-tab-btn active" id="storySubTabTopicsBtn" onclick="switchStorySubTab('topics')">🗂️ Tópicos</button>
+        <button class="sub-tab-btn" id="storySubTabBuilderBtn" onclick="switchStorySubTab('builder')">✨ Story Builder</button>
+        <button class="sub-tab-btn" id="storySubTabReadBtn" onclick="switchStorySubTab('read')">📖 Lidas</button>
+      </div>
+
+      <!-- TÓPICOS -->
+      <div id="storyTopicsView">
+        <div class="card">
+          <div id="topicGrid" style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;"></div>
+        </div>
+        <div id="topicStoryDisplay"></div>
+      </div>
+
+      <!-- STORY BUILDER -->
+      <div id="storyBuilderView" style="display:none;">
+        <div class="card">
+          <div class="card-title">✨ Story Builder</div>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">Escolha pelo menos 2 padrões que você já estudou e a IA monta uma cena real conectando eles.</p>
+          <div id="storyBuilderPicker"></div>
+          <button class="btn" style="width:100%; margin-top:0.75rem; background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));" onclick="generateBuiltStory()">🪄 Gerar História</button>
+          <div id="storyBuilderResult" style="margin-top:0.75rem;"></div>
+        </div>
+      </div>
+
+      <!-- HISTÓRIAS LIDAS -->
+      <div id="storyReadView" style="display:none;">
+        <div id="readStoriesList"></div>
+      </div>
     </section>
+
+    <!-- MODAL DE SHADOWING FRASE-POR-FRASE -->
+    <div id="shadowModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:200; padding:1.25rem; overflow-y:auto;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <div style="font-weight:800; color:var(--accent-cyan);">🐢 Modo Shadowing</div>
+        <button class="btn btn-sm btn-secondary" onclick="closeShadowMode()">✕ Fechar</button>
+      </div>
+      <div id="shadowProgress" style="text-align:center; font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;"></div>
+      <div class="card" style="text-align:center; padding:1.5rem 1rem;">
+        <div id="shadowEn" style="font-size:1.3rem; font-weight:800; color:var(--accent-cyan); margin-bottom:0.6rem;"></div>
+        <div id="shadowPh" style="font-size:0.95rem; color:#fef08a; font-style:italic; margin-bottom:0.6rem;"></div>
+        <div id="shadowPt" style="font-size:0.9rem; color:var(--text-main);"></div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-top:0.75rem;">
+        <button class="btn" onclick="speakCurrentShadowLine(1.0)">🔊 Normal</button>
+        <button class="btn btn-secondary" onclick="speakCurrentShadowLine(0.65)">🐢 Bem devagar</button>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-top:0.5rem;">
+        <button class="btn btn-secondary" onclick="shadowStep(-1)">⏮ Anterior</button>
+        <button class="btn btn-secondary" onclick="shadowStep(1)">Próxima ⏭</button>
+      </div>
+    </div>
+
 
     <!-- 4. REPETIÇÃO ESPAÇADA (SRS) -->
     <section id="srsSection" class="section">
       <div class="card">
         <div class="card-title">🧠 Repetição Espaçada (SRS)</div>
         <p style="font-size:0.82rem; color:var(--text-muted);">Revise os cards para fixar o vocabulário na memória de longo prazo:</p>
+        <p id="srsStatusLine" style="font-size:0.82rem; color:var(--accent-cyan); font-weight:700; margin-top:0.4rem;"></p>
       </div>
 
       <div class="flashcard" id="srsCard" onclick="flipSRSCard()">
@@ -549,6 +613,14 @@
 
     <!-- 5. CONFIGURAÇÕES & BACKUP -->
     <section id="configSection" class="section">
+      <div class="card">
+        <div class="card-title">🤖 IA para Histórias (Gemini)</div>
+        <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:0.75rem;">Cole sua chave de API do Google Gemini pra gerar histórias contextuais. Fica salva só no seu navegador.</p>
+        <input type="password" id="geminiKeyInput" class="search-input" placeholder="Sua chave de API do Gemini..." style="margin-bottom:0.5rem;">
+        <button class="btn btn-secondary" style="width:100%;" onclick="saveGeminiKey()">💾 Salvar Chave</button>
+        <p id="geminiKeyStatus" style="font-size:0.78rem; color:var(--text-muted); margin-top:0.5rem;"></p>
+      </div>
+
       <div class="card">
         <div class="card-title">⚙️ Backup & Sincronização dos 133 Padrões</div>
         <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem;">Garantia de que seus padrões salvos nunca sumirão:</p>
@@ -570,7 +642,7 @@
       <span class="nav-icon">🔗</span> Histórias
     </div>
     <div class="nav-item" onclick="showSection('srsSection')" id="nav-srs">
-      <span class="nav-icon">🧠</span> SRS
+      <span class="nav-icon">🧠</span> SRS<span id="srsDueBadge" style="display:none; background:var(--accent-red); color:#fff; font-size:0.65rem; font-weight:800; border-radius:10px; padding:1px 6px; margin-left:4px; vertical-align:top;"></span>
     </div>
     <div class="nav-item" onclick="showSection('configSection')" id="nav-config">
       <span class="nav-icon">⚙️</span> Backup
@@ -761,19 +833,63 @@
       return db;
     }
 
-    const storyDatabase = {
-      en: [
-        {
-          title: '🔥 Trajetória e Ambição',
-          desc: 'Junção de histórias passadas com conectores nativos.',
-          textHTML: 'Back in Brazil, I used to work in sales, <mark class="connector">but</mark> I wanted a new challenge, <mark class="connector">so</mark> I came here to build a better life. <mark class="connector">Actually</mark>, I am working hard every day <mark class="connector">because</mark> my main goal is to get a great job.',
-          plainText: "Back in Brazil, I used to work in sales, but I wanted a new challenge, so I came here to build a better life. Actually, I am working hard every day because my main goal is to get a great job.",
-          pt: "No Brasil, eu costumava trabalhar em vendas, mas queria um novo desafio, então vim para cá para construir uma vida melhor. Na verdade, estou trabalhando duro todos os dias porque meu objetivo principal é conseguir um ótimo emprego.",
-          connectors: ["but (mas)", "so (então)", "actually (na verdade)", "because (porque)"]
-        }
-      ],
-      es: [], fr: []
-    };
+    // ===== INTEGRAÇÃO COM GEMINI (histórias com IA) =====
+    const GEMINI_KEY_STORAGE = 'polyglot_gemini_key';
+    function getGeminiKey() { return localStorage.getItem(GEMINI_KEY_STORAGE) || ''; }
+    function saveGeminiKey() {
+      const val = document.getElementById('geminiKeyInput').value.trim();
+      if (val) {
+        localStorage.setItem(GEMINI_KEY_STORAGE, val);
+        document.getElementById('geminiKeyStatus').innerText = '✅ Chave salva neste navegador.';
+      } else {
+        localStorage.removeItem(GEMINI_KEY_STORAGE);
+        document.getElementById('geminiKeyStatus').innerText = 'Chave removida.';
+      }
+      document.getElementById('geminiKeyInput').value = '';
+    }
+
+    async function callGeminiForStory(prompt) {
+      const key = getGeminiKey();
+      if (!key) throw new Error('NO_KEY');
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.9, responseMimeType: 'application/json' }
+        })
+      });
+      if (!res.ok) throw new Error('API_ERROR_' + res.status);
+      const data = await res.json();
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!text) throw new Error('NO_CONTENT');
+      const clean = text.replace(/```json|```/g, '').trim();
+      return JSON.parse(clean);
+    }
+
+    // ===== TÓPICOS DE HISTÓRIA =====
+    const STORY_TOPICS = [
+      { key: 'restaurante', label: '🍔 Restaurante' },
+      { key: 'viagem', label: '✈️ Viagem' },
+      { key: 'hotel', label: '🏨 Hotel' },
+      { key: 'supermercado', label: '🛒 Supermercado' },
+      { key: 'bar', label: '🍹 Bar' },
+      { key: 'hospital', label: '🏥 Hospital' },
+      { key: 'aeroporto', label: '🛫 Aeroporto' },
+      { key: 'farmacia', label: '💊 Farmácia' },
+      { key: 'academia', label: '🏋️ Academia' },
+      { key: 'escritorio', label: '💼 Escritório' },
+      { key: 'encontro', label: '☕ Encontro Casual' },
+      { key: 'cinema', label: '🎬 Cinema' }
+    ];
+    const TOPIC_STORAGE_KEY = 'polyglot_topic_stories';
+    function loadTopicState() {
+      try { return JSON.parse(localStorage.getItem(TOPIC_STORAGE_KEY) || '{}'); } catch (e) { return {}; }
+    }
+    function saveTopicState(state) {
+      localStorage.setItem(TOPIC_STORAGE_KEY, JSON.stringify(state));
+    }
 
     function initApp() {
       patternDatabase = buildDatabase();
@@ -783,8 +899,13 @@
         document.getElementById('onboardingOverlay').style.display = 'none';
         document.getElementById('activeLangLabel').innerText = langNames[currentLang] || 'Idiomas';
         renderPatternList();
-        renderStoryList();
+        renderTopicGrid();
         setupSRSDeck();
+        maybeNotifyDueCards();
+        if (getGeminiKey()) {
+          const statusEl = document.getElementById('geminiKeyStatus');
+          if (statusEl) statusEl.innerText = '✅ Chave já configurada neste navegador.';
+        }
       }
     }
 
@@ -798,7 +919,7 @@
       document.getElementById('onboardingOverlay').style.display = 'none';
       document.getElementById('activeLangLabel').innerText = langNames[lang];
       renderPatternList();
-      renderStoryList();
+      renderTopicGrid();
       setupSRSDeck();
     }
 
@@ -810,6 +931,13 @@
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       document.getElementById(sectionId).classList.add('active');
+
+      if (sectionId === 'srsSection') {
+        setupSRSDeck();
+      }
+      if (sectionId === 'storySection') {
+        renderTopicGrid();
+      }
       
       const navMap = {
         patternsSection: 'nav-patterns',
@@ -1145,6 +1273,46 @@
     }
     // ===== FIM DO MOTOR DE EXEMPLOS CONTEXTUAIS =====
 
+    // Respostas condizentes com o TIPO de frase (pergunta sim/não com be, pergunta com do, pergunta com modal,
+    // afirmação, ou comando/WH sem resposta sim/não natural) - resolve o bug de resposta padronizada genérica.
+    const RESP_BY_FORM = {
+      be_q: {
+        pos: [{ en:"Yes, I am.", pt:"Sim, estou/sou." }, { en:"Yes, definitely.", pt:"Sim, com certeza." }],
+        neg: [{ en:"No, I'm not.", pt:"Não, não estou/sou." }, { en:"Not really.", pt:"Não muito." }]
+      },
+      do_q: {
+        pos: [{ en:"Yes, I do.", pt:"Sim." }, { en:"Yes, for sure.", pt:"Sim, com certeza." }],
+        neg: [{ en:"No, I don't.", pt:"Não." }, { en:"Not really.", pt:"Não muito." }]
+      },
+      modal_can_q: {
+        pos: [{ en:"Sure, I can.", pt:"Claro, posso sim." }, { en:"Of course.", pt:"Claro." }],
+        neg: [{ en:"Sorry, I can't.", pt:"Desculpe, não posso." }, { en:"Not right now.", pt:"Agora não." }]
+      },
+      statement: {
+        pos: [{ en:"Me too!", pt:"Eu também!" }, { en:"That's great!", pt:"Que ótimo!" }],
+        neg: [{ en:"I don't think so.", pt:"Acho que não." }, { en:"Hmm, not really.", pt:"Hmm, não muito." }]
+      },
+      other: {
+        pos: [{ en:"Okay, sure.", pt:"Tá bom, claro." }, { en:"Got it.", pt:"Entendi." }],
+        neg: [{ en:"Sorry, I can't right now.", pt:"Desculpe, agora não posso." }, { en:"I'm not sure.", pt:"Não tenho certeza." }]
+      }
+    };
+    function getRespForForm(rawInput) {
+      const info = mtxAnalyzePattern(rawInput);
+      let bucket;
+      if (info.form === 'be_q') bucket = 'be_q';
+      else if (info.form === 'do_q') bucket = 'do_q';
+      else if (info.form === 'modal_can_q') bucket = 'modal_can_q';
+      else if (info.form === 'statement_be' || info.form === 'statement_verb') bucket = 'statement';
+      else bucket = 'other';
+
+      const b = RESP_BY_FORM[bucket];
+      return {
+        posResp: b.pos.map(r => ({ en: r.en, ph: phSentence(r.en), pt: r.pt })),
+        negResp: b.neg.map(r => ({ en: r.en, ph: phSentence(r.en), pt: r.pt }))
+      };
+    }
+
     function getPatternDataDetails(patternObj) {
       const raw = patternObj.raw || patternObj.clean || "";
       const clean = patternObj.clean || "";
@@ -1259,20 +1427,45 @@
           }];
         }
 
-        posResp = [
-          { en: "Yes, absolutely!", ph: "Iés, ábsolutli!", pt: "Sim, com certeza!" },
-          { en: "Sure, sounds great!", ph: "Shúr, sáunds gréit!", pt: "Claro, parece ótimo!" }
-        ];
+        const resp = getRespForForm(raw);
+        posResp = resp.posResp;
+        negResp = resp.negResp;
 
-        negResp = [
-          { en: "No, not right now.", ph: "Nóu, nót ráit náu.", pt: "Não, agora não." },
-          { en: "Sorry, I can't.", ph: "Sóri, ái kánt.", pt: "Desculpe, eu não posso." }
-        ];
+        const lowerFirst = s => {
+          if (!s) return s;
+          if (/^I\b/.test(s)) return s; // não abaixa o pronome "I"
+          return s.charAt(0).toLowerCase() + s.slice(1);
+        };
 
-        variations = [
-          { en: "Really?", ph: "Ríali?", pt: "Sério? / É mesmo?" },
-          { en: "Tell me more about that.", ph: "Tél mi mór ebáut đát.", pt: "Me conta mais sobre isso." }
-        ];
+        const smartVar = getSmartVariations(raw);
+        if (smartVar) {
+          const enV2 = `Honestly, ${lowerFirst(clean)}`;
+          const ptV2 = `Sinceramente, ${lowerFirst(desc)}`;
+          variations = [
+            smartVar.v1,
+            { en: enV2, ph: phSentence(enV2), pt: ptV2 }
+          ];
+        } else {
+          const extraVar = getExtraFallbackVariation(raw, clean, desc);
+          if (extraVar) {
+            const enV2 = extraVar.v2 ? extraVar.v2.en : `Honestly, ${lowerFirst(clean)}`;
+            const ptV2 = extraVar.v2 ? extraVar.v2.pt : `Sinceramente, ${lowerFirst(desc)}`;
+            const phV2 = extraVar.v2 ? extraVar.v2.ph : phSentence(enV2);
+            variations = [
+              extraVar.v1,
+              { en: enV2, ph: phV2, pt: ptV2 }
+            ];
+          } else {
+            const enV1 = `By the way, ${lowerFirst(clean)}`;
+            const enV2 = `So, ${lowerFirst(clean)}`;
+            const ptV1 = `Aliás, ${lowerFirst(desc)}`;
+            const ptV2 = `Então, ${lowerFirst(desc)}`;
+            variations = [
+              { en: enV1, ph: phSentence(enV1), pt: ptV1 },
+              { en: enV2, ph: phSentence(enV2), pt: ptV2 }
+            ];
+          }
+        }
       }
 
       return { usage, tip, posResp, negResp, variations, categories, ingRule };
@@ -1361,6 +1554,7 @@
       switchSubTab('visao');
       selectedPronoun = 'You';
       renderMatrixVariations();
+      updateMarkStudiedButton();
       showSection('focusedStudySection');
     }
 
@@ -1497,18 +1691,149 @@
       const clean = rawInput.replace(/\[/g,'').replace(/\]/g,'').trim();
       let m;
       if ((m = clean.match(/^(Am|Is|Are|Was|Were)\s+(I|you|he|she|it|we|they)\s+(.*)$/i)))
-        return { form:'be_q', complement: m[3], rawKey: rawInput };
+        return { form:'be_q', subject: m[2].toLowerCase(), complement: m[3], rawKey: rawInput };
       if ((m = clean.match(/^(Do|Does|Did)\s+(I|you|he|she|it|we|they)\s+(.*)$/i)))
-        return { form:'do_q', complement: m[3], rawKey: rawInput };
+        return { form:'do_q', subject: m[2].toLowerCase(), complement: m[3], rawKey: rawInput };
       if ((m = clean.match(/^Can\s+(I|you|he|she|it|we|they)\s+(.*)$/i)))
-        return { form:'modal_can_q', complement: m[2], rawKey: rawInput };
+        return { form:'modal_can_q', subject: m[1].toLowerCase(), complement: m[2], rawKey: rawInput };
       if ((m = clean.match(/^(I|You|He|She|It|We|They)\s+(am|is|are)\s+(.*)$/i)))
-        return { form:'statement_be', complement: m[3], rawKey: rawInput };
+        return { form:'statement_be', subject: m[1].toLowerCase(), complement: m[3], rawKey: rawInput };
       if ((m = clean.match(/^(I|You|He|She|It|We|They)\s+(\w+)\s*(.*)$/i))) {
         const verb = m[2].toLowerCase();
-        if (MTX_VERB_TABLE[verb]) return { form:'statement_verb', verb, complement: m[3], rawKey: rawInput };
+        if (MTX_VERB_TABLE[verb]) return { form:'statement_verb', subject: m[1].toLowerCase(), verb, complement: m[3], rawKey: rawInput };
       }
       return { form:'not_applicable' };
+    }
+
+    // Variações NATIVAS DE VERDADE (paráfrases reais) para os padrões com sujeito pessoal identificável
+    // (mesmos 44 padrões já mapeados pela Matriz). Para o resto, cai no fallback seguro "By the way/So".
+    const BE_CONTRACTION_PT_KEY = { you:'you', he:'he', she:'she', it:'it', we:'we', they:'they' };
+    // Cobertura extra do fallback: comandos -> pedido educado; perguntas be com sujeito fixo; WH-questions -> pergunta indireta
+    const IMPERATIVE_PREFIXES = ["Be ","Clean up ","Don't ","Enjoy ","Hand me ","Make sure to ","Put on ","Take ","Watch "];
+    const BE_EXTRA_PREFIXES = {
+      "Is the car ": { subject:'the car', aux:'is' },
+      "Is this seat ": { subject:'this seat', aux:'is' },
+      "Is your car ": { subject:'your car', aux:'is' },
+      "The car is ": { subject:'the car', aux:'is' },
+      "That is ": { subject:'that', aux:'is' },
+      "That's ": { subject:'that', aux:'is' },
+      "This book is ": { subject:'this book', aux:'is' },
+      "The weather is ": { subject:'the weather', aux:'is' }
+    };
+    const WH_VARIATIONS = {
+      "Where is my [phone]?": "Do you know where my phone is?",
+      "Where is [the safety gear]?": "Do you know where the safety gear is?",
+      "Where is she [from]?": "Do you know where she is from?",
+      "When is [the party]?": "Do you know when the party is?",
+      "Who is [this]?": "Do you know who this is?",
+      "Why is this [here]?": "Do you know why this is here?",
+      "How's [the weather]?": "Do you know how the weather is?",
+      "What do you [mean]?": "Do you know what you mean?",
+      "How do you know [that]?": "Do you know how you know that?",
+      "How do you like [working here]?": "Do you know how you like working here?",
+      "Where do you [live]?": "Do you know where you live?",
+      "Where are you [from]?": "Do you know where you are from?",
+      "Where are you [going]?": "Do you know where you are going?",
+      "What are your [plans]?": "Do you know what your plans are?",
+      "What is your [name]?": "Do you know what your name is?",
+      "What did you [say]?": "Do you know what you said?",
+      "What did you do [back home]?": "Do you know what you did back home?",
+      "Where did you [go]?": "Do you know where you went?",
+      "Where did you [grow up]?": "Do you know where you grew up?",
+      "Who did [this]?": "Do you know who did this?",
+      "What [happened]?": "Do you know what happened?",
+      "Where can I [park]?": "Do you know where I can park?",
+      "Where do I [put this]?": "Do you know where I put this?",
+      "What's for [dinner]?": "Do you know what's for dinner?",
+      "What's [the next task]?": "Do you know what the next task is?",
+      "What time [is it]?": "Do you know what time it is?",
+      "Where are my [keys]?": "Do you know where my keys are?",
+      "How long will [this take]?": "Do you know how long this will take?",
+      "How much does [this cost]?": "Do you know how much this costs?",
+      "How was [your day]?": "Do you know how your day was?",
+      "How would you like [your steak]?": "Do you know how you would like your steak?",
+      "How old are [you]?": "Do you know how old you are?",
+      "How are [you]?": "Do you know how you are?",
+      "What are your plans for [the future]?": "Do you know what your plans are for the future?",
+      "What brought you [here]?": "Do you know what brought you here?"
+    };
+    function extraStripEndPunct(s) { return s.replace(/[?.!]+$/, '').trim(); }
+    function lowerFirstGlobal(s) {
+      if (!s) return s;
+      if (/^I\b/.test(s)) return s;
+      return s.charAt(0).toLowerCase() + s.slice(1);
+    }
+    function getExtraFallbackVariation(rawInput, cleanInput, descInput) {
+      const impPrefix = IMPERATIVE_PREFIXES.find(p => rawInput.startsWith(p));
+      if (impPrefix) {
+        let v1en;
+        if (impPrefix === "Don't ") {
+          const rest = extraStripEndPunct(cleanInput.replace(/^Don't\s+/i, ''));
+          v1en = `Could you please try not to ${rest}?`;
+        } else {
+          const rest = extraStripEndPunct(lowerFirstGlobal(cleanInput));
+          v1en = `Could you please ${rest}?`;
+        }
+        const v2en = `Please, ${lowerFirstGlobal(cleanInput)}`;
+        const descBody = extraStripEndPunct(lowerFirstGlobal(descInput));
+        return {
+          v1: { en: v1en, ph: phSentence(v1en), pt: `Você poderia, por favor, ${descBody}?` },
+          v2: { en: v2en, ph: phSentence(v2en), pt: `Por favor, ${lowerFirstGlobal(descInput)}` }
+        };
+      }
+
+      const bePrefix = Object.keys(BE_EXTRA_PREFIXES).find(p => rawInput.startsWith(p));
+      if (bePrefix) {
+        const info = BE_EXTRA_PREFIXES[bePrefix];
+        const tail = extraStripEndPunct(cleanInput.slice(bePrefix.length));
+        const v1en = `Would you say ${info.subject} ${info.aux} ${tail}?`;
+        const v1pt = `Você diria que ${extraStripEndPunct(lowerFirstGlobal(descInput))}?`;
+        return { v1: { en: v1en, ph: phSentence(v1en), pt: v1pt } };
+      }
+
+      if (WH_VARIATIONS[rawInput]) {
+        const v1en = WH_VARIATIONS[rawInput];
+        const v1pt = `Você sabe ${extraStripEndPunct(lowerFirstGlobal(descInput))}?`;
+        return { v1: { en: v1en, ph: phSentence(v1en), pt: v1pt } };
+      }
+
+      return null;
+    }
+
+    function getSmartVariations(rawInput) {
+      const info = mtxAnalyzePattern(rawInput);
+      if (info.form === 'not_applicable') return null;
+      const ptData = MTX_PT[info.rawKey];
+      if (!ptData) return null; // só padrões já mapeados pela matriz têm dados suficientes pra paráfrase segura
+      const subj = info.subject;
+
+      if (info.form === 'be_q') {
+        const CONTRACT_EN = { i:"I'm", you:"you're", he:"he's", she:"she's", it:"it's", we:"we're", they:"they're" };
+        const en = `Would you say ${CONTRACT_EN[subj]} ${info.complement}`;
+        const beTbl = ptData.beType === 'ser' ? MTX_SER_PT : MTX_ESTAR_PT;
+        const comp = mtxFixContractions(ptData.complement || info.complement);
+        const pt = `Você diria que ${beTbl.present[subj] || beTbl.present.you} ${comp}?`;
+        return { v1: { en, ph: phSentence(en), pt } };
+      }
+
+      if (info.form === 'do_q') {
+        const en = `Do you happen to ${info.complement}`;
+        const vd = MTX_DO_Q_VERB_MAP[ptData.verb] || MTX_DO_Q_VERB_MAP.feel;
+        const comp = mtxFixContractions(ptData.complement || '');
+        const pt = mtxFixContractions(`Por acaso, você ${vd.pt.you} ${comp}?`);
+        return { v1: { en, ph: phSentence(en), pt } };
+      }
+
+      if (info.form === 'modal_can_q') {
+        const subjEnMap = { i:'I', you:'you', we:'we' };
+        const en = `Could ${subjEnMap[subj] || subj} ${info.complement}`;
+        const PODER_COND = { i:'poderia', you:'poderia', we:'poderíamos' };
+        const inf = ptData.complementInf || '';
+        const pt = `${MTX_SUBJ_PT[subj === 'i' ? 'I' : subj]} ${PODER_COND[subj] || 'poderia'} ${inf}?`;
+        return { v1: { en, ph: phSentence(en), pt } };
+      }
+
+      return null; // statement_be/statement_verb e demais casos usam o fallback "Honestly/So" com a frase completa
     }
 
     function mtxFuturePt(infStem, tail, key, reflexive) {
@@ -1767,47 +2092,343 @@
       `;
     }
 
-    function renderStoryList() {
-      const container = document.getElementById('storyListContainer');
-      const list = storyDatabase[currentLang] || [];
-      if (list.length === 0) {
-        container.innerHTML = `<div class="card" style="color:var(--text-muted);">Histórias e treinos de conectores disponíveis. Escolha Inglês para experimentar.</div>`;
+    // ===== SUB-ABAS DA SEÇÃO DE HISTÓRIAS =====
+    function switchStorySubTab(tab) {
+      document.getElementById('storyTopicsView').style.display = tab === 'topics' ? 'block' : 'none';
+      document.getElementById('storyBuilderView').style.display = tab === 'builder' ? 'block' : 'none';
+      document.getElementById('storyReadView').style.display = tab === 'read' ? 'block' : 'none';
+      document.getElementById('storySubTabTopicsBtn').classList.toggle('active', tab === 'topics');
+      document.getElementById('storySubTabBuilderBtn').classList.toggle('active', tab === 'builder');
+      document.getElementById('storySubTabReadBtn').classList.toggle('active', tab === 'read');
+      if (tab === 'topics') renderTopicGrid();
+      if (tab === 'builder') renderStoryBuilderPicker();
+      if (tab === 'read') renderReadStoriesList();
+    }
+
+    function checkGeminiWarning() {
+      const hasKey = !!getGeminiKey();
+      document.getElementById('geminiWarning').style.display = hasKey ? 'none' : 'block';
+      return hasKey;
+    }
+
+    // ===== TÓPICOS =====
+    function renderTopicGrid() {
+      checkGeminiWarning();
+      const state = loadTopicState();
+      const grid = document.getElementById('topicGrid');
+      grid.innerHTML = STORY_TOPICS.map(t => {
+        const hasPending = state[t.key] && state[t.key].pending;
+        return `
+          <button class="btn ${hasPending ? 'btn-secondary' : ''}" style="position:relative; text-align:left;" onclick="openTopicStory('${t.key}')">
+            ${t.label}
+            ${hasPending ? '<span style="position:absolute; top:4px; right:6px; font-size:0.65rem; background:var(--accent-yellow); color:#000; padding:1px 5px; border-radius:8px; font-weight:800;">pendente</span>' : ''}
+          </button>
+        `;
+      }).join('');
+      document.getElementById('topicStoryDisplay').innerHTML = '';
+    }
+
+    async function openTopicStory(topicKey) {
+      const state = loadTopicState();
+      const entry = state[topicKey];
+      if (entry && entry.pending) {
+        renderTopicStoryDisplay(topicKey, entry.pending, true);
         return;
       }
-      container.innerHTML = list.map(story => `
-        <div class="card">
-          <div class="card-title">${story.title}</div>
-          <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.75rem;">${story.desc}</p>
-          <div>${story.connectors.map(c => `<span class="connector-badge">${c}</span>`).join('')}</div>
-          
-          <div style="background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:0.85rem; border-radius:10px; margin:0.75rem 0;">
-            <div style="font-size:1.05rem; font-weight:600;">${story.textHTML}</div>
-            <div style="font-size:0.82rem; color:var(--text-muted); margin-top:0.5rem;">💡 <b>Tradução:</b> ${story.pt}</div>
-          </div>
+      if (!checkGeminiWarning()) {
+        document.getElementById('topicStoryDisplay').innerHTML = `<div class="card" style="color:#f87171;">⚠️ Configure sua chave do Gemini na aba Backup primeiro.</div>`;
+        return;
+      }
+      document.getElementById('topicStoryDisplay').innerHTML = `<div class="card" style="text-align:center;">⏳ Gerando história de ${STORY_TOPICS.find(t=>t.key===topicKey).label}...</div>`;
+      try {
+        const story = await generateTopicStory(topicKey);
+        const st = loadTopicState();
+        st[topicKey] = st[topicKey] || { pending: null, read: [] };
+        st[topicKey].pending = story;
+        saveTopicState(st);
+        renderTopicStoryDisplay(topicKey, story, false);
+        renderTopicGrid();
+      } catch (e) {
+        document.getElementById('topicStoryDisplay').innerHTML = `<div class="card" style="color:#f87171;">❌ Erro ao gerar história (${e.message}). Confira sua chave de API e tente de novo.</div>`;
+      }
+    }
 
+    async function generateTopicStory(topicKey) {
+      const topic = STORY_TOPICS.find(t => t.key === topicKey);
+      const state = loadSrsState();
+      const studiedIds = Object.keys(state);
+      const studiedPatterns = (patternDatabase[currentLang] || []).filter(p => studiedIds.includes(p.id)).map(p => p.clean).slice(0, 15);
+
+      const prompt = `Você é um professor de inglês criando uma mini-história curta (5-7 frases) em inglês simples (nível iniciante/intermediário) ambientada no contexto de: "${topic.key}".
+${studiedPatterns.length > 0 ? `Se fizer sentido naturalmente, tente incluir 2-3 destas frases que o aluno já estudou, adaptando levemente se precisar: ${JSON.stringify(studiedPatterns)}. Não force se não encaixar bem no contexto.` : ''}
+A história deve ser uma cena real e coerente (com narração + talvez um diálogo curto), não frases soltas coladas.
+Responda SOMENTE em JSON válido, neste formato exato, sem nenhum texto antes ou depois:
+{"title": "título curto em português com um emoji", "sentences": [{"en": "frase em inglês", "pt": "tradução em português"}, ...]}`;
+
+      return await callGeminiForStory(prompt);
+    }
+
+    function renderTopicStoryDisplay(topicKey, story, wasPending) {
+      const container = document.getElementById('topicStoryDisplay');
+      const fullEn = story.sentences.map(s => s.en).join(' ');
+      container.innerHTML = `
+        <div class="card">
+          ${wasPending ? `<p style="font-size:0.78rem; color:var(--accent-yellow); font-weight:700;">📌 Você tem uma história pendente deste tópico. Marque como Estudado pra poder gerar outra.</p>` : ''}
+          <div class="card-title">${story.title}</div>
+          <div style="background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:0.85rem; border-radius:10px; margin:0.75rem 0;">
+            ${story.sentences.map(s => `<div style="margin-bottom:0.5rem;"><div style="font-weight:600;">${s.en}</div><div style="font-size:0.8rem; color:var(--text-muted);">🇧🇷 ${s.pt}</div></div>`).join('')}
+          </div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
-            <button class="btn" onclick="speakText('${story.plainText.replace(/'/g, "\\'")}', 1.0)">🔊 Normal</button>
-            <button class="btn btn-secondary" onclick="speakText('${story.plainText.replace(/'/g, "\\'")}', 0.75)">🐢 Shadowing (0.75x)</button>
+            <button class="btn" onclick="speakText('${fullEn.replace(/'/g, "\\'")}', 1.0)">🔊 Normal</button>
+            <button class="btn btn-secondary" onclick="speakText('${fullEn.replace(/'/g, "\\'")}', 0.75)">🐢 Devagar</button>
+          </div>
+          <button class="btn" style="width:100%; margin-top:0.5rem; background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));" onclick='openShadowModeWithSentences(${JSON.stringify(story.sentences)})'>🎯 Shadowing Frase-por-Frase</button>
+          <button class="btn" style="width:100%; margin-top:0.5rem; background: linear-gradient(135deg, var(--accent-green), #16a34a);" onclick="markTopicStoryStudied('${topicKey}')">✅ Marcar como Estudado</button>
+        </div>
+      `;
+    }
+
+    function markTopicStoryStudied(topicKey) {
+      const state = loadTopicState();
+      const entry = state[topicKey];
+      if (!entry || !entry.pending) return;
+      entry.read = entry.read || [];
+      entry.read.unshift({ ...entry.pending, readAt: new Date().toISOString() });
+      entry.pending = null;
+      saveTopicState(state);
+      renderTopicGrid();
+      document.getElementById('topicStoryDisplay').innerHTML = `<div class="card" style="color:var(--accent-green);">✅ História marcada como estudada! Ela foi pra aba "📖 Lidas". Pode gerar uma nova desse tópico quando quiser.</div>`;
+    }
+
+    // ===== HISTÓRIAS LIDAS =====
+    function renderReadStoriesList() {
+      const state = loadTopicState();
+      const container = document.getElementById('readStoriesList');
+      const items = [];
+      STORY_TOPICS.forEach(t => {
+        const entry = state[t.key];
+        if (entry && entry.read && entry.read.length) {
+          entry.read.forEach((story, i) => items.push({ topicLabel: t.label, story, topicKey: t.key, i }));
+        }
+      });
+      if (items.length === 0) {
+        container.innerHTML = `<div class="card" style="color:var(--text-muted);">Nenhuma história lida ainda. Estude uma na aba Tópicos!</div>`;
+        return;
+      }
+      container.innerHTML = items.map(item => `
+        <div class="card">
+          <p style="font-size:0.75rem; color:var(--text-muted);">${item.topicLabel} • lida em ${new Date(item.story.readAt).toLocaleDateString('pt-BR')}</p>
+          <div class="card-title">${item.story.title}</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-top:0.5rem;">
+            <button class="btn btn-secondary" onclick='reviewReadStory(${JSON.stringify(item.story)})'>👁️ Rever</button>
+            <button class="btn btn-secondary" onclick='openShadowModeWithSentences(${JSON.stringify(item.story.sentences)})'>🎯 Shadowing</button>
           </div>
         </div>
       `).join('');
     }
+    function reviewReadStory(story) {
+      const fullEn = story.sentences.map(s => s.en).join(' ');
+      document.getElementById('readStoriesList').insertAdjacentHTML('afterbegin', `
+        <div class="card" style="border-color:var(--accent-cyan);">
+          <div class="card-title">${story.title}</div>
+          <div style="background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:0.85rem; border-radius:10px; margin:0.75rem 0;">
+            ${story.sentences.map(s => `<div style="margin-bottom:0.5rem;"><div style="font-weight:600;">${s.en}</div><div style="font-size:0.8rem; color:var(--text-muted);">🇧🇷 ${s.pt}</div></div>`).join('')}
+          </div>
+          <button class="btn" style="width:100%;" onclick="speakText('${fullEn.replace(/'/g, "\\'")}', 1.0)">🔊 Ouvir</button>
+        </div>
+      `);
+    }
+
+    // ===== SHADOWING FRASE-POR-FRASE (genérico, aceita qualquer lista de frases) =====
+    let shadowSentences = [];
+    let shadowIdx = 0;
+
+    function openShadowModeWithSentences(sentences) {
+      shadowSentences = sentences;
+      shadowIdx = 0;
+      document.getElementById('shadowModal').style.display = 'block';
+      renderShadowLine();
+    }
+    function closeShadowMode() {
+      document.getElementById('shadowModal').style.display = 'none';
+    }
+    function renderShadowLine() {
+      const s = shadowSentences[shadowIdx];
+      document.getElementById('shadowProgress').innerText = `Frase ${shadowIdx + 1} de ${shadowSentences.length}`;
+      document.getElementById('shadowEn').innerText = s.en;
+      document.getElementById('shadowPh').innerText = '🗣️ ' + phSentence(s.en);
+      document.getElementById('shadowPt').innerText = '🇧🇷 ' + s.pt;
+    }
+    function shadowStep(delta) {
+      shadowIdx = Math.max(0, Math.min(shadowSentences.length - 1, shadowIdx + delta));
+      renderShadowLine();
+    }
+    function speakCurrentShadowLine(rate) {
+      const s = shadowSentences[shadowIdx];
+      speakText(s.en, rate);
+    }
+
+    // ===== STORY BUILDER: cena real com IA a partir dos padrões estudados =====
+    function renderStoryBuilderPicker() {
+      const container = document.getElementById('storyBuilderPicker');
+      if (!container) return;
+      checkGeminiWarning();
+      const state = loadSrsState();
+      const studiedIds = Object.keys(state);
+      const list = (patternDatabase[currentLang] || []).filter(p => studiedIds.includes(p.id));
+      if (list.length === 0) {
+        container.innerHTML = `<p style="font-size:0.8rem; color:var(--text-muted);">Você ainda não marcou nenhum padrão como Estudado. Estude alguns na aba Padrões primeiro!</p>`;
+        return;
+      }
+      container.innerHTML = list.map(p => `
+        <label style="display:flex; align-items:center; gap:0.5rem; padding:0.4rem 0; font-size:0.85rem; border-bottom:1px solid var(--card-border);">
+          <input type="checkbox" class="storyBuilderCheck" value="${p.id}">
+          <span>${p.clean}</span>
+        </label>
+      `).join('');
+    }
+
+    async function generateBuiltStory() {
+      const checked = Array.from(document.querySelectorAll('.storyBuilderCheck:checked'));
+      const resultDiv = document.getElementById('storyBuilderResult');
+      if (checked.length < 2) {
+        resultDiv.innerHTML = `<p style="color:#f87171; font-size:0.85rem;">Escolha pelo menos 2 padrões estudados pra montar a história.</p>`;
+        return;
+      }
+      if (!checkGeminiWarning()) {
+        resultDiv.innerHTML = `<p style="color:#f87171; font-size:0.85rem;">⚠️ Configure sua chave do Gemini na aba Backup primeiro.</p>`;
+        return;
+      }
+      const ids = checked.map(c => c.value);
+      const list = (patternDatabase[currentLang] || []).filter(p => ids.includes(p.id));
+      const patternTexts = list.map(p => p.clean);
+
+      resultDiv.innerHTML = `<div class="card" style="text-align:center;">⏳ Montando sua cena...</div>`;
+
+      const prompt = `Você é um professor de inglês. Crie uma cena curta e real (5-8 frases) em inglês simples que incorpore NATURALMENTE estas frases que o aluno já estudou, exatamente como estão ou com pequenos ajustes de contexto: ${JSON.stringify(patternTexts)}.
+Não é pra apenas grudar uma frase na outra com "and/but/so" - monte uma situação de verdade (narração + as frases encaixadas como diálogo ou pensamento) que dê sentido a elas estarem juntas.
+Responda SOMENTE em JSON válido, sem texto antes ou depois:
+{"title": "título curto em português com emoji", "sentences": [{"en": "frase em inglês", "pt": "tradução em português"}, ...]}`;
+
+      try {
+        const story = await callGeminiForStory(prompt);
+        const fullEn = story.sentences.map(s => s.en).join(' ');
+        resultDiv.innerHTML = `
+          <div style="background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:0.85rem; border-radius:10px;">
+            <div class="card-title" style="margin-bottom:0.5rem;">${story.title}</div>
+            ${story.sentences.map(s => `<div style="margin-bottom:0.5rem;"><div style="font-weight:600;">${s.en}</div><div style="font-size:0.8rem; color:var(--text-muted);">🇧🇷 ${s.pt}</div></div>`).join('')}
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-top:0.5rem;">
+            <button class="btn" onclick="speakText('${fullEn.replace(/'/g, "\\'")}', 1.0)">🔊 Ouvir</button>
+            <button class="btn btn-secondary" onclick='openShadowModeWithSentences(${JSON.stringify(story.sentences)})'>🎯 Shadowing</button>
+          </div>
+        `;
+      } catch (e) {
+        resultDiv.innerHTML = `<p style="color:#f87171; font-size:0.85rem;">❌ Erro ao gerar (${e.message}). Confira sua chave de API.</p>`;
+      }
+    }
+
+    // ===== SRS REAL: persistência + agendamento por repetição espaçada (estilo Leitner) =====
+    const SRS_INTERVALS_DAYS = [1, 2, 4, 7, 15, 30]; // dias até a próxima revisão, por nível (0 a 5)
+    const SRS_STORAGE_KEY = 'polyglot_srs_state';
+
+    function loadSrsState() {
+      try {
+        const raw = localStorage.getItem(SRS_STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) { return {}; }
+    }
+    function saveSrsState(state) {
+      try { localStorage.setItem(SRS_STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+    }
+    function todayISO() {
+      const d = new Date();
+      d.setHours(0,0,0,0);
+      return d.toISOString().slice(0,10);
+    }
+    function addDaysISO(days) {
+      const d = new Date();
+      d.setHours(0,0,0,0);
+      d.setDate(d.getDate() + days);
+      return d.toISOString().slice(0,10);
+    }
+
+    function markAsStudied() {
+      if (!selectedPatternObj) return;
+      const state = loadSrsState();
+      const id = selectedPatternObj.id;
+      state[id] = state[id] || { level: 0, dueDate: todayISO(), studiedAt: new Date().toISOString(), lang: currentLang };
+      state[id].dueDate = todayISO(); // disponível pra revisar já a partir de hoje
+      state[id].studiedAt = new Date().toISOString();
+      saveSrsState(state);
+      updateMarkStudiedButton();
+      updateSrsBadge();
+      setupSRSDeck();
+    }
+
+    function updateMarkStudiedButton() {
+      if (!selectedPatternObj) return;
+      const state = loadSrsState();
+      const entry = state[selectedPatternObj.id];
+      const btn = document.getElementById('markStudiedBtn');
+      const status = document.getElementById('markStudiedStatus');
+      if (entry) {
+        btn.innerText = '✅ Estudado (marcar de novo)';
+        const dueLabel = entry.dueDate === todayISO() ? 'hoje' : `em ${entry.dueDate.split('-').reverse().join('/')}`;
+        status.innerText = `Próxima revisão programada: ${dueLabel} • Nível ${entry.level}`;
+      } else {
+        btn.innerText = '✅ Marcar como Estudado';
+        status.innerText = 'Ainda não adicionado ao SRS.';
+      }
+    }
+
+    function getDueSrsList() {
+      const state = loadSrsState();
+      const today = todayISO();
+      const list = patternDatabase[currentLang] || [];
+      return list.filter(p => state[p.id] && state[p.id].dueDate <= today);
+    }
+
+    function countDueSrs() {
+      return getDueSrsList().length;
+    }
+
+    function updateSrsBadge() {
+      const badge = document.getElementById('srsDueBadge');
+      if (!badge) return;
+      const count = countDueSrs();
+      if (count > 0) {
+        badge.innerText = count;
+        badge.style.display = 'inline-block';
+      } else {
+        badge.style.display = 'none';
+      }
+      const statusLine = document.getElementById('srsStatusLine');
+      if (statusLine) {
+        statusLine.innerText = count > 0
+          ? `📌 ${count} padrão(ões) programado(s) pra revisar hoje`
+          : '✅ Tudo em dia! Nenhuma revisão pendente hoje.';
+      }
+    }
 
     function setupSRSDeck() {
-      srsDeck = patternDatabase[currentLang] || [];
+      srsDeck = getDueSrsList();
       srsIndex = 0;
       srsFlipped = false;
+      updateSrsBadge();
       renderSRSCard();
     }
 
     function renderSRSCard() {
       if (srsDeck.length === 0) {
-        document.getElementById('srsContent').innerText = "Nenhum card disponível.";
+        document.getElementById('srsContent').innerText = "🎉 Nenhum card pendente agora. Estude novos padrões na aba Padrões e marque como Estudado!";
+        document.getElementById('srsPrompt').innerText = "TUDO EM DIA";
+        document.getElementById('srsControls').style.display = 'none';
         return;
       }
       const item = srsDeck[srsIndex % srsDeck.length];
       srsFlipped = false;
-      document.getElementById('srsPrompt').innerText = "PORTUGUÊS (TOQUE PARA REVELAR)";
+      document.getElementById('srsPrompt').innerText = `PORTUGUÊS (TOQUE PARA REVELAR) • ${srsIndex % srsDeck.length + 1}/${srsDeck.length}`;
       document.getElementById('srsContent').innerText = item.desc;
       document.getElementById('srsControls').style.display = 'none';
     }
@@ -1825,8 +2446,48 @@
     }
 
     function rateSRS(rating) {
-      srsIndex++;
+      if (srsDeck.length === 0) return;
+      const item = srsDeck[srsIndex % srsDeck.length];
+      const state = loadSrsState();
+      const entry = state[item.id] || { level: 0 };
+
+      if (rating === 'again') {
+        entry.level = 0;
+        entry.dueDate = todayISO(); // volta pro fim da fila de hoje mesmo
+      } else if (rating === 'hard') {
+        entry.level = Math.max(0, entry.level); // mantém nível
+        entry.dueDate = addDaysISO(SRS_INTERVALS_DAYS[Math.min(entry.level, SRS_INTERVALS_DAYS.length - 1)]);
+      } else { // easy
+        entry.level = Math.min(SRS_INTERVALS_DAYS.length - 1, entry.level + 1);
+        entry.dueDate = addDaysISO(SRS_INTERVALS_DAYS[entry.level]);
+      }
+      state[item.id] = entry;
+      saveSrsState(state);
+
+      // remove da fila da sessão atual (já foi revisado agora), a não ser que tenha errado (volta pro final da fila)
+      srsDeck.splice(srsIndex % srsDeck.length, 1);
+      if (rating === 'again') srsDeck.push(item);
+      if (srsIndex >= srsDeck.length) srsIndex = 0;
+
+      updateSrsBadge();
       renderSRSCard();
+    }
+
+    // Lembrete leve via Web Notifications (só funciona com o app aberto/em background recente;
+    // não substitui push notification real, que exigiria um servidor).
+    function maybeNotifyDueCards() {
+      const count = countDueSrs();
+      if (count === 0) return;
+      if (!('Notification' in window)) return;
+      if (Notification.permission === 'granted') {
+        new Notification('Nego Bom Polyglot', { body: `Você tem ${count} padrão(ões) pra revisar hoje! 🧠` });
+      } else if (Notification.permission !== 'denied') {
+        Notification.requestPermission().then(perm => {
+          if (perm === 'granted') {
+            new Notification('Nego Bom Polyglot', { body: `Você tem ${count} padrão(ões) pra revisar hoje! 🧠` });
+          }
+        });
+      }
     }
 
     function speakText(text, rate = 1.0) {
