@@ -1510,7 +1510,7 @@
             <div class="example-box">
               <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                 <div class="example-en">• ${ex.en}</div>
-                <button class="btn btn-sm btn-secondary" onclick="speakText('${ex.en.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
+                <button class="btn btn-sm btn-secondary" onclick="speakText('${ex.en.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">🔊 Ouvir</button>
               </div>
               ${ex.ph ? `<div class="example-ph">🗣️ <i>(${ex.ph})</i></div>` : ''}
               <div class="example-pt">🇧🇷 ${ex.pt}</div>
@@ -1524,7 +1524,7 @@
         <div class="interactive-card-item">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <div style="font-weight:700; color:var(--accent-green);">${item.en}</div>
-            <button class="btn btn-sm btn-secondary" onclick="speakText('${item.en.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
+            <button class="btn btn-sm btn-secondary" onclick="speakText('${item.en.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">🔊 Ouvir</button>
           </div>
           <div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ (${item.ph})</div>
           <div style="font-size:0.82rem; color:var(--text-main); margin-top:2px;">🇧🇷 ${item.pt}</div>
@@ -1536,7 +1536,7 @@
         <div class="interactive-card-item">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <div style="font-weight:700; color:var(--accent-red);">${item.en}</div>
-            <button class="btn btn-sm btn-secondary" onclick="speakText('${item.en.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
+            <button class="btn btn-sm btn-secondary" onclick="speakText('${item.en.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">🔊 Ouvir</button>
           </div>
           <div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ (${item.ph})</div>
           <div style="font-size:0.82rem; color:var(--text-main); margin-top:2px;">🇧🇷 ${item.pt}</div>
@@ -1548,7 +1548,7 @@
         <div class="interactive-card-item">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <div style="font-weight:700; color:var(--accent-cyan);">${item.en}</div>
-            <button class="btn btn-sm btn-secondary" onclick="speakText('${item.en.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
+            <button class="btn btn-sm btn-secondary" onclick="speakText('${item.en.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">🔊 Ouvir</button>
           </div>
           <div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ (${item.ph})</div>
           <div style="font-size:0.82rem; color:var(--text-main); margin-top:2px;">🇧🇷 ${item.pt}</div>
@@ -2059,7 +2059,7 @@
           <div class="tense-card-label">Presente Simple</div>
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <div style="font-weight:700; color:var(--accent-cyan);">${present}</div>
-            <button class="btn btn-sm btn-secondary" onclick="speakText('${present.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
+            <button class="btn btn-sm btn-secondary" onclick="speakText('${present.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">🔊 Ouvir</button>
           </div>
           ${presentPh ? `<div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ ${presentPh}</div>` : ''}
           <div style="font-size:0.82rem; color:var(--text-main); margin-top:2px;">🇧🇷 ${presentPt}</div>
@@ -2069,7 +2069,7 @@
           <div class="tense-card-label">Passado Simple</div>
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <div style="font-weight:700; color:var(--accent-cyan);">${past}</div>
-            <button class="btn btn-sm btn-secondary" onclick="speakText('${past.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
+            <button class="btn btn-sm btn-secondary" onclick="speakText('${past.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">🔊 Ouvir</button>
           </div>
           ${pastPh ? `<div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ ${pastPh}</div>` : ''}
           <div style="font-size:0.82rem; color:var(--text-main); margin-top:2px;">🇧🇷 ${pastPt}</div>
@@ -2079,7 +2079,7 @@
           <div class="tense-card-label">Futuro Simple</div>
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <div style="font-weight:700; color:var(--accent-cyan);">${future}</div>
-            <button class="btn btn-sm btn-secondary" onclick="speakText('${future.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
+            <button class="btn btn-sm btn-secondary" onclick="speakText('${future.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">🔊 Ouvir</button>
           </div>
           ${futurePh ? `<div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ ${futurePh}</div>` : ''}
           <div style="font-size:0.82rem; color:var(--text-main); margin-top:2px;">🇧🇷 ${futurePt}</div>
@@ -2089,7 +2089,7 @@
           <div class="tense-card-label">Condicional (Would)</div>
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <div style="font-weight:700; color:var(--accent-cyan);">${conditional}</div>
-            <button class="btn btn-sm btn-secondary" onclick="speakText('${conditional.replace(/'/g, "\\'")}')">🔊 Ouvir</button>
+            <button class="btn btn-sm btn-secondary" onclick="speakText('${conditional.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')">🔊 Ouvir</button>
           </div>
           ${conditionalPh ? `<div style="font-size:0.8rem; color:#fef08a; font-style:italic; margin-top:2px;">🗣️ ${conditionalPh}</div>` : ''}
           <div style="font-size:0.82rem; color:var(--text-main); margin-top:2px;">🇧🇷 ${conditionalPt}</div>
@@ -2183,8 +2183,8 @@ Responda SOMENTE em JSON válido, neste formato exato, sem nenhum texto antes ou
             ${story.sentences.map(s => `<div style="margin-bottom:0.5rem;"><div style="font-weight:600;">${s.en}</div><div style="font-size:0.8rem; color:var(--text-muted);">🇧🇷 ${s.pt}</div></div>`).join('')}
           </div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
-            <button class="btn" onclick="speakText('${fullEn.replace(/'/g, "\\'")}', 1.0)">🔊 Normal</button>
-            <button class="btn btn-secondary" onclick="speakText('${fullEn.replace(/'/g, "\\'")}', 0.75)">🐢 Devagar</button>
+            <button class="btn" onclick="speakText('${fullEn.replace(/'/g, "\\'").replace(/"/g, '&quot;')}', 1.0)">🔊 Normal</button>
+            <button class="btn btn-secondary" onclick="speakText('${fullEn.replace(/'/g, "\\'").replace(/"/g, '&quot;')}', 0.75)">🐢 Devagar</button>
           </div>
           <button class="btn" style="width:100%; margin-top:0.5rem; background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));" onclick='openShadowModeWithSentences(${JSON.stringify(story.sentences)})'>🎯 Shadowing Frase-por-Frase</button>
           <button class="btn" style="width:100%; margin-top:0.5rem; background: linear-gradient(135deg, var(--accent-green), #16a34a);" onclick="markTopicStoryStudied('${topicKey}')">✅ Marcar como Estudado</button>
@@ -2238,7 +2238,7 @@ Responda SOMENTE em JSON válido, neste formato exato, sem nenhum texto antes ou
           <div style="background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:0.85rem; border-radius:10px; margin:0.75rem 0;">
             ${story.sentences.map(s => `<div style="margin-bottom:0.5rem;"><div style="font-weight:600;">${s.en}</div><div style="font-size:0.8rem; color:var(--text-muted);">🇧🇷 ${s.pt}</div></div>`).join('')}
           </div>
-          <button class="btn" style="width:100%;" onclick="speakText('${fullEn.replace(/'/g, "\\'")}', 1.0)">🔊 Ouvir</button>
+          <button class="btn" style="width:100%;" onclick="speakText('${fullEn.replace(/'/g, "\\'").replace(/"/g, '&quot;')}', 1.0)">🔊 Ouvir</button>
         </div>
       `);
     }
@@ -2323,7 +2323,7 @@ Responda SOMENTE em JSON válido, sem texto antes ou depois:
             ${story.sentences.map(s => `<div style="margin-bottom:0.5rem;"><div style="font-weight:600;">${s.en}</div><div style="font-size:0.8rem; color:var(--text-muted);">🇧🇷 ${s.pt}</div></div>`).join('')}
           </div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-top:0.5rem;">
-            <button class="btn" onclick="speakText('${fullEn.replace(/'/g, "\\'")}', 1.0)">🔊 Ouvir</button>
+            <button class="btn" onclick="speakText('${fullEn.replace(/'/g, "\\'").replace(/"/g, '&quot;')}', 1.0)">🔊 Ouvir</button>
             <button class="btn btn-secondary" onclick='openShadowModeWithSentences(${JSON.stringify(story.sentences)})'>🎯 Shadowing</button>
           </div>
         `;
