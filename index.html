@@ -851,16 +851,22 @@
     async function callGeminiForStory(prompt) {
       const key = getGeminiKey();
       if (!key) throw new Error('NO_KEY');
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`;
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`;
       const res = await fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': key
+        },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: { temperature: 0.9, responseMimeType: 'application/json' }
         })
       });
-      if (!res.ok) throw new Error('API_ERROR_' + res.status);
+      if (!res.ok) {
+        const errText = await res.text().catch(() => '');
+        throw new Error('API_ERROR_' + res.status + (errText ? ': ' + errText.slice(0, 150) : ''));
+      }
       const data = await res.json();
       const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
       if (!text) throw new Error('NO_CONTENT');
