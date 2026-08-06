@@ -2183,10 +2183,10 @@ Responda SOMENTE em JSON válido, neste formato exato, sem nenhum texto antes ou
             ${story.sentences.map(s => `<div style="margin-bottom:0.5rem;"><div style="font-weight:600;">${s.en}</div><div style="font-size:0.8rem; color:var(--text-muted);">🇧🇷 ${s.pt}</div></div>`).join('')}
           </div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
-            <button class="btn" onclick="speakText('${fullEn.replace(/'/g, "\\'").replace(/"/g, '&quot;')}', 1.0)">🔊 Normal</button>
-            <button class="btn btn-secondary" onclick="speakText('${fullEn.replace(/'/g, "\\'").replace(/"/g, '&quot;')}', 0.75)">🐢 Devagar</button>
+            <button class="btn" onclick='speakSentenceSequence(${jsonForAttr(story.sentences)}, 1.0)'>🔊 Normal</button>
+            <button class="btn btn-secondary" onclick='speakSentenceSequence(${jsonForAttr(story.sentences)}, 0.75)'>🐢 Devagar</button>
           </div>
-          <button class="btn" style="width:100%; margin-top:0.5rem; background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));" onclick='openShadowModeWithSentences(${JSON.stringify(story.sentences)})'>🎯 Shadowing Frase-por-Frase</button>
+          <button class="btn" style="width:100%; margin-top:0.5rem; background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));" onclick='openShadowModeWithSentences(${jsonForAttr(story.sentences)})'>🎯 Shadowing Frase-por-Frase</button>
           <button class="btn" style="width:100%; margin-top:0.5rem; background: linear-gradient(135deg, var(--accent-green), #16a34a);" onclick="markTopicStoryStudied('${topicKey}')">✅ Marcar como Estudado</button>
         </div>
       `;
@@ -2224,8 +2224,8 @@ Responda SOMENTE em JSON válido, neste formato exato, sem nenhum texto antes ou
           <p style="font-size:0.75rem; color:var(--text-muted);">${item.topicLabel} • lida em ${new Date(item.story.readAt).toLocaleDateString('pt-BR')}</p>
           <div class="card-title">${item.story.title}</div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-top:0.5rem;">
-            <button class="btn btn-secondary" onclick='reviewReadStory(${JSON.stringify(item.story)})'>👁️ Rever</button>
-            <button class="btn btn-secondary" onclick='openShadowModeWithSentences(${JSON.stringify(item.story.sentences)})'>🎯 Shadowing</button>
+            <button class="btn btn-secondary" onclick='reviewReadStory(${jsonForAttr(item.story)})'>👁️ Rever</button>
+            <button class="btn btn-secondary" onclick='openShadowModeWithSentences(${jsonForAttr(item.story.sentences)})'>🎯 Shadowing</button>
           </div>
         </div>
       `).join('');
@@ -2238,7 +2238,7 @@ Responda SOMENTE em JSON válido, neste formato exato, sem nenhum texto antes ou
           <div style="background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:0.85rem; border-radius:10px; margin:0.75rem 0;">
             ${story.sentences.map(s => `<div style="margin-bottom:0.5rem;"><div style="font-weight:600;">${s.en}</div><div style="font-size:0.8rem; color:var(--text-muted);">🇧🇷 ${s.pt}</div></div>`).join('')}
           </div>
-          <button class="btn" style="width:100%;" onclick="speakText('${fullEn.replace(/'/g, "\\'").replace(/"/g, '&quot;')}', 1.0)">🔊 Ouvir</button>
+          <button class="btn" style="width:100%;" onclick='speakSentenceSequence(${jsonForAttr(story.sentences)}, 1.0)'>🔊 Ouvir</button>
         </div>
       `);
     }
@@ -2323,8 +2323,8 @@ Responda SOMENTE em JSON válido, sem texto antes ou depois:
             ${story.sentences.map(s => `<div style="margin-bottom:0.5rem;"><div style="font-weight:600;">${s.en}</div><div style="font-size:0.8rem; color:var(--text-muted);">🇧🇷 ${s.pt}</div></div>`).join('')}
           </div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-top:0.5rem;">
-            <button class="btn" onclick="speakText('${fullEn.replace(/'/g, "\\'").replace(/"/g, '&quot;')}', 1.0)">🔊 Ouvir</button>
-            <button class="btn btn-secondary" onclick='openShadowModeWithSentences(${JSON.stringify(story.sentences)})'>🎯 Shadowing</button>
+            <button class="btn" onclick='speakSentenceSequence(${jsonForAttr(story.sentences)}, 1.0)'>🔊 Ouvir</button>
+            <button class="btn btn-secondary" onclick='openShadowModeWithSentences(${jsonForAttr(story.sentences)})'>🎯 Shadowing</button>
           </div>
         `;
       } catch (e) {
@@ -2492,6 +2492,25 @@ Responda SOMENTE em JSON válido, sem texto antes ou depois:
           }
         });
       }
+    }
+
+    function jsonForAttr(obj) {
+      return JSON.stringify(obj).replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+    }
+
+    function speakSentenceSequence(sentences, rate) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      let i = 0;
+      function speakNext() {
+        if (i >= sentences.length) return;
+        const utterance = new SpeechSynthesisUtterance(sentences[i].en);
+        utterance.lang = langVoiceMap[currentLang] || 'en-US';
+        utterance.rate = rate;
+        utterance.onend = () => { i++; speakNext(); };
+        window.speechSynthesis.speak(utterance);
+      }
+      speakNext();
     }
 
     function speakText(text, rate = 1.0) {
