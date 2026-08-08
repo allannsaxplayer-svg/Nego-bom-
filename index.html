@@ -622,12 +622,22 @@
       </div>
 
       <div class="card">
-        <div class="card-title">⚙️ Backup & Sincronização dos 133 Padrões</div>
+        <div class="card-title">➕ Adicionar Novo Padrão</div>
+        <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:0.75rem;">Escreve um padrão novo e ele entra na biblioteca com tudo (categorias, matriz, respostas, variações) automaticamente — sem eu mexer no código.</p>
+        <input type="text" id="newPatternEn" class="search-input" placeholder="Em inglês, com [colchetes] na parte variável. Ex: I usually [wake up early]." style="margin-bottom:0.5rem;">
+        <input type="text" id="newPatternPt" class="search-input" placeholder="Tradução em português. Ex: Eu geralmente acordo cedo." style="margin-bottom:0.75rem;">
+        <button class="btn" style="width:100%; background: linear-gradient(135deg, var(--accent-green), #16a34a);" onclick="addNewPattern()">✅ Adicionar à Biblioteca</button>
+        <p id="newPatternStatus" style="font-size:0.78rem; margin-top:0.5rem;"></p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">⚙️ Backup & Sincronização dos Padrões</div>
         <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem;">Garantia de que seus padrões salvos nunca sumirão:</p>
         <button class="btn btn-secondary" onclick="exportDataJSON()" style="margin-bottom:0.75rem;">📥 Exportar Backup (JSON)</button>
-        
-        <textarea id="importArea" class="search-input" style="height:100px; margin-bottom:0.75rem;" placeholder="Cole o código JSON de backup ou de novos padrões aqui..."></textarea>
-        <button class="btn" style="background:var(--accent-green);" onclick="importDataJSON()">⚡ Importar Padrões JSON</button>
+
+        <textarea id="importArea" class="search-input" style="height:100px; margin-bottom:0.75rem;" placeholder="Cole aqui o JSON de um backup exportado ou de uma lista de padrões novos..."></textarea>
+        <button class="btn" style="background:var(--accent-green); width:100%; margin-bottom:0.5rem;" onclick="importDataJSON(false)">⚡ Importar e Mesclar (adiciona só o que é novo)</button>
+        <button class="btn btn-secondary" style="width:100%;" onclick="importDataJSON(true)">♻️ Restaurar Backup Completo (substitui tudo)</button>
       </div>
     </section>
 
@@ -2546,27 +2556,102 @@ Responda SOMENTE em JSON válido, sem texto antes ou depois:
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(patternDatabase, null, 2));
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", "negobom_133_patterns_backup.json");
+      downloadAnchor.setAttribute("download", "negobom_patterns_backup.json");
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
     }
 
-    function importDataJSON() {
+    function importDataJSON(overwrite) {
       const content = document.getElementById("importArea").value;
+      if (!content.trim()) { alert("Cole o JSON antes de importar."); return; }
+      let parsed;
       try {
-        const parsed = JSON.parse(content);
-        if (parsed.en || Array.isArray(parsed)) {
-          patternDatabase = Array.isArray(parsed) ? { en: parsed, es: [], fr: [] } : parsed;
-          localStorage.setItem('polyglot_db_133', JSON.stringify(patternDatabase));
-          alert("Padrões importados e salvos com sucesso!");
-          renderPatternList();
-        } else {
-          alert("Formato JSON inválido.");
-        }
-      } catch(e) {
+        parsed = JSON.parse(content);
+      } catch (e) {
         alert("Erro ao ler JSON: " + e.message);
+        return;
       }
+      const incoming = Array.isArray(parsed) ? { en: parsed, es: [], fr: [] } : parsed;
+      if (!incoming.en && !incoming.es && !incoming.fr) {
+        alert("Formato JSON inválido — esperado {en:[...], es:[...], fr:[...]} ou uma lista de padrões.");
+        return;
+      }
+
+      if (overwrite) {
+        if (!confirm("Isso vai SUBSTITUIR toda a sua biblioteca atual pelo conteúdo colado. Tem certeza?")) return;
+        patternDatabase = { en: incoming.en || [], es: incoming.es || [], fr: incoming.fr || [] };
+        localStorage.setItem('polyglot_db_133', JSON.stringify(patternDatabase));
+        alert("Backup restaurado com sucesso!");
+        renderPatternList();
+        return;
+      }
+
+      // Modo mesclar: só adiciona padrões cujo texto "raw" ainda não existe na biblioteca.
+      let added = 0, skipped = 0;
+      ['en', 'es', 'fr'].forEach(lang => {
+        if (!incoming[lang] || !Array.isArray(incoming[lang])) return;
+        patternDatabase[lang] = patternDatabase[lang] || [];
+        const existingRaws = new Set(patternDatabase[lang].map(p => p.raw));
+        incoming[lang].forEach(p => {
+          if (!p.raw || existingRaws.has(p.raw)) { skipped++; return; }
+          patternDatabase[lang].push({
+            id: p.id || `custom_${Date.now()}_${Math.random().toString(36).slice(2,7)}`,
+            raw: p.raw,
+            displayHTML: p.displayHTML || getHighlightedPatternHTML(p.raw),
+            clean: p.clean || getCleanPatternText(p.raw),
+            desc: p.desc || ''
+          });
+          existingRaws.add(p.raw);
+          added++;
+        });
+      });
+      localStorage.setItem('polyglot_db_133', JSON.stringify(patternDatabase));
+      alert(`✅ ${added} padrão(ões) novo(s) adicionado(s)! ${skipped > 0 ? `(${skipped} já existiam e foram ignorados)` : ''}`);
+      renderPatternList();
+      document.getElementById('importArea').value = '';
+    }
+
+    function addNewPattern() {
+      const rawInput = document.getElementById('newPatternEn').value.trim();
+      const ptInput = document.getElementById('newPatternPt').value.trim();
+      const statusEl = document.getElementById('newPatternStatus');
+
+      const bracketMatches = rawInput.match(/\[.+?\]/g);
+      if (!bracketMatches || bracketMatches.length !== 1) {
+        statusEl.style.color = '#f87171';
+        statusEl.innerText = '⚠️ O padrão em inglês precisa ter exatamente uma parte entre [colchetes].';
+        return;
+      }
+      if (!ptInput) {
+        statusEl.style.color = '#f87171';
+        statusEl.innerText = '⚠️ Escreve a tradução em português também.';
+        return;
+      }
+
+      patternDatabase[currentLang] = patternDatabase[currentLang] || [];
+      const alreadyExists = patternDatabase[currentLang].some(p => p.raw === rawInput);
+      if (alreadyExists) {
+        statusEl.style.color = '#f87171';
+        statusEl.innerText = '⚠️ Esse padrão já existe na sua biblioteca.';
+        return;
+      }
+
+      const newPattern = {
+        id: `custom_${Date.now()}`,
+        raw: rawInput,
+        displayHTML: getHighlightedPatternHTML(rawInput),
+        clean: getCleanPatternText(rawInput),
+        desc: ptInput
+      };
+      patternDatabase[currentLang].push(newPattern);
+      localStorage.setItem('polyglot_db_133', JSON.stringify(patternDatabase));
+
+      statusEl.style.color = 'var(--accent-green)';
+      statusEl.innerText = '✅ Padrão adicionado! Já está disponível na aba Padrões, com categorias, matriz e tudo mais.';
+      document.getElementById('newPatternEn').value = '';
+      document.getElementById('newPatternPt').value = '';
+      renderPatternList();
     }
 
     window.onload = initApp;
