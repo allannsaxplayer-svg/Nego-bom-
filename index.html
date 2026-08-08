@@ -625,7 +625,11 @@
         <div class="card-title">➕ Adicionar Novo Padrão</div>
         <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:0.75rem;">Escreve um padrão novo e ele entra na biblioteca com tudo (categorias, matriz, respostas, variações) automaticamente — sem eu mexer no código.</p>
         <input type="text" id="newPatternEn" class="search-input" placeholder="Em inglês, com [colchetes] na parte variável. Ex: I usually [wake up early]." style="margin-bottom:0.5rem;">
-        <input type="text" id="newPatternPt" class="search-input" placeholder="Tradução em português. Ex: Eu geralmente acordo cedo." style="margin-bottom:0.75rem;">
+        <input type="text" id="newPatternPt" class="search-input" placeholder="Tradução em português. Ex: Eu geralmente acordo cedo." style="margin-bottom:0.5rem;">
+        <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.82rem; margin-bottom:0.75rem;">
+          <input type="checkbox" id="newPatternIsMenu">
+          🍽️ Este é um padrão de cardápio/atendimento (varia por item de comida — sanduíche, carne, acompanhamento...)
+        </label>
         <button class="btn" style="width:100%; background: linear-gradient(135deg, var(--accent-green), #16a34a);" onclick="addNewPattern()">✅ Adicionar à Biblioteca</button>
         <p id="newPatternStatus" style="font-size:0.78rem; margin-top:0.5rem;"></p>
       </div>
@@ -1262,6 +1266,47 @@
         .replace(/\bem os\b/gi, 'nos').replace(/\bem as\b/gi, 'nas');
     }
 
+    // Gerador especial pra padrões de cardápio/atendimento (varia por item de comida, não por contexto de vida)
+    const FOOD_ITEM_BANK = {
+      "🥪 Sanduíches": [
+        ["lettuce, tomato, and cheddar cheese", "alface, tomate e queijo cheddar"],
+        ["fresh baked bread", "pão assado na hora"]
+      ],
+      "🥩 Carnes & Churrasco": [
+        ["filet mignon", "filé mignon"],
+        ["grilled chicken", "frango grelhado"]
+      ],
+      "🍟 Acompanhamentos": [
+        ["french fries", "batata frita"],
+        ["rice and beans", "arroz e feijão"]
+      ],
+      "🍝 Massas & Molhos": [
+        ["alfredo sauce", "molho alfredo"],
+        ["grilled vegetables", "legumes grelhados"]
+      ],
+      "🥤 Bebidas": [
+        ["a soda", "um refrigerante"],
+        ["iced tea", "chá gelado"]
+      ]
+    };
+    function buildMenuCategories(raw, desc) {
+      const parsed = parsePatternSlot(raw);
+      if (!parsed) return { status: "no-bracket" };
+      const { prefix, suffix } = parsed;
+      const categories = Object.keys(FOOD_ITEM_BANK).map(title => ({
+        title,
+        examples: FOOD_ITEM_BANK[title].map(([itemEn, itemPt]) => {
+          const enFull = cleanPunct(`${prefix}${itemEn}${suffix}`);
+          return {
+            en: enFull,
+            ph: phSentence(enFull),
+            pt: `${desc}  🍽️ (item: ${itemPt})`
+          };
+        })
+      }));
+      return { status: "ok", categories };
+    }
+
     function buildSmartCategories(raw) {
       const parsed = parsePatternSlot(raw);
       if (!parsed) return { status: "no-bracket" };
@@ -1425,7 +1470,7 @@
         ];
 
       } else {
-        const smart = buildSmartCategories(raw);
+        const smart = patternObj.menuType ? buildMenuCategories(raw, desc) : buildSmartCategories(raw);
 
         if (smart.status === "ok") {
           categories = smart.categories;
@@ -2637,12 +2682,14 @@ Responda SOMENTE em JSON válido, sem texto antes ou depois:
         return;
       }
 
+      const isMenu = document.getElementById('newPatternIsMenu').checked;
       const newPattern = {
         id: `custom_${Date.now()}`,
         raw: rawInput,
         displayHTML: getHighlightedPatternHTML(rawInput),
         clean: getCleanPatternText(rawInput),
-        desc: ptInput
+        desc: ptInput,
+        menuType: isMenu
       };
       patternDatabase[currentLang].push(newPattern);
       localStorage.setItem('polyglot_db_133', JSON.stringify(patternDatabase));
@@ -2651,6 +2698,7 @@ Responda SOMENTE em JSON válido, sem texto antes ou depois:
       statusEl.innerText = '✅ Padrão adicionado! Já está disponível na aba Padrões, com categorias, matriz e tudo mais.';
       document.getElementById('newPatternEn').value = '';
       document.getElementById('newPatternPt').value = '';
+      document.getElementById('newPatternIsMenu').checked = false;
       renderPatternList();
     }
 
