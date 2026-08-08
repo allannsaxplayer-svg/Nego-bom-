@@ -611,6 +611,16 @@
       </div>
     </section>
 
+    <!-- 4.5 DICAS DO INGLÊS (PRONÚNCIA) -->
+    <section id="tipsSection" class="section">
+      <div class="card">
+        <div class="card-title">🗣️ Dicas do Inglês — Lógica da Pronúncia</div>
+        <p style="font-size:0.82rem; color:var(--text-muted);">Padrões reais de como o inglês soa de verdade, sem gramática chata:</p>
+      </div>
+      <div id="tipsListContainer"></div>
+      <div id="tipDetailContainer"></div>
+    </section>
+
     <!-- 5. CONFIGURAÇÕES & BACKUP -->
     <section id="configSection" class="section">
       <div class="card">
@@ -657,6 +667,9 @@
     </div>
     <div class="nav-item" onclick="showSection('srsSection')" id="nav-srs">
       <span class="nav-icon">🧠</span> SRS<span id="srsDueBadge" style="display:none; background:var(--accent-red); color:#fff; font-size:0.65rem; font-weight:800; border-radius:10px; padding:1px 6px; margin-left:4px; vertical-align:top;"></span>
+    </div>
+    <div class="nav-item" onclick="showSection('tipsSection')" id="nav-tips">
+      <span class="nav-icon">🗣️</span> Dicas
     </div>
     <div class="nav-item" onclick="showSection('configSection')" id="nav-config">
       <span class="nav-icon">⚙️</span> Backup
@@ -957,16 +970,252 @@
       if (sectionId === 'storySection') {
         renderTopicGrid();
       }
+      if (sectionId === 'tipsSection') {
+        renderTipsList();
+      }
       
       const navMap = {
         patternsSection: 'nav-patterns',
         storySection: 'nav-story',
         srsSection: 'nav-srs',
+        tipsSection: 'nav-tips',
         configSection: 'nav-config'
       };
       if (navMap[sectionId]) {
         document.getElementById(navMap[sectionId]).classList.add('active');
       }
+    }
+
+    // ===== DICAS DO INGLÊS: BANCO DE REGRAS DE PRONÚNCIA (PARTE 1 de 2) =====
+    const PRONUNCIATION_RULES = [
+      // --- CONEXÃO DE SONS (LINKING) ---
+      {
+        id: 'link_cons_vowel', category: '🔗 Conexão de Sons (Linking)',
+        title: 'Consoante + Vogal = Palavras Coladas',
+        rule: 'Quando uma palavra termina em som de consoante e a próxima começa com som de vogal, elas se fundem em uma única "palavra" na fala.',
+        examples: [
+          { word: 'Check it out', ph: 'che-ki-taut', meaning: 'Dá uma olhada' },
+          { word: 'Hold on', ph: 'hol-don', meaning: 'Espera / Segura aí' }
+        ]
+      },
+      {
+        id: 'link_wy', category: '🔗 Conexão de Sons (Linking)',
+        title: 'Conexão com Som de W ou Y',
+        rule: 'Quando uma palavra termina em vogal e a próxima começa em vogal, surge um som invisível de W (se a vogal anterior for U/O) ou de Y (se for I/E) pra suavizar a transição.',
+        examples: [
+          { word: 'Go out', ph: 'go-w-aut', meaning: 'Sair' },
+          { word: 'See it', ph: 'sí-y-it', meaning: 'Ver isso' }
+        ]
+      },
+      {
+        id: 'link_tch', category: '🔗 Conexão de Sons (Linking)',
+        title: 'T + You = "CH" (Assimilação)',
+        rule: 'Quando uma palavra termina em som de T e a próxima é "you"/"your", os sons se juntam e formam o som de CH (tch).',
+        examples: [
+          { word: 'Meet you', ph: 'mí-tchu', meaning: 'Te encontrar' },
+          { word: "Don't you", ph: 'dôn-tchu', meaning: 'Você não...' }
+        ]
+      },
+      {
+        id: 'link_dj', category: '🔗 Conexão de Sons (Linking)',
+        title: 'D + You = "DJ"',
+        rule: 'Quando uma palavra termina em som de D e a próxima é "you"/"your", o encontro produz o som de DJ (como em "jungle").',
+        examples: [
+          { word: 'Would you', ph: 'wu-dju', meaning: 'Você poderia' },
+          { word: 'Did you', ph: 'di-dju', meaning: 'Você fez' }
+        ]
+      },
+      // --- OMISSÕES E REDUÇÕES ---
+      {
+        id: 'magic_e', category: '✂️ Omissões e Reduções',
+        title: 'O "E" Mudo no Final (Magic E)',
+        rule: 'Quando uma palavra curta termina com "E" precedido de consoante, esse E é mudo — e faz a vogal anterior soar como o nome dela no alfabeto.',
+        exception: 'Palavras de origem francesa/italiana costumam pronunciar o E final: "Café" soa "ka-féi", "Recipe" soa "rré-si-pi" (esse é som de "i", vem do grego/italiano — caminho diferente do café, mas mesma ideia: nem sempre o E cala).',
+        examples: [
+          { word: 'Hat → Hate', ph: 'rétt → réit', meaning: 'Chapéu → Odiar' },
+          { word: 'Kit → Kite', ph: 'kitt → káit', meaning: 'Kit → Pipa' }
+        ]
+      },
+      {
+        id: 'schwa', category: '✂️ Omissões e Reduções',
+        title: 'A Sílaba Fraca Vira "Schwa" (ã)',
+        rule: 'Toda vogal que não é a sílaba tônica (forte) da palavra perde o som original e vira o som neutro e preguiçoso "ã". É o som mais comum do inglês inteiro.',
+        examples: [
+          { word: 'About', ph: 'ã-báut', meaning: 'Sobre / Cerca de' },
+          { word: 'Banana', ph: 'bã-nǽ-nã', meaning: 'Banana (repare: só a sílaba do meio é forte!)' }
+        ]
+      },
+      {
+        id: 'cluster_drop', category: '✂️ Omissões e Reduções',
+        title: 'Cortar o T/D Final em Grupos de Consoantes',
+        rule: 'Se a palavra termina em duas consoantes (tipo ST ou ND) e a próxima palavra começa com consoante, o T ou D some na fala rápida.',
+        examples: [
+          { word: 'Last night', ph: 'lás-náit', meaning: 'Ontem à noite' },
+          { word: 'Next door', ph: 'néks-dór', meaning: 'Porta ao lado' }
+        ]
+      },
+      {
+        id: 'h_drop', category: '✂️ Omissões e Reduções',
+        title: 'O "H" Mudo em Pronomes Rápidos',
+        rule: 'Em conversa rápida, "him/her/have/has/his" perdem o som de H quando não estão no começo da frase.',
+        exception: 'Se o pronome está no início da frase, ou sendo enfatizado, o H sopra sim: "He left" = "Rí léft" (não "í léft"); "Give it to HIM, not her" = "Rím" com força.',
+        examples: [
+          { word: 'Tell him', ph: 'tél-im', meaning: 'Fala pra ele' },
+          { word: 'Ask her', ph: 'ás-kêr', meaning: 'Pergunta pra ela' }
+        ]
+      },
+      // --- PADRÕES DE TERMINAÇÃO E ESCRITA ---
+      {
+        id: 'able', category: '📝 Terminações e Escrita',
+        title: 'O Final "-able" Vira "ãbol"',
+        rule: 'A terminação "-able" nunca soa como a palavra "able" (éibol) sozinha. Na palavra inteira, ela vira um som fraco de "ãbol".',
+        examples: [
+          { word: 'Comfortable', ph: 'kómf-tãbol', meaning: 'Confortável' },
+          { word: 'Vegetable', ph: 'védj-tãbol', meaning: 'Vegetal / Legume' }
+        ]
+      },
+      {
+        id: 'double_cons', category: '📝 Terminações e Escrita',
+        title: 'Consoante Dupla Soa Como Uma Só',
+        rule: 'Quando duas consoantes iguais aparecem juntas (na escrita ou no encontro de duas palavras), pronuncia-se só uma vez — um pouco mais longa.',
+        examples: [
+          { word: 'Summer', ph: 'sâ-mer', meaning: 'Verão' },
+          { word: 'Black cat', ph: 'blé-két', meaning: 'Gato preto' }
+        ]
+      },
+      {
+        id: 'silent_k', category: '📝 Terminações e Escrita',
+        title: 'O "K" Mudo Antes de "N" (KN-)',
+        rule: 'Toda palavra que começa com KN ignora totalmente o K. A pronúncia começa direto no N.',
+        examples: [
+          { word: 'Know', ph: 'nôu', meaning: 'Saber' },
+          { word: 'Knife', ph: 'náif', meaning: 'Faca' }
+        ]
+      },
+      {
+        id: 'silent_gh', category: '📝 Terminações e Escrita',
+        title: 'O "GH" Mudo (ou Vira "F")',
+        rule: 'A combinação GH é quase sempre 100% muda antes de T ou no final de palavra.',
+        exception: 'Em algumas palavras curtas antigas, o GH final ganha som de F.',
+        examples: [
+          { word: 'Night', ph: 'náit', meaning: 'Noite' },
+          { word: 'Enough', ph: 'i-náf', meaning: 'O suficiente (exceção: GH = F)' }
+        ]
+      },
+      // --- VOGAL A ---
+      {
+        id: 'vowel_a_short', category: '🅰️ Vogal A',
+        title: 'A Curto (som de "É" aberto)',
+        rule: 'Ocorre quando a palavra termina em consoante (sílaba fechada).',
+        examples: [
+          { word: 'Cat', ph: 'két', meaning: 'Gato' },
+          { word: 'Map', ph: 'mép', meaning: 'Mapa' }
+        ]
+      },
+      {
+        id: 'vowel_a_long', category: '🅰️ Vogal A',
+        title: 'A Longo (som de "EI")',
+        rule: 'Ocorre no padrão "A + Consoante + E mudo" ou nas combinações AI/AY.',
+        examples: [
+          { word: 'Make', ph: 'méik', meaning: 'Fazer' },
+          { word: 'Rain', ph: 'réin', meaning: 'Chuva' }
+        ]
+      },
+      {
+        id: 'vowel_a_r', category: '🅰️ Vogal A',
+        title: 'A Controlado por R ("ÁR" profundo)',
+        rule: 'Quando o A vem seguido de R, vira um "Á" vindo do fundo da garganta.',
+        exception: 'Quando seguido do padrão "-ALL" ou do dígrafo "AW", o A ganha som de "Ó" em vez disso.',
+        examples: [
+          { word: 'Car', ph: 'kár', meaning: 'Carro' },
+          { word: 'Ball', ph: 'ból', meaning: 'Bola (exceção: -ALL = Ó)' }
+        ]
+      },
+      // --- VOGAL E ---
+      {
+        id: 'vowel_e_short', category: '🅴 Vogal E',
+        title: 'E Curto (som de "É" seco)',
+        rule: 'Ocorre em palavras fechadas por consoante.',
+        examples: [
+          { word: 'Bed', ph: 'béd', meaning: 'Cama' },
+          { word: 'Help', ph: 'rélp', meaning: 'Ajuda' }
+        ]
+      },
+      {
+        id: 'vowel_e_long', category: '🅴 Vogal E',
+        title: 'E Longo (som de "Í" puxado)',
+        rule: 'Ocorre nas combinações "EE" e "EA".',
+        exception: 'Algumas palavras com EA não fazem som de "Í", e sim de "É" — como "bread" e "head".',
+        examples: [
+          { word: 'See', ph: 'síí', meaning: 'Ver' },
+          { word: 'Bread', ph: 'bréd', meaning: 'Pão (exceção: EA = É)' }
+        ]
+      },
+      {
+        id: 'vowel_e_r', category: '🅴 Vogal E',
+        title: 'E Controlado por R ("ẼR" enrolado)',
+        rule: '"ER" no inglês quase sempre vira um som neutro e enrolado com a língua — o mesmo som de "IR" e "UR"!',
+        examples: [
+          { word: 'Her', ph: 'rrẽr', meaning: 'Ela / Dela' },
+          { word: 'Service', ph: 'sẽr-vis', meaning: 'Serviço' }
+        ]
+      },
+      // --- MEUS ACRÉSCIMOS (marcados como sugestão do Claude) ---
+      {
+        id: 'th_sounds', category: '⭐ Sacadas Extras',
+        title: 'O "TH" Tem 2 Sons Diferentes',
+        rule: 'Existem dois "TH" no inglês: um vibrado (voiced), com a língua entre os dentes e a garganta vibrando — usado em palavras curtas e comuns como "this/that/the". E um sem vibrar (unvoiced), só soprando o ar — usado em "think/three/mouth". É o som que mais trava quem fala português, porque não existe nada parecido no nosso idioma.',
+        examples: [
+          { word: 'This / That', ph: 'ĐIS / ĐÉT (vibrando)', meaning: 'Isto / Aquilo' },
+          { word: 'Think / Three', ph: 'THINK / THRÍ (sem vibrar)', meaning: 'Pensar / Três' }
+        ]
+      }
+    ];
+
+    function renderTipsList() {
+      const container = document.getElementById('tipsListContainer');
+      document.getElementById('tipDetailContainer').innerHTML = '';
+      const byCategory = {};
+      PRONUNCIATION_RULES.forEach(r => {
+        byCategory[r.category] = byCategory[r.category] || [];
+        byCategory[r.category].push(r);
+      });
+      container.innerHTML = Object.keys(byCategory).map(cat => `
+        <div class="card">
+          <div class="card-title">${cat}</div>
+          <div style="display:flex; flex-direction:column; gap:0.4rem; margin-top:0.5rem;">
+            ${byCategory[cat].map(r => `
+              <button class="btn btn-secondary" style="text-align:left;" onclick="openTipDetail('${r.id}')">${r.title}</button>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openTipDetail(id) {
+      const rule = PRONUNCIATION_RULES.find(r => r.id === id);
+      if (!rule) return;
+      const container = document.getElementById('tipDetailContainer');
+      container.innerHTML = `
+        <div class="card" style="border-color:var(--accent-cyan);">
+          <button class="btn btn-sm btn-secondary" onclick="document.getElementById('tipDetailContainer').innerHTML=''">✕ Fechar</button>
+          <div class="card-title" style="margin-top:0.5rem;">${rule.title}</div>
+          <p style="font-size:0.85rem; margin:0.5rem 0;">${rule.rule}</p>
+          ${rule.exception ? `<p style="font-size:0.8rem; color:var(--accent-yellow); background:rgba(250,204,21,0.08); padding:0.5rem; border-radius:8px; margin-bottom:0.75rem;">⚠️ <b>Exceção:</b> ${rule.exception}</p>` : ''}
+          <div style="background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:0.75rem; border-radius:10px;">
+            ${rule.examples.map(ex => `
+              <div style="margin-bottom:0.6rem; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <div style="font-weight:700; color:var(--accent-cyan);">${ex.word}</div>
+                  <div style="font-size:0.82rem; color:#fef08a; font-style:italic;">🗣️ ${ex.ph}</div>
+                  <div style="font-size:0.78rem; color:var(--text-muted);">🇧🇷 ${ex.meaning}</div>
+                </div>
+                <button class="btn btn-sm btn-secondary" onclick="speakText('${ex.word.replace(/'/g, "\\'")}')">🔊</button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
     }
 
     function switchSubTab(tabName) {
