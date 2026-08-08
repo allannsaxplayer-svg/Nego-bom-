@@ -2172,9 +2172,13 @@ Responda SOMENTE em JSON válido, neste formato exato, sem nenhum texto antes ou
       return await callGeminiForStory(prompt);
     }
 
+    let currentTopicStory = null;
+    let currentTopicStoryKey = null;
+
     function renderTopicStoryDisplay(topicKey, story, wasPending) {
+      currentTopicStory = story;
+      currentTopicStoryKey = topicKey;
       const container = document.getElementById('topicStoryDisplay');
-      const fullEn = story.sentences.map(s => s.en).join(' ');
       container.innerHTML = `
         <div class="card">
           ${wasPending ? `<p style="font-size:0.78rem; color:var(--accent-yellow); font-weight:700;">📌 Você tem uma história pendente deste tópico. Marque como Estudado pra poder gerar outra.</p>` : ''}
@@ -2183,10 +2187,10 @@ Responda SOMENTE em JSON válido, neste formato exato, sem nenhum texto antes ou
             ${story.sentences.map(s => `<div style="margin-bottom:0.5rem;"><div style="font-weight:600;">${s.en}</div><div style="font-size:0.8rem; color:var(--text-muted);">🇧🇷 ${s.pt}</div></div>`).join('')}
           </div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
-            <button class="btn" onclick='speakSentenceSequence(${jsonForAttr(story.sentences)}, 1.0)'>🔊 Normal</button>
-            <button class="btn btn-secondary" onclick='speakSentenceSequence(${jsonForAttr(story.sentences)}, 0.75)'>🐢 Devagar</button>
+            <button class="btn" onclick="speakSentenceSequence(currentTopicStory.sentences, 1.0)">🔊 Normal</button>
+            <button class="btn btn-secondary" onclick="speakSentenceSequence(currentTopicStory.sentences, 0.75)">🐢 Devagar</button>
           </div>
-          <button class="btn" style="width:100%; margin-top:0.5rem; background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));" onclick='openShadowModeWithSentences(${jsonForAttr(story.sentences)})'>🎯 Shadowing Frase-por-Frase</button>
+          <button class="btn" style="width:100%; margin-top:0.5rem; background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));" onclick="openShadowModeWithSentences(currentTopicStory.sentences)">🎯 Shadowing Frase-por-Frase</button>
           <button class="btn" style="width:100%; margin-top:0.5rem; background: linear-gradient(135deg, var(--accent-green), #16a34a);" onclick="markTopicStoryStudied('${topicKey}')">✅ Marcar como Estudado</button>
         </div>
       `;
@@ -2205,40 +2209,41 @@ Responda SOMENTE em JSON válido, neste formato exato, sem nenhum texto antes ou
     }
 
     // ===== HISTÓRIAS LIDAS =====
+    let readStoriesFlat = [];
     function renderReadStoriesList() {
       const state = loadTopicState();
       const container = document.getElementById('readStoriesList');
-      const items = [];
+      readStoriesFlat = [];
       STORY_TOPICS.forEach(t => {
         const entry = state[t.key];
         if (entry && entry.read && entry.read.length) {
-          entry.read.forEach((story, i) => items.push({ topicLabel: t.label, story, topicKey: t.key, i }));
+          entry.read.forEach(story => readStoriesFlat.push({ topicLabel: t.label, story }));
         }
       });
-      if (items.length === 0) {
+      if (readStoriesFlat.length === 0) {
         container.innerHTML = `<div class="card" style="color:var(--text-muted);">Nenhuma história lida ainda. Estude uma na aba Tópicos!</div>`;
         return;
       }
-      container.innerHTML = items.map(item => `
+      container.innerHTML = readStoriesFlat.map((item, idx) => `
         <div class="card">
           <p style="font-size:0.75rem; color:var(--text-muted);">${item.topicLabel} • lida em ${new Date(item.story.readAt).toLocaleDateString('pt-BR')}</p>
           <div class="card-title">${item.story.title}</div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-top:0.5rem;">
-            <button class="btn btn-secondary" onclick='reviewReadStory(${jsonForAttr(item.story)})'>👁️ Rever</button>
-            <button class="btn btn-secondary" onclick='openShadowModeWithSentences(${jsonForAttr(item.story.sentences)})'>🎯 Shadowing</button>
+            <button class="btn btn-secondary" onclick="reviewReadStoryByIndex(${idx})">👁️ Rever</button>
+            <button class="btn btn-secondary" onclick="openShadowModeWithSentences(readStoriesFlat[${idx}].story.sentences)">🎯 Shadowing</button>
           </div>
         </div>
       `).join('');
     }
-    function reviewReadStory(story) {
-      const fullEn = story.sentences.map(s => s.en).join(' ');
+    function reviewReadStoryByIndex(idx) {
+      const story = readStoriesFlat[idx].story;
       document.getElementById('readStoriesList').insertAdjacentHTML('afterbegin', `
         <div class="card" style="border-color:var(--accent-cyan);">
           <div class="card-title">${story.title}</div>
           <div style="background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:0.85rem; border-radius:10px; margin:0.75rem 0;">
             ${story.sentences.map(s => `<div style="margin-bottom:0.5rem;"><div style="font-weight:600;">${s.en}</div><div style="font-size:0.8rem; color:var(--text-muted);">🇧🇷 ${s.pt}</div></div>`).join('')}
           </div>
-          <button class="btn" style="width:100%;" onclick='speakSentenceSequence(${jsonForAttr(story.sentences)}, 1.0)'>🔊 Ouvir</button>
+          <button class="btn" style="width:100%;" onclick="speakSentenceSequence(readStoriesFlat[${idx}].story.sentences, 1.0)">🔊 Ouvir</button>
         </div>
       `);
     }
@@ -2248,16 +2253,28 @@ Responda SOMENTE em JSON válido, neste formato exato, sem nenhum texto antes ou
     let shadowIdx = 0;
 
     function openShadowModeWithSentences(sentences) {
-      shadowSentences = sentences;
-      shadowIdx = 0;
-      document.getElementById('shadowModal').style.display = 'block';
-      renderShadowLine();
+      try {
+        if (!sentences || !Array.isArray(sentences) || sentences.length === 0) {
+          alert('DEBUG: sentences está vazio ou inválido: ' + JSON.stringify(sentences));
+          return;
+        }
+        shadowSentences = sentences;
+        shadowIdx = 0;
+        document.getElementById('shadowModal').style.display = 'block';
+        renderShadowLine();
+      } catch (err) {
+        alert('DEBUG: erro ao abrir shadowing: ' + err.message);
+      }
     }
     function closeShadowMode() {
       document.getElementById('shadowModal').style.display = 'none';
     }
     function renderShadowLine() {
       const s = shadowSentences[shadowIdx];
+      if (!s || typeof s.en !== 'string') {
+        alert('DEBUG: frase inválida no índice ' + shadowIdx + ': ' + JSON.stringify(s));
+        return;
+      }
       document.getElementById('shadowProgress').innerText = `Frase ${shadowIdx + 1} de ${shadowSentences.length}`;
       document.getElementById('shadowEn').innerText = s.en;
       document.getElementById('shadowPh').innerText = '🗣️ ' + phSentence(s.en);
@@ -2292,6 +2309,7 @@ Responda SOMENTE em JSON válido, neste formato exato, sem nenhum texto antes ou
       `).join('');
     }
 
+    let lastBuiltStory = null;
     async function generateBuiltStory() {
       const checked = Array.from(document.querySelectorAll('.storyBuilderCheck:checked'));
       const resultDiv = document.getElementById('storyBuilderResult');
@@ -2316,15 +2334,15 @@ Responda SOMENTE em JSON válido, sem texto antes ou depois:
 
       try {
         const story = await callGeminiForStory(prompt);
-        const fullEn = story.sentences.map(s => s.en).join(' ');
+        lastBuiltStory = story;
         resultDiv.innerHTML = `
           <div style="background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:0.85rem; border-radius:10px;">
             <div class="card-title" style="margin-bottom:0.5rem;">${story.title}</div>
             ${story.sentences.map(s => `<div style="margin-bottom:0.5rem;"><div style="font-weight:600;">${s.en}</div><div style="font-size:0.8rem; color:var(--text-muted);">🇧🇷 ${s.pt}</div></div>`).join('')}
           </div>
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-top:0.5rem;">
-            <button class="btn" onclick='speakSentenceSequence(${jsonForAttr(story.sentences)}, 1.0)'>🔊 Ouvir</button>
-            <button class="btn btn-secondary" onclick='openShadowModeWithSentences(${jsonForAttr(story.sentences)})'>🎯 Shadowing</button>
+            <button class="btn" onclick="speakSentenceSequence(lastBuiltStory.sentences, 1.0)">🔊 Ouvir</button>
+            <button class="btn btn-secondary" onclick="openShadowModeWithSentences(lastBuiltStory.sentences)">🎯 Shadowing</button>
           </div>
         `;
       } catch (e) {
