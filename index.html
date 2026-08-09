@@ -621,6 +621,17 @@
       <div id="tipDetailContainer"></div>
     </section>
 
+    <!-- 4.6 VOCABULÁRIO POR TEMA -->
+    <section id="vocabSection" class="section">
+      <div class="card">
+        <div class="card-title">🧩 Vocabulário por Tema</div>
+        <p style="font-size:0.82rem; color:var(--text-muted);">Os "tijolos" pra completar qualquer padrão em qualquer situação:</p>
+      </div>
+      <div id="vocabThemeGrid" style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; margin-bottom:1rem;"></div>
+      <div id="vocabWordListContainer"></div>
+      <div id="vocabWordDetailContainer"></div>
+    </section>
+
     <!-- 5. CONFIGURAÇÕES & BACKUP -->
     <section id="configSection" class="section">
       <div class="card">
@@ -662,19 +673,29 @@
     <div class="nav-item active" onclick="showSection('patternsSection')" id="nav-patterns">
       <span class="nav-icon">📚</span> Padrões
     </div>
-    <div class="nav-item" onclick="showSection('storySection')" id="nav-story">
-      <span class="nav-icon">🔗</span> Histórias
-    </div>
     <div class="nav-item" onclick="showSection('srsSection')" id="nav-srs">
       <span class="nav-icon">🧠</span> SRS<span id="srsDueBadge" style="display:none; background:var(--accent-red); color:#fff; font-size:0.65rem; font-weight:800; border-radius:10px; padding:1px 6px; margin-left:4px; vertical-align:top;"></span>
     </div>
-    <div class="nav-item" onclick="showSection('tipsSection')" id="nav-tips">
-      <span class="nav-icon">🗣️</span> Dicas
-    </div>
-    <div class="nav-item" onclick="showSection('configSection')" id="nav-config">
-      <span class="nav-icon">⚙️</span> Backup
+    <div class="nav-item" onclick="openMoreMenu()" id="nav-more">
+      <span class="nav-icon">⋯</span> Mais
     </div>
   </nav>
+
+  <!-- MENU "MAIS OPÇÕES" -->
+  <div id="moreMenuOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:300;" onclick="closeMoreMenu(event)">
+    <div style="position:absolute; bottom:0; left:0; right:0; background:var(--bg-secondary); border-radius:20px 20px 0 0; padding:1.25rem; border-top:1px solid var(--card-border);" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <div style="font-weight:800; font-size:1.1rem;">Mais opções</div>
+        <button class="btn btn-sm btn-secondary" onclick="closeMoreMenu()">✕</button>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:0.6rem;">
+        <button class="btn btn-secondary" style="text-align:left;" onclick="showSection('storySection'); closeMoreMenu();">🔗 Histórias & Story Builder</button>
+        <button class="btn btn-secondary" style="text-align:left;" onclick="showSection('tipsSection'); closeMoreMenu();">🗣️ Dicas do Inglês</button>
+        <button class="btn btn-secondary" style="text-align:left;" onclick="showSection('vocabSection'); closeMoreMenu();">🧩 Vocabulário por Tema</button>
+        <button class="btn btn-secondary" style="text-align:left;" onclick="showSection('configSection'); closeMoreMenu();">⚙️ Backup & Configurações</button>
+      </div>
+    </div>
+  </div>
 
   <script>
     let currentLang = localStorage.getItem('nego_lang') || null;
@@ -955,6 +976,13 @@
       setupSRSDeck();
     }
 
+    function openMoreMenu() {
+      document.getElementById('moreMenuOverlay').style.display = 'block';
+    }
+    function closeMoreMenu(event) {
+      document.getElementById('moreMenuOverlay').style.display = 'none';
+    }
+
     function showSection(sectionId) {
       if (!currentLang) {
         openLanguageSelector();
@@ -973,13 +1001,17 @@
       if (sectionId === 'tipsSection') {
         renderTipsList();
       }
+      if (sectionId === 'vocabSection') {
+        renderVocabThemes();
+      }
       
       const navMap = {
         patternsSection: 'nav-patterns',
-        storySection: 'nav-story',
         srsSection: 'nav-srs',
-        tipsSection: 'nav-tips',
-        configSection: 'nav-config'
+        storySection: 'nav-more',
+        tipsSection: 'nav-more',
+        vocabSection: 'nav-more',
+        configSection: 'nav-more'
       };
       if (navMap[sectionId]) {
         document.getElementById(navMap[sectionId]).classList.add('active');
@@ -1460,6 +1492,137 @@
         ]
       }
     ];
+
+    // ===== VOCABULÁRIO POR TEMA (banco inicial, cresce igual os padrões) =====
+    const VOCABULARY_THEMES = {
+      supermercado: {
+        label: '🛒 Supermercado', words: [
+          { en: 'apple', pt: 'maçã', ph: 'épol', tag: 'substantivo', examples: [
+            { en: 'I bought a red apple.', pt: 'Eu comprei uma maçã vermelha.' }
+          ]},
+          { en: 'tomato', pt: 'tomate', ph: 'tô-méi-tou', tag: 'substantivo', examples: [
+            { en: 'Do we have any tomatoes left?', pt: 'A gente ainda tem tomate?' }
+          ]},
+          { en: 'onion', pt: 'cebola', ph: 'â-ni-an', tag: 'substantivo', examples: [
+            { en: 'This soup needs more onion.', pt: 'Essa sopa precisa de mais cebola.' }
+          ]},
+          { en: 'garlic', pt: 'alho', ph: 'gár-lic', tag: 'substantivo', examples: [
+            { en: 'I love the smell of garlic.', pt: 'Eu amo o cheiro de alho.' }
+          ]},
+          { en: 'fresh', pt: 'fresco / recente', ph: 'frésh', tag: 'adjetivo', examples: [
+            { en: 'These vegetables are very fresh.', pt: 'Esses legumes estão bem frescos.' },
+            { en: 'I need a fresh start.', pt: 'Eu preciso de um recomeço. (sentido diferente: "novo/renovado")' }
+          ]},
+          { en: 'checkout', pt: 'caixa (pra pagar)', ph: 'tché-káut', tag: 'substantivo', examples: [
+            { en: 'The checkout line is really long today.', pt: 'A fila do caixa está bem longa hoje.' }
+          ]},
+          { en: 'to pay', pt: 'pagar', ph: 'tú péi', tag: 'verbo', examples: [
+            { en: 'Can I pay by card?', pt: 'Posso pagar com cartão?' }
+          ]},
+          { en: 'to weigh', pt: 'pesar', ph: 'tú uéi', tag: 'verbo', examples: [
+            { en: 'You need to weigh the fruit first.', pt: 'Você precisa pesar a fruta primeiro.' }
+          ]}
+        ]
+      },
+      corpo_humano: {
+        label: '🧍 Corpo Humano', words: [
+          { en: 'head', pt: 'cabeça', ph: 'réd', tag: 'substantivo', examples: [
+            { en: 'My head hurts.', pt: 'Minha cabeça dói.' },
+            { en: 'She is the head of the company.', pt: 'Ela é a chefe da empresa. (sentido diferente: "líder")' }
+          ]},
+          { en: 'hand', pt: 'mão', ph: 'rénd', tag: 'substantivo', examples: [
+            { en: 'Wash your hands before eating.', pt: 'Lave as mãos antes de comer.' },
+            { en: 'Can you give me a hand?', pt: 'Você pode me dar uma ajuda? (sentido diferente: "ajuda")' }
+          ]},
+          { en: 'back', pt: 'costas', ph: 'béc', tag: 'substantivo', examples: [
+            { en: 'My back hurts from work.', pt: 'Minhas costas doem do trabalho.' },
+            { en: "I'll be back in five minutes.", pt: 'Eu volto em cinco minutos. (sentido diferente: "voltar")' }
+          ]},
+          { en: 'chest', pt: 'peito', ph: 'tchést', tag: 'substantivo', examples: [
+            { en: 'He felt a pain in his chest.', pt: 'Ele sentiu uma dor no peito.' }
+          ]},
+          { en: 'ankle', pt: 'tornozelo', ph: 'én-col', tag: 'substantivo', examples: [
+            { en: 'I twisted my ankle playing soccer.', pt: 'Eu torci o tornozelo jogando futebol.' }
+          ]}
+        ]
+      },
+      numeros_enderecos: {
+        label: '🔢 Números & Endereços', words: [
+          { en: 'address', pt: 'endereço', ph: 'é-dres', tag: 'substantivo', examples: [
+            { en: "What's your address?", pt: 'Qual é o seu endereço?' }
+          ]},
+          { en: 'zip code', pt: 'CEP', ph: 'zip kôud', tag: 'substantivo', examples: [
+            { en: 'I need your zip code to deliver this.', pt: 'Eu preciso do seu CEP pra entregar isso.' }
+          ]},
+          { en: 'street', pt: 'rua', ph: 'strít', tag: 'substantivo', examples: [
+            { en: 'I live on Oak Street.', pt: 'Eu moro na rua Oak.' }
+          ]},
+          { en: 'phone number', pt: 'número de telefone', ph: 'fôun nâm-ber', tag: 'substantivo', examples: [
+            { en: "Can I get your phone number?", pt: 'Posso pegar seu número de telefone?' }
+          ]},
+          { en: 'to count', pt: 'contar', ph: 'tú káunt', tag: 'verbo', examples: [
+            { en: 'Can you count to ten in English?', pt: 'Você consegue contar até dez em inglês?' },
+            { en: 'Every vote counts.', pt: 'Todo voto importa. (sentido diferente: "importar/valer")' }
+          ]}
+        ]
+      }
+    };
+
+    let vocabCurrentTheme = null;
+
+    function renderVocabThemes() {
+      const grid = document.getElementById('vocabThemeGrid');
+      document.getElementById('vocabWordListContainer').innerHTML = '';
+      document.getElementById('vocabWordDetailContainer').innerHTML = '';
+      grid.innerHTML = Object.keys(VOCABULARY_THEMES).map(key => `
+        <button class="btn" onclick="openVocabTheme('${key}')">${VOCABULARY_THEMES[key].label}</button>
+      `).join('');
+    }
+
+    function openVocabTheme(themeKey) {
+      vocabCurrentTheme = themeKey;
+      const theme = VOCABULARY_THEMES[themeKey];
+      document.getElementById('vocabWordDetailContainer').innerHTML = '';
+      const container = document.getElementById('vocabWordListContainer');
+      container.innerHTML = `
+        <div class="card">
+          <div class="card-title">${theme.label}</div>
+          <div style="display:flex; flex-direction:column; gap:0.4rem; margin-top:0.5rem;">
+            ${theme.words.map((w, i) => `
+              <button class="btn btn-secondary" style="text-align:left; display:flex; justify-content:space-between;" onclick="openVocabWord(${i})">
+                <span><b>${w.en}</b> — ${w.pt}</span>
+                <span style="font-size:0.7rem; opacity:0.7;">${w.tag}</span>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function openVocabWord(wordIdx) {
+      const word = VOCABULARY_THEMES[vocabCurrentTheme].words[wordIdx];
+      const container = document.getElementById('vocabWordDetailContainer');
+      container.innerHTML = `
+        <div class="card" style="border-color:var(--accent-cyan);">
+          <button class="btn btn-sm btn-secondary" onclick="document.getElementById('vocabWordDetailContainer').innerHTML=''">✕ Fechar</button>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.5rem;">
+            <div class="card-title" style="margin:0;">${word.en}</div>
+            <button class="btn btn-sm btn-secondary" onclick="speakText('${word.en.replace(/'/g, "\\'")}')">🔊</button>
+          </div>
+          <p style="font-size:0.85rem; color:#fef08a; font-style:italic;">🗣️ ${word.ph}</p>
+          <p style="font-size:0.85rem;">🇧🇷 ${word.pt} <span style="font-size:0.7rem; color:var(--text-muted);">(${word.tag})</span></p>
+          <div style="background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:0.75rem; border-radius:10px; margin-top:0.5rem;">
+            <div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:0.4rem;">Exemplos de uso:</div>
+            ${word.examples.map(ex => `
+              <div style="margin-bottom:0.5rem;">
+                <div style="font-weight:600; font-size:0.9rem;">${ex.en}</div>
+                <div style="font-size:0.78rem; color:var(--text-muted);">🇧🇷 ${ex.pt}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
 
     function renderTipsList() {
       const container = document.getElementById('tipsListContainer');
