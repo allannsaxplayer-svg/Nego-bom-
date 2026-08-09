@@ -1169,6 +1169,295 @@
           { word: 'This / That', ph: 'ĐIS / ĐÉT (vibrando)', meaning: 'Isto / Aquilo' },
           { word: 'Think / Three', ph: 'THINK / THRÍ (sem vibrar)', meaning: 'Pensar / Três' }
         ]
+      },
+      // --- VOGAL I ---
+      {
+        id: 'vowel_i_short', category: '🅸 Vogal I',
+        title: 'I Curto (som preso, entre "I" e "E")',
+        rule: 'Não é um "Í" limpo e aberto como em português — é um som rápido e abafado, bem no meio do caminho entre "I" e "E".',
+        examples: [
+          { word: 'Sit', ph: 'sït', meaning: 'Sentar' },
+          { word: 'Big', ph: 'bïg', meaning: 'Grande' }
+        ]
+      },
+      {
+        id: 'vowel_i_long', category: '🅸 Vogal I',
+        title: 'I Longo (som de "AI")',
+        rule: 'Ocorre no padrão "I + Consoante + E mudo" ou na combinação "IGH".',
+        exception: 'Palavras curtas terminadas em ND ou LD também transformam o I em som longo, mesmo sem o E mudo: "Find" (fáind), "Child" (cháild), "Wild" (wáild).',
+        examples: [
+          { word: 'Time', ph: 'táim', meaning: 'Tempo' },
+          { word: 'Night', ph: 'náit', meaning: 'Noite' }
+        ]
+      },
+      {
+        id: 'vowel_i_r', category: '🅸 Vogal I',
+        title: 'I Controlado por R (mesmo som do ER)',
+        rule: 'A combinação "IR" tem exatamente o mesmo som do "ER" — aquele som neutro e enrolado com a língua.',
+        examples: [
+          { word: 'Bird', ph: 'bẽrd', meaning: 'Pássaro' },
+          { word: 'Girl', ph: 'gẽrl', meaning: 'Menina' }
+        ]
+      },
+      // --- VOGAL O ---
+      {
+        id: 'vowel_o_short', category: '🅾️ Vogal O',
+        title: 'O Curto (som de "Ó" aberto)',
+        rule: 'Ocorre em palavras curtas terminadas em consoante.',
+        examples: [
+          { word: 'Hot', ph: 'rót', meaning: 'Quente' },
+          { word: 'Job', ph: 'djób', meaning: 'Trabalho/Emprego' }
+        ]
+      },
+      {
+        id: 'vowel_o_long', category: '🅾️ Vogal O',
+        title: 'O Longo (som de "OU")',
+        rule: 'Ocorre no padrão "O + Consoante + E mudo" ou nas combinações "OA"/"OW".',
+        examples: [
+          { word: 'Home', ph: 'róum', meaning: 'Casa/Lar' },
+          { word: 'Boat', ph: 'bôut', meaning: 'Barco' }
+        ]
+      },
+      {
+        id: 'vowel_o_r', category: '🅾️ Vogal O',
+        title: 'O Controlado por R (som de "ÓR")',
+        rule: 'Quando o O é seguido de R, vira um "ÓR" bem definido e alongado.',
+        exception: 'A combinação "OO" ganha som de "Ú" — mas repara que existem dois "Ú" diferentes: um mais longo ("food") e um mais curto e seco ("book").',
+        examples: [
+          { word: 'Door', ph: 'dór', meaning: 'Porta' },
+          { word: 'Food / Book', ph: 'fúúd / búk', meaning: 'Comida (Ú longo) / Livro (Ú curto)' }
+        ]
+      },
+      // --- VOGAL U ---
+      {
+        id: 'vowel_u_short', category: '🅄 Vogal U',
+        title: 'U Curto (som de "Â" neutro)',
+        rule: 'É o som do "A" fechado do português, quase um "Â" — não confundir com o "U" de "uva".',
+        examples: [
+          { word: 'Bus', ph: 'bâs', meaning: 'Ônibus' },
+          { word: 'Sun', ph: 'sân', meaning: 'Sol' }
+        ]
+      },
+      {
+        id: 'vowel_u_long', category: '🅄 Vogal U',
+        title: 'U Longo (som de "IÚ")',
+        rule: 'Ocorre no padrão "U + Consoante + E mudo".',
+        examples: [
+          { word: 'Cute', ph: 'kiút', meaning: 'Fofo/Bonitinho' },
+          { word: 'Use', ph: 'iúz', meaning: 'Usar' }
+        ]
+      },
+      {
+        id: 'vowel_u_r', category: '🅄 Vogal U',
+        title: 'U Controlado por R (mesmo som do ER)',
+        rule: 'A combinação "UR" tem o mesmo som de "ER" e "IR".',
+        exception: 'Em algumas palavras fechadas, o U não vira "Â" e sim "Ú" abafado: "Full" (fúl), "Put" (pút).',
+        examples: [
+          { word: 'Turn', ph: 'tẽrn', meaning: 'Virar/Girar' },
+          { word: 'Nurse', ph: 'nẽrs', meaning: 'Enfermeira' }
+        ]
+      },
+      // --- SEGREDO DE OURO ---
+      {
+        id: 'golden_secret', category: '⭐ Sacadas Extras',
+        title: 'O Segredo de Ouro: ER = IR = UR',
+        rule: 'As três combinações — ER, IR e UR — têm rigorosamente a MESMA pronúncia no inglês americano: um "ẼR" enrolado, com a língua curvada pro fundo da boca. Se você aprender esse som uma vez, já sabe ler centenas de palavras.',
+        examples: [
+          { word: 'Her = Bird = Turn', ph: 'rrẽr = bẽrd = tẽrn', meaning: 'Todos com a MESMA vogal!' },
+          { word: 'Service = Girl = Nurse', ph: 'sẽrvis = gẽrl = nẽrs', meaning: 'De novo, o mesmo som' }
+        ]
+      },
+      {
+        id: 'ed_endings', category: '⭐ Sacadas Extras',
+        title: 'O "-ed" do Passado Tem 3 Sons',
+        rule: 'A terminação "-ed" muda de som dependendo da última letra do verbo: som de "T" depois de consoante sem vibrar (walk→walked), som de "D" depois de vogal ou consoante vibrada (play→played), e som de "ID" quando o verbo já termina em T ou D (want→wanted).',
+        examples: [
+          { word: 'Walked', ph: 'uókt (som de T)', meaning: 'Caminhou' },
+          { word: 'Played', ph: 'pléid (som de D)', meaning: 'Jogou/Brincou' },
+          { word: 'Wanted', ph: 'uóntid (som de ID)', meaning: 'Quis/Queria' }
+        ]
+      },
+      {
+        id: 's_endings', category: '⭐ Sacadas Extras',
+        title: 'O "-s" do Plural/3ª Pessoa Também Tem 3 Sons',
+        rule: 'Mesma lógica do "-ed": som de "S" depois de consoante sem vibrar (cat→cats), som de "Z" depois de vogal ou consoante vibrada (dog→dogs), e som de "IZ" quando a palavra já termina em som de S/CH/SH/Z (class→classes).',
+        examples: [
+          { word: 'Cats', ph: 'kéts (som de S)', meaning: 'Gatos' },
+          { word: 'Dogs', ph: 'dógz (som de Z)', meaning: 'Cachorros' },
+          { word: 'Classes', ph: 'klésiz (som de IZ)', meaning: 'Aulas/Turmas' }
+        ]
+      },
+      {
+        id: 'american_r', category: '⭐ Sacadas Extras',
+        title: 'O "R" Americano Não é o Nosso "R"',
+        rule: 'Como sua própria lógica usa o "R" do português pra representar o som de H (hospital→rospital), é importante não confundir: o R de verdade do inglês americano não é vibrado nem tampouco o R suave de "caro" — a língua fica curvada pra trás, sem tocar em nada, meio "engolindo" o som. É o mesmo som que aparece em ER/IR/UR.',
+        examples: [
+          { word: 'Red', ph: 'w-réd (língua curvada, sem tocar)', meaning: 'Vermelho' },
+          { word: 'Right', ph: 'w-ráit', meaning: 'Certo/Direita' }
+        ]
+      },
+      // --- SONS DE CONSOANTES (os 3 primeiros que faltavam da leva original) ---
+      {
+        id: 'h_to_r', category: '🔤 Sons de Consoantes',
+        title: 'O "H" Ganha Som de "R" (truque de leitura)',
+        rule: 'O inglês tem um som de H aspirado que o português não tem letra pra representar — mas o nosso "R" de "carro" soa bem parecido! Por isso, usar "R" pra ler o H em inglês é um baita atalho.',
+        examples: [
+          { word: 'Hospital', ph: 'rós-pi-tol', meaning: 'Hospital' },
+          { word: 'Head', ph: 'réd', meaning: 'Cabeça' },
+          { word: 'Husband', ph: 'rás-bend', meaning: 'Marido' }
+        ]
+      },
+      {
+        id: 't_flap', category: '🔤 Sons de Consoantes',
+        title: 'O "T" Entre Vogais Vira "R" Brando',
+        rule: 'Quando a letra T fica entre duas vogais, ela perde o som forte de "T" e ganha o som do R brando do português — igual o "r" de "caro" ou "arara". Isso só acontece no inglês americano.',
+        examples: [
+          { word: 'Water', ph: 'uó-rer', meaning: 'Água' },
+          { word: 'City', ph: 'sí-ri', meaning: 'Cidade' },
+          { word: 'Computer', ph: 'côm-piú-rer', meaning: 'Computador' }
+        ]
+      },
+      {
+        id: 'wr_silent', category: '🔤 Sons de Consoantes',
+        title: 'O "W" Mudo Antes de "R" (WR-)',
+        rule: 'Sempre que uma palavra começa com as letras WR, o W é totalmente ignorado. A pronúncia começa direto no som do R.',
+        examples: [
+          { word: 'Write', ph: 'ráit', meaning: 'Escrever' },
+          { word: 'Wrong', ph: 'róng', meaning: 'Errado' },
+          { word: 'Wrap', ph: 'rép', meaning: 'Embrulhar' }
+        ]
+      },
+      {
+        id: 'mb_silent', category: '🔤 Sons de Consoantes',
+        title: 'O "MB" no Final — o "B" é Mudo',
+        rule: 'Sempre que uma palavra termina com as letras MB, o B não é pronunciado. A boca fecha no M e para por aí.',
+        examples: [
+          { word: 'Climb', ph: 'kláim', meaning: 'Escalar' },
+          { word: 'Comb', ph: 'kôum', meaning: 'Pente' },
+          { word: 'Thumb', ph: 'thâm', meaning: 'Polegar' }
+        ]
+      },
+      // --- MAIS TERMINAÇÕES (originais que faltavam + leva nova corrigida) ---
+      {
+        id: 'ture_ending', category: '📝 Terminações e Escrita',
+        title: 'O Final "-ture" Vira "tchãr"',
+        rule: 'Palavras terminadas em -ture raramente soam como "túre". O som é sempre "tchãr" (ou "tchêr" bem suave).',
+        examples: [
+          { word: 'Future', ph: 'fiú-tchãr', meaning: 'Futuro' },
+          { word: 'Picture', ph: 'pík-tchãr', meaning: 'Foto/Imagem' },
+          { word: 'Culture', ph: 'kál-tchãr', meaning: 'Cultura' }
+        ]
+      },
+      {
+        id: 'tion_ending', category: '📝 Terminações e Escrita',
+        title: 'O Final "-tion" Vira "shãn"',
+        rule: 'A terminação -tion nunca é pronunciada como "ti-ón". Ela sempre assume o som seco de "shãn".',
+        examples: [
+          { word: 'Action', ph: 'ék-chãn', meaning: 'Ação' },
+          { word: 'Information', ph: 'in-for-mei-chãn', meaning: 'Informação' }
+        ]
+      },
+      {
+        id: 'ous_ending', category: '📝 Terminações e Escrita',
+        title: 'O Final "-ous" Vira "ãs/es" (Schwa)',
+        rule: 'A terminação -ous nunca soa como "ôus" cheio. O encontro OU perde a força no final da palavra e vira o som neutro Schwa — algo entre "ãs" e "es".',
+        examples: [
+          { word: 'Dangerous', ph: 'déin-jã-res', meaning: 'Perigoso' },
+          { word: 'Delicious', ph: 'de-lí-xes', meaning: 'Delicioso' },
+          { word: 'Famous', ph: 'féi-mãs', meaning: 'Famoso' }
+        ]
+      },
+      {
+        id: 'ice_ending', category: '📝 Terminações e Escrita',
+        title: 'O Final "-ice" Vira "is" (na maioria)',
+        rule: 'Em palavras com duas ou mais sílabas, "-ice" perde a força e vira o som abafado de "is".',
+        exception: 'Em palavras de UMA sílaba só, o E mudo faz o I virar "AI": Ice(áis), Rice(ráis), Price(práis). E cuidado com "Police" — foge da regra, soa "pu-LÍS" com força no final, não "põlís" fraco.',
+        examples: [
+          { word: 'Notice', ph: 'nô-ris', meaning: 'Aviso/Notar' },
+          { word: 'Practice', ph: 'prák-tis', meaning: 'Praticar' },
+          { word: 'Office', ph: 'ó-fis', meaning: 'Escritório' }
+        ]
+      },
+      {
+        id: 'ate_ending', category: '📝 Terminações e Escrita',
+        title: 'O Final "-ate" Vira "ët" (Substantivo/Adjetivo)',
+        rule: 'Quando a palavra é um substantivo ou adjetivo, "-ate" não soa "eit" — vira um "ët" bem fraquinho.',
+        exception: 'Se a MESMA palavra for usada como verbo (uma ação), o som volta a ser forte "EIT". É o mesmo truque de RECord (substantivo) vs reCORD (verbo)!',
+        examples: [
+          { word: 'Chocolate', ph: 'chók-lët', meaning: 'Chocolate' },
+          { word: 'Climate', ph: 'kláí-mët', meaning: 'Clima' },
+          { word: 'To Create', ph: 'kri-éit (verbo, som forte)', meaning: 'Criar' }
+        ]
+      },
+      {
+        id: 'age_ending', category: '📝 Terminações e Escrita',
+        title: 'O Final "-age" Vira "idj"',
+        rule: 'Raramente se diz "eidj" no final de palavras longas. O som vira "idj" curto.',
+        exception: 'Palavras que vieram direto do francês mantêm o som "ÁJ" (tipo o som do S em "pleasure", não "DJ"): Garage soa "gã-RÁJ".',
+        examples: [
+          { word: 'Village', ph: 'ví-lidj', meaning: 'Vilarejo' },
+          { word: 'Message', ph: 'mé-sidj', meaning: 'Mensagem' },
+          { word: 'Damage', ph: 'dá-midj', meaning: 'Dano/Prejuízo' }
+        ]
+      },
+      {
+        id: 'silent_t_combos', category: '📝 Terminações e Escrita',
+        title: 'O "T" Mudo em "-FTEN" e "-STLE/-STEN"',
+        rule: 'Nessas combinações, o T é ignorado na fala.',
+        exception: '"Often" é especial: os dois jeitos (com T e sem T) são aceitos e comuns nos EUA — não é uma regra 100% fechada como em listen/castle.',
+        examples: [
+          { word: 'Listen', ph: 'lí-sen', meaning: 'Escutar' },
+          { word: 'Castle', ph: 'ká-sol', meaning: 'Castelo' },
+          { word: 'Often', ph: 'ó-fen (ou ó-ften, os dois valem)', meaning: 'Frequentemente' }
+        ]
+      },
+      {
+        id: 'ful_ending', category: '📝 Terminações e Escrita',
+        title: 'O Final "-ful" Vira "fõl"',
+        rule: 'A palavra "full" sozinha soa "fúl" forte. Mas como final de outra palavra, ganha um som neutro e rápido de "fõl".',
+        examples: [
+          { word: 'Beautiful', ph: 'biú-ri-fõl', meaning: 'Lindo(a)' },
+          { word: 'Helpful', ph: 'rélp-fõl', meaning: 'Prestativo/Útil' }
+        ]
+      },
+      {
+        id: 'al_before_cons', category: '📝 Terminações e Escrita',
+        title: 'O "AL" Antes de Consoante Vira "ÓL"',
+        rule: 'Quando A vem seguido de L antes de outra consoante, o som muda pra "ÓL".',
+        exception: 'Em walk/talk/chalk/half, o L fica totalmente mudo (uók, tók)! Mas em "almost", o L é pronunciado normal (ól-môust) — não generalize essa mudez pra toda palavra com AL.',
+        examples: [
+          { word: 'Walk', ph: 'uók (L mudo aqui!)', meaning: 'Caminhar' },
+          { word: 'Almost', ph: 'ól-môust (L normal aqui)', meaning: 'Quase' }
+        ]
+      },
+      // --- MAIS SACADAS EXTRAS ---
+      {
+        id: 'noun_verb_stress', category: '⭐ Sacadas Extras',
+        title: 'A Sílaba Forte Muda Substantivo ↔ Verbo',
+        rule: 'Em várias palavras de 2 sílabas, o SUBSTANTIVO tem força na 1ª sílaba, e o VERBO (a mesma palavra escrita!) tem força na 2ª. Muda o som, muda até o sentido.',
+        examples: [
+          { word: 'RÉ-cord (substantivo) / ri-CÓRD (verbo)', ph: 'RÉ-kord / ri-KÓRD', meaning: 'O registro / Gravar' },
+          { word: 'PRÉ-sent (substantivo) / pri-SÉNT (verbo)', ph: 'PRÉ-zent / pri-ZÉNT', meaning: 'O presente / Apresentar' }
+        ]
+      },
+      {
+        id: 'sion_ending', category: '⭐ Sacadas Extras',
+        title: 'O Final "-sion" Tem 2 Sons',
+        rule: 'Depois de VOGAL, "-sion" soa suave "jn" (como o J de "já"). Depois de CONSOANTE, soa "chn" (como o CH de "chá") — irmã da regra do "-tion".',
+        examples: [
+          { word: 'Television', ph: 'té-le-vi-jn (depois de vogal)', meaning: 'Televisão' },
+          { word: 'Mansion', ph: 'mén-chn (depois de consoante)', meaning: 'Mansão' }
+        ]
+      },
+      {
+        id: 'ough_chameleon', category: '⭐ Sacadas Extras',
+        title: 'O "OUGH" Camaleão (sem regra fixa!)',
+        rule: 'A combinação OUGH é famosa por não ter regra — a MESMA letra muda de som completamente de palavra pra palavra. Aqui não dá pra generalizar: o jeito é decorar palavra por palavra, de tanto ouvir.',
+        examples: [
+          { word: 'Though', ph: 'đôu (som de "ô")', meaning: 'Embora' },
+          { word: 'Through', ph: 'thru (som de "u")', meaning: 'Através de' },
+          { word: 'Tough', ph: 'tâf (som de "âf")', meaning: 'Difícil/Durão' }
+        ]
       }
     ];
 
