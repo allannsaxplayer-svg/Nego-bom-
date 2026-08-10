@@ -1510,8 +1510,8 @@
             { en: 'I love the smell of garlic.', pt: 'Eu amo o cheiro de alho.' }
           ]},
           { en: 'fresh', pt: 'fresco / recente', ph: 'frésh', tag: 'adjetivo', examples: [
-            { en: 'These vegetables are very fresh.', pt: 'Esses legumes estão bem frescos.' },
-            { en: 'I need a fresh start.', pt: 'Eu preciso de um recomeço. (sentido diferente: "novo/renovado")' }
+            { en: 'These vegetables are very fresh.', pt: 'Esses legumes estão bem frescos.', sense: 'Sentido 1 — literal: usado pra comida, ar, coisas que não estragaram ou acabaram de ser feitas.' },
+            { en: 'I need a fresh start.', pt: 'Eu preciso de um recomeço.', sense: 'Sentido 2 — figurado: algo "novo/renovado", sem ligação com comida. Usado com "start", "idea", "approach".' }
           ]},
           { en: 'checkout', pt: 'caixa (pra pagar)', ph: 'tché-káut', tag: 'substantivo', examples: [
             { en: 'The checkout line is really long today.', pt: 'A fila do caixa está bem longa hoje.' }
@@ -1527,16 +1527,16 @@
       corpo_humano: {
         label: '🧍 Corpo Humano', words: [
           { en: 'head', pt: 'cabeça', ph: 'réd', tag: 'substantivo', examples: [
-            { en: 'My head hurts.', pt: 'Minha cabeça dói.' },
-            { en: 'She is the head of the company.', pt: 'Ela é a chefe da empresa. (sentido diferente: "líder")' }
+            { en: 'My head hurts.', pt: 'Minha cabeça dói.', sense: 'Sentido 1 — literal: a parte do corpo.' },
+            { en: 'She is the head of the company.', pt: 'Ela é a chefe da empresa.', sense: 'Sentido 2 — figurado: "líder/chefe" de algo. Aparece antes de "of the [empresa/departamento]".' }
           ]},
           { en: 'hand', pt: 'mão', ph: 'rénd', tag: 'substantivo', examples: [
-            { en: 'Wash your hands before eating.', pt: 'Lave as mãos antes de comer.' },
-            { en: 'Can you give me a hand?', pt: 'Você pode me dar uma ajuda? (sentido diferente: "ajuda")' }
+            { en: 'Wash your hands before eating.', pt: 'Lave as mãos antes de comer.', sense: 'Sentido 1 — literal: a parte do corpo.' },
+            { en: 'Can you give me a hand?', pt: 'Você pode me dar uma ajuda?', sense: 'Sentido 2 — expressão fixa "give someone a hand" = ajudar. Só funciona com o verbo "give".' }
           ]},
           { en: 'back', pt: 'costas', ph: 'béc', tag: 'substantivo', examples: [
-            { en: 'My back hurts from work.', pt: 'Minhas costas doem do trabalho.' },
-            { en: "I'll be back in five minutes.", pt: 'Eu volto em cinco minutos. (sentido diferente: "voltar")' }
+            { en: 'My back hurts from work.', pt: 'Minhas costas doem do trabalho.', sense: 'Sentido 1 — substantivo: a parte do corpo.' },
+            { en: "I'll be back in five minutes.", pt: 'Eu volto em cinco minutos.', sense: 'Sentido 2 — advérbio, depois de "be": indica retorno/volta, não tem nada a ver com o corpo.' }
           ]},
           { en: 'chest', pt: 'peito', ph: 'tchést', tag: 'substantivo', examples: [
             { en: 'He felt a pain in his chest.', pt: 'Ele sentiu uma dor no peito.' }
@@ -1561,8 +1561,8 @@
             { en: "Can I get your phone number?", pt: 'Posso pegar seu número de telefone?' }
           ]},
           { en: 'to count', pt: 'contar', ph: 'tú káunt', tag: 'verbo', examples: [
-            { en: 'Can you count to ten in English?', pt: 'Você consegue contar até dez em inglês?' },
-            { en: 'Every vote counts.', pt: 'Todo voto importa. (sentido diferente: "importar/valer")' }
+            { en: 'Can you count to ten in English?', pt: 'Você consegue contar até dez em inglês?', sense: 'Sentido 1 — literal: contar números em sequência.' },
+            { en: 'Every vote counts.', pt: 'Todo voto importa.', sense: 'Sentido 2 — figurado: "ter valor/importar". Não tem número envolvido.' }
           ]}
         ]
       }
@@ -1614,8 +1614,13 @@
           <div style="background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:0.75rem; border-radius:10px; margin-top:0.5rem;">
             <div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:0.4rem;">Exemplos de uso:</div>
             ${word.examples.map(ex => `
-              <div style="margin-bottom:0.5rem;">
-                <div style="font-weight:600; font-size:0.9rem;">${ex.en}</div>
+              <div style="margin-bottom:0.7rem;">
+                ${ex.sense ? `<div style="font-size:0.75rem; color:var(--accent-yellow); font-weight:700; margin-bottom:0.2rem;">📌 ${ex.sense}</div>` : ''}
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <div style="font-weight:600; font-size:0.9rem;">${ex.en}</div>
+                  <button class="btn btn-sm btn-secondary" onclick="speakText('${ex.en.replace(/'/g, "\\'")}')">🔊</button>
+                </div>
+                <div style="font-size:0.8rem; color:#fef08a; font-style:italic;">🗣️ ${phSentence(ex.en)}</div>
                 <div style="font-size:0.78rem; color:var(--text-muted);">🇧🇷 ${ex.pt}</div>
               </div>
             `).join('')}
