@@ -568,7 +568,12 @@
       </div>
     </section>
 
-    <!-- MODAL DE SHADOWING FRASE-POR-FRASE -->
+    <!-- MODAL DE DETALHE DA PALAVRA (VOCABULÁRIO) -->
+    <div id="vocabWordModal" style="display:none; position:fixed; inset:0; background:var(--bg-primary); z-index:250; padding:1.25rem; overflow-y:auto;">
+      <button class="btn btn-sm btn-secondary" onclick="closeVocabWordModal()">← Voltar</button>
+      <div id="vocabWordModalContent"></div>
+    </div>
+
     <div id="shadowModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:200; padding:1.25rem; overflow-y:auto;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
         <div style="font-weight:800; color:var(--accent-cyan);">🐢 Modo Shadowing</div>
@@ -1521,7 +1526,66 @@
           ]},
           { en: 'to weigh', pt: 'pesar', ph: 'tú uéi', tag: 'verbo', examples: [
             { en: 'You need to weigh the fruit first.', pt: 'Você precisa pesar a fruta primeiro.' }
-          ]}
+          ]},
+          { en: 'banana', pt: 'banana', ph: 'bã-né-nã', tag: 'substantivo', examples: [{ en: 'I eat a banana every morning.', pt: 'Eu como uma banana toda manhã.' }] },
+          { en: 'orange', pt: 'laranja', ph: 'ó-rindj', tag: 'substantivo', examples: [{ en: 'Can I have some orange juice?', pt: 'Posso tomar um suco de laranja?' }] },
+          { en: 'strawberry', pt: 'morango', ph: 'stró-be-ri', tag: 'substantivo', examples: [{ en: 'These strawberries look delicious.', pt: 'Esses morangos parecem deliciosos.' }] },
+          { en: 'grape', pt: 'uva', ph: 'gréip', tag: 'substantivo', examples: [{ en: 'She bought a bag of grapes.', pt: 'Ela comprou um saco de uvas.' }] },
+          { en: 'lemon / lime', pt: 'limão siciliano / limão verde', ph: 'lé-mon / láim', tag: 'substantivo', examples: [{ en: 'Add a slice of lime to the drink.', pt: 'Coloca uma fatia de limão na bebida.' }] },
+          { en: 'watermelon', pt: 'melancia', ph: 'uó-ter-mé-lon', tag: 'substantivo', examples: [{ en: 'Watermelon is perfect for hot days.', pt: 'Melancia é perfeita pra dias quentes.' }] },
+          { en: 'pineapple', pt: 'abacaxi', ph: 'páin-ép-ol', tag: 'substantivo', examples: [{ en: 'We ordered a pineapple juice.', pt: 'A gente pediu um suco de abacaxi.' }] },
+          { en: 'mango', pt: 'manga', ph: 'mén-gou', tag: 'substantivo', examples: [{ en: 'This mango is really sweet.', pt: 'Essa manga tá bem doce.' }] },
+          { en: 'lettuce', pt: 'alface', ph: 'lé-tâs', tag: 'substantivo', examples: [{ en: 'The salad needs more lettuce.', pt: 'A salada precisa de mais alface.' }] },
+          { en: 'carrot', pt: 'cenoura', ph: 'ké-rot', tag: 'substantivo', examples: [{ en: 'He is cutting the carrots.', pt: 'Ele está cortando as cenouras.' }] },
+          { en: 'cucumber', pt: 'pepino', ph: 'kiú-kâm-ber', tag: 'substantivo', examples: [{ en: 'I like cucumber in my salad.', pt: 'Eu gosto de pepino na minha salada.' }] },
+          { en: 'corn', pt: 'milho', ph: 'kórn', tag: 'substantivo', examples: [{ en: 'We had corn on the cob.', pt: 'A gente comeu milho na espiga.' }] },
+          { en: 'mushroom', pt: 'cogumelo', ph: 'mâsh-rum', tag: 'substantivo', examples: [{ en: 'This sauce has mushrooms in it.', pt: 'Esse molho tem cogumelo.' }] },
+          { en: 'beef', pt: 'carne bovina', ph: 'bíf', tag: 'substantivo', examples: [{ en: 'We are out of ground beef.', pt: 'A gente ficou sem carne moída.' }] },
+          { en: 'chicken', pt: 'frango', ph: 'tchí-ken', tag: 'substantivo', examples: [{ en: 'I will have the grilled chicken.', pt: 'Eu vou querer o frango grelhado.' }] },
+          { en: 'pork', pt: 'carne de porco', ph: 'pórk', tag: 'substantivo', examples: [{ en: 'Do you have any pork chops?', pt: 'Vocês têm costeleta de porco?' }] },
+          { en: 'fish', pt: 'peixe', ph: 'físh', tag: 'substantivo', examples: [{ en: 'The fish is fresh today.', pt: 'O peixe está fresco hoje.' }] },
+          { en: 'sausage', pt: 'linguiça / salsicha', ph: 'só-sidj', tag: 'substantivo', examples: [{ en: 'Add some sausage to the rice.', pt: 'Coloca linguiça no arroz.' }] },
+          { en: 'bacon', pt: 'bacon', ph: 'béi-kon', tag: 'substantivo', examples: [{ en: 'I want eggs and bacon.', pt: 'Eu quero ovos com bacon.' }] },
+          { en: 'bread', pt: 'pão', ph: 'bréd', tag: 'substantivo', examples: [{ en: 'Can you pass the bread?', pt: 'Você pode passar o pão?' }] },
+          { en: 'cheese', pt: 'queijo', ph: 'tchíz', tag: 'substantivo', examples: [{ en: 'This sandwich needs more cheese.', pt: 'Esse sanduíche precisa de mais queijo.' }] },
+          { en: 'butter', pt: 'manteiga', ph: 'bâ-rer', tag: 'substantivo', examples: [{ en: 'Put some butter on the bread.', pt: 'Passa manteiga no pão.' }] },
+          { en: 'eggs', pt: 'ovos', ph: 'égs', tag: 'substantivo', examples: [{ en: 'How do you want your eggs?', pt: 'Como você quer os ovos?' }] },
+          { en: 'milk', pt: 'leite', ph: 'mílk', tag: 'substantivo', examples: [{ en: 'We need to buy more milk.', pt: 'A gente precisa comprar mais leite.' }] },
+          { en: 'rice', pt: 'arroz', ph: 'ráis', tag: 'substantivo', examples: [{ en: 'I always eat rice and beans.', pt: 'Eu sempre como arroz com feijão.' }] },
+          { en: 'beans', pt: 'feijão', ph: 'bíns', tag: 'substantivo', examples: [{ en: 'The beans are still cooking.', pt: 'O feijão ainda está cozinhando.' }] },
+          { en: 'pasta', pt: 'macarrão / massa', ph: 'pás-tã', tag: 'substantivo', examples: [{ en: "I will have the pasta with tomato sauce.", pt: 'Eu vou querer a massa com molho de tomate.' }] },
+          { en: 'oil', pt: 'óleo / azeite', ph: 'óil', tag: 'substantivo', examples: [{ en: 'Use olive oil for this recipe.', pt: 'Usa azeite nessa receita.' }] },
+          { en: 'salt / pepper', pt: 'sal / pimenta', ph: 'sólt / pé-per', tag: 'substantivo', examples: [{ en: 'Can you pass the salt and pepper?', pt: 'Você pode passar o sal e a pimenta?' }] },
+          { en: 'sugar / honey', pt: 'açúcar / mel', ph: 'shú-gãr / râ-ni', tag: 'substantivo', examples: [{ en: 'Do you want sugar or honey in your tea?', pt: 'Você quer açúcar ou mel no seu chá?' }] }
+        ]
+      },
+      ferramentas: {
+        label: '🛠️ Ferramentas & Construção', words: [
+          { en: 'hammer', pt: 'martelo', ph: 'ré-mer', tag: 'substantivo', examples: [{ en: 'Pass me the hammer, please.', pt: 'Me passa o martelo, por favor.' }] },
+          { en: 'screwdriver', pt: 'chave de fenda', ph: 'skrú-dráiver', tag: 'substantivo', examples: [{ en: 'I need a Phillips screwdriver.', pt: 'Eu preciso de uma chave phillips.' }] },
+          { en: 'drill', pt: 'furadeira', ph: 'dríl', tag: 'substantivo', examples: [{ en: 'The drill battery is dead.', pt: 'A bateria da furadeira acabou.' }] },
+          { en: 'saw', pt: 'serrote / serra', ph: 'só', tag: 'substantivo', examples: [{ en: 'Use the saw to cut this board.', pt: 'Usa o serrote pra cortar essa tábua.' }] },
+          { en: 'tape measure', pt: 'fita métrica / trena', ph: 'téip mé-jer', tag: 'substantivo', examples: [{ en: 'Grab the tape measure for me.', pt: 'Pega a trena pra mim.' }] },
+          { en: 'level', pt: 'nível de bolha', ph: 'lé-vol', tag: 'substantivo', examples: [{ en: 'Check it with the level first.', pt: 'Confere com o nível primeiro.' }] },
+          { en: 'pliers', pt: 'alicate', ph: 'pláiers', tag: 'substantivo', examples: [{ en: 'I need the pliers to bend this wire.', pt: 'Eu preciso do alicate pra dobrar esse fio.' }] },
+          { en: 'wrench', pt: 'chave de boca / inglesa', ph: 'rénch', tag: 'substantivo', examples: [{ en: 'Use the wrench to tighten that bolt.', pt: 'Usa a chave inglesa pra apertar esse parafuso.' }] },
+          { en: 'nails / screws', pt: 'pregos / parafusos', ph: 'néils / skrús', tag: 'substantivo', examples: [{ en: 'We ran out of nails.', pt: 'Acabaram os pregos.' }] },
+          { en: 'ladder', pt: 'escada móvel', ph: 'lé-der', tag: 'substantivo', examples: [{ en: 'Be careful on the ladder.', pt: 'Cuidado na escada.' }] },
+          { en: 'scaffolding', pt: 'andaime', ph: 'ské-fol-din', tag: 'substantivo', examples: [{ en: "They're setting up the scaffolding.", pt: 'Eles estão montando o andaime.' }] },
+          { en: 'hard hat / helmet', pt: 'capacete de proteção', ph: 'rárd rét', tag: 'substantivo', examples: [{ en: 'You must wear a hard hat here.', pt: 'Você precisa usar capacete aqui.' }] },
+          { en: 'gloves', pt: 'luvas de proteção', ph: 'glâvs', tag: 'substantivo', examples: [{ en: "Don't forget your gloves.", pt: 'Não esquece as suas luvas.' }] },
+          { en: 'safety glasses', pt: 'óculos de proteção', ph: 'séif-ti glé-sis', tag: 'substantivo', examples: [{ en: 'Put on your safety glasses.', pt: 'Coloca seus óculos de proteção.' }] },
+          { en: 'boots', pt: 'botas de trabalho', ph: 'búts', tag: 'substantivo', examples: [{ en: 'Steel-toe boots are required.', pt: 'Botas com biqueira de aço são obrigatórias.' }] },
+          { en: 'wood / lumber', pt: 'madeira', ph: 'uúd / lâm-ber', tag: 'substantivo', examples: [{ en: 'We need more wood for this.', pt: 'A gente precisa de mais madeira pra isso.' }] },
+          { en: 'concrete / cement', pt: 'concreto / cimento', ph: 'kón-krit / si-mént', tag: 'substantivo', examples: [{ en: 'The concrete needs to dry first.', pt: 'O concreto precisa secar primeiro.' }] },
+          { en: 'brick', pt: 'tijolo', ph: 'bríc', tag: 'substantivo', examples: [{ en: "We're building a brick wall.", pt: 'A gente está construindo uma parede de tijolo.' }] },
+          { en: 'paint / brush / roller', pt: 'tinta / pincel / rolo', ph: 'péint / brâsh / ró-ler', tag: 'substantivo', examples: [{ en: 'Grab the roller and the paint.', pt: 'Pega o rolo e a tinta.' }] },
+          { en: 'glue', pt: 'cola', ph: 'glú', tag: 'substantivo', examples: [{ en: 'Use glue to fix that piece.', pt: 'Usa cola pra consertar essa peça.' }] },
+          { en: 'wheelbarrow', pt: 'carrinho de mão', ph: 'uíl-bé-rou', tag: 'substantivo', examples: [{ en: 'Fill the wheelbarrow with sand.', pt: 'Enche o carrinho de mão com areia.' }] },
+          { en: 'shovel', pt: 'pá', ph: 'shâ-vol', tag: 'substantivo', examples: [{ en: 'Get the shovel from the truck.', pt: 'Pega a pá no caminhão.' }] },
+          { en: 'trash / debris', pt: 'lixo / entulho', ph: 'trésh / de-brí', tag: 'substantivo', examples: [{ en: "We will clean up the debris tomorrow.", pt: 'A gente limpa o entulho amanhã.' }] },
+          { en: 'hazard', pt: 'perigo / risco', ph: 'ré-zãrd', tag: 'substantivo', examples: [{ en: 'That wire is a safety hazard.', pt: 'Aquele fio é um risco de segurança.' }] },
+          { en: 'blueprint', pt: 'planta baixa / projeto', ph: 'blú-print', tag: 'substantivo', examples: [{ en: 'Check the blueprint before you start.', pt: 'Confere a planta antes de começar.' }] }
         ]
       },
       corpo_humano: {
@@ -1579,54 +1643,85 @@
       `).join('');
     }
 
+    const VOCAB_STUDIED_KEY = 'polyglot_vocab_studied';
+    function loadVocabStudied() {
+      try { return JSON.parse(localStorage.getItem(VOCAB_STUDIED_KEY) || '{}'); } catch (e) { return {}; }
+    }
+    function saveVocabStudied(state) {
+      localStorage.setItem(VOCAB_STUDIED_KEY, JSON.stringify(state));
+    }
+    function vocabWordKey(themeKey, wordEn) {
+      return `${themeKey}::${wordEn}`;
+    }
+
     function openVocabTheme(themeKey) {
       vocabCurrentTheme = themeKey;
       const theme = VOCABULARY_THEMES[themeKey];
-      document.getElementById('vocabWordDetailContainer').innerHTML = '';
+      const studied = loadVocabStudied();
       const container = document.getElementById('vocabWordListContainer');
       container.innerHTML = `
         <div class="card">
           <div class="card-title">${theme.label}</div>
           <div style="display:flex; flex-direction:column; gap:0.4rem; margin-top:0.5rem;">
-            ${theme.words.map((w, i) => `
-              <button class="btn btn-secondary" style="text-align:left; display:flex; justify-content:space-between;" onclick="openVocabWord(${i})">
-                <span><b>${w.en}</b> — ${w.pt}</span>
+            ${theme.words.map((w, i) => {
+              const isStudied = !!studied[vocabWordKey(themeKey, w.en)];
+              return `
+              <button class="btn ${isStudied ? '' : 'btn-secondary'}" style="text-align:left; display:flex; justify-content:space-between; ${isStudied ? 'background:linear-gradient(135deg, var(--accent-green), #16a34a);' : ''}" onclick="openVocabWord(${i})">
+                <span>${isStudied ? '✅ ' : ''}<b>${w.en}</b> — ${w.pt}</span>
                 <span style="font-size:0.7rem; opacity:0.7;">${w.tag}</span>
               </button>
-            `).join('')}
+            `;
+            }).join('')}
           </div>
         </div>
       `;
     }
 
     function openVocabWord(wordIdx) {
-      const word = VOCABULARY_THEMES[vocabCurrentTheme].words[wordIdx];
-      const container = document.getElementById('vocabWordDetailContainer');
+      const themeKey = vocabCurrentTheme;
+      const word = VOCABULARY_THEMES[themeKey].words[wordIdx];
+      const studied = loadVocabStudied();
+      const isStudied = !!studied[vocabWordKey(themeKey, word.en)];
+      const container = document.getElementById('vocabWordModalContent');
       container.innerHTML = `
-        <div class="card" style="border-color:var(--accent-cyan);">
-          <button class="btn btn-sm btn-secondary" onclick="document.getElementById('vocabWordDetailContainer').innerHTML=''">✕ Fechar</button>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.5rem;">
-            <div class="card-title" style="margin:0;">${word.en}</div>
-            <button class="btn btn-sm btn-secondary" onclick="speakText('${word.en.replace(/'/g, "\\'")}')">🔊</button>
-          </div>
-          <p style="font-size:0.85rem; color:#fef08a; font-style:italic;">🗣️ ${word.ph}</p>
-          <p style="font-size:0.85rem;">🇧🇷 ${word.pt} <span style="font-size:0.7rem; color:var(--text-muted);">(${word.tag})</span></p>
-          <div style="background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:0.75rem; border-radius:10px; margin-top:0.5rem;">
-            <div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:0.4rem;">Exemplos de uso:</div>
-            ${word.examples.map(ex => `
-              <div style="margin-bottom:0.7rem;">
-                ${ex.sense ? `<div style="font-size:0.75rem; color:var(--accent-yellow); font-weight:700; margin-bottom:0.2rem;">📌 ${ex.sense}</div>` : ''}
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                  <div style="font-weight:600; font-size:0.9rem;">${ex.en}</div>
-                  <button class="btn btn-sm btn-secondary" onclick="speakText('${ex.en.replace(/'/g, "\\'")}')">🔊</button>
-                </div>
-                <div style="font-size:0.8rem; color:#fef08a; font-style:italic;">🗣️ ${phSentence(ex.en)}</div>
-                <div style="font-size:0.78rem; color:var(--text-muted);">🇧🇷 ${ex.pt}</div>
-              </div>
-            `).join('')}
-          </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1rem;">
+          <div class="card-title" style="margin:0; font-size:1.4rem;">${word.en}</div>
+          <button class="btn btn-sm btn-secondary" onclick="speakText('${word.en.replace(/'/g, "\\'")}')">🔊</button>
         </div>
+        <p style="font-size:0.9rem; color:#fef08a; font-style:italic;">🗣️ ${word.ph}</p>
+        <p style="font-size:0.9rem;">🇧🇷 ${word.pt} <span style="font-size:0.7rem; color:var(--text-muted);">(${word.tag})</span></p>
+        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:0.75rem; border-radius:10px; margin-top:0.75rem;">
+          <div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:0.4rem;">Exemplos de uso:</div>
+          ${word.examples.map(ex => `
+            <div style="margin-bottom:0.7rem;">
+              ${ex.sense ? `<div style="font-size:0.75rem; color:var(--accent-yellow); font-weight:700; margin-bottom:0.2rem;">📌 ${ex.sense}</div>` : ''}
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-weight:600; font-size:0.9rem;">${ex.en}</div>
+                <button class="btn btn-sm btn-secondary" onclick="speakText('${ex.en.replace(/'/g, "\\'")}')">🔊</button>
+              </div>
+              <div style="font-size:0.8rem; color:#fef08a; font-style:italic;">🗣️ ${phSentence(ex.en)}</div>
+              <div style="font-size:0.78rem; color:var(--text-muted);">🇧🇷 ${ex.pt}</div>
+            </div>
+          `).join('')}
+        </div>
+        <button class="btn" style="width:100%; margin-top:0.75rem; background: linear-gradient(135deg, var(--accent-green), #16a34a);" onclick="markVocabWordStudied('${themeKey}', ${wordIdx})">
+          ${isStudied ? '✅ Estudada (marcar de novo)' : '✅ Marcar como Estudada'}
+        </button>
       `;
+      document.getElementById('vocabWordModal').style.display = 'block';
+    }
+
+    function closeVocabWordModal() {
+      document.getElementById('vocabWordModal').style.display = 'none';
+      openVocabTheme(vocabCurrentTheme);
+    }
+
+    function markVocabWordStudied(themeKey, wordIdx) {
+      const word = VOCABULARY_THEMES[themeKey].words[wordIdx];
+      const studied = loadVocabStudied();
+      studied[vocabWordKey(themeKey, word.en)] = true;
+      saveVocabStudied(studied);
+      openVocabWord(wordIdx);
     }
 
     function renderTipsList() {
