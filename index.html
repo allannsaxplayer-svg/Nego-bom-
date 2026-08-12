@@ -569,7 +569,7 @@
     </section>
 
     <!-- MODAL DE DETALHE DA PALAVRA (VOCABULÁRIO) -->
-    <div id="vocabWordModal" style="display:none; position:fixed; inset:0; background:var(--bg-primary); z-index:250; padding:1.25rem; overflow-y:auto;">
+    <div id="vocabWordModal" style="display:none; position:fixed; inset:0; background:var(--bg-dark); z-index:250; padding:1.25rem; overflow-y:auto;">
       <button class="btn btn-sm btn-secondary" onclick="closeVocabWordModal()">← Voltar</button>
       <div id="vocabWordModalContent"></div>
     </div>
@@ -688,7 +688,7 @@
 
   <!-- MENU "MAIS OPÇÕES" -->
   <div id="moreMenuOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:300;" onclick="closeMoreMenu(event)">
-    <div style="position:absolute; bottom:0; left:0; right:0; background:var(--bg-secondary); border-radius:20px 20px 0 0; padding:1.25rem; border-top:1px solid var(--card-border);" onclick="event.stopPropagation()">
+    <div style="position:absolute; bottom:0; left:0; right:0; background:var(--bg-dark); border-radius:20px 20px 0 0; padding:1.25rem; border-top:1px solid var(--card-border);" onclick="event.stopPropagation()">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
         <div style="font-weight:800; font-size:1.1rem;">Mais opções</div>
         <button class="btn btn-sm btn-secondary" onclick="closeMoreMenu()">✕</button>
@@ -1607,7 +1607,159 @@
           ]},
           { en: 'ankle', pt: 'tornozelo', ph: 'én-col', tag: 'substantivo', examples: [
             { en: 'I twisted my ankle playing soccer.', pt: 'Eu torci o tornozelo jogando futebol.' }
-          ]}
+          ]},
+          { en: 'face', pt: 'rosto', ph: 'féis', tag: 'substantivo', examples: [{ en: 'Wash your face before bed.', pt: 'Lava o rosto antes de dormir.' }] },
+          { en: 'hair', pt: 'cabelo', ph: 'rér', tag: 'substantivo', examples: [{ en: 'Her hair is very long.', pt: 'O cabelo dela é bem comprido.' }] },
+          { en: 'eye / ear', pt: 'olho / ouvido', ph: 'ái / íar', tag: 'substantivo', examples: [{ en: 'My eyes are tired.', pt: 'Meus olhos estão cansados.' }] },
+          { en: 'nose / mouth', pt: 'nariz / boca', ph: 'nôuz / máuth', tag: 'substantivo', examples: [{ en: 'Open your mouth, please.', pt: 'Abre a boca, por favor.' }] },
+          { en: 'tooth / teeth', pt: 'dente / dentes', ph: 'túth / títh', tag: 'substantivo', examples: [{ en: 'I need to brush my teeth.', pt: 'Eu preciso escovar os dentes.' }] },
+          { en: 'neck / throat', pt: 'pescoço / garganta', ph: 'néc / thrôut', tag: 'substantivo', examples: [{ en: 'My throat hurts when I swallow.', pt: 'Minha garganta dói quando eu engulo.' }] },
+          { en: 'shoulder', pt: 'ombro', ph: 'shôul-der', tag: 'substantivo', examples: [{ en: 'He hurt his shoulder at the gym.', pt: 'Ele machucou o ombro na academia.' }] },
+          { en: 'stomach / belly', pt: 'estômago / barriga', ph: 'stâ-mãc / bé-li', tag: 'substantivo', examples: [{ en: 'My stomach hurts.', pt: 'Minha barriga dói.' }] },
+          { en: 'arm / elbow / wrist', pt: 'braço / cotovelo / pulso', ph: 'árm / él-bôu / ríst', tag: 'substantivo', examples: [{ en: 'I broke my wrist last year.', pt: 'Eu quebrei o pulso ano passado.' }] },
+          { en: 'finger / thumb', pt: 'dedo / polegar', ph: 'fín-ger / thâm', tag: 'substantivo', examples: [{ en: 'I cut my finger with the knife.', pt: 'Eu cortei o dedo com a faca.' }] },
+          { en: 'leg / knee', pt: 'perna / joelho', ph: 'lég / ní', tag: 'substantivo', examples: [{ en: 'My knee hurts when I run.', pt: 'Meu joelho dói quando eu corro.' }] },
+          { en: 'foot / feet / toe', pt: 'pé / pés / dedo do pé', ph: 'fút / fít / tôu', tag: 'substantivo', examples: [{ en: 'My feet are swollen.', pt: 'Meus pés estão inchados.' }] },
+          { en: 'skin / bone / blood', pt: 'pele / osso / sangue', ph: 'skín / bôun / blâd', tag: 'substantivo', examples: [{ en: 'She has sensitive skin.', pt: 'Ela tem a pele sensível.' }] },
+          { en: 'pain / ache', pt: 'dor aguda / dor contínua', ph: 'péin / éik', tag: 'substantivo', examples: [{ en: 'I have a sharp pain in my back.', pt: 'Eu tenho uma dor aguda nas costas.' }] },
+          { en: 'hurt / injury', pt: 'machucado / lesão', ph: 'rẽrt / ín-djã-ri', tag: 'substantivo', examples: [{ en: 'It was a minor injury.', pt: 'Foi uma lesão leve.' }] },
+          { en: 'fever', pt: 'febre', ph: 'fí-ver', tag: 'substantivo', examples: [{ en: 'The baby has a fever.', pt: 'O bebê está com febre.' }] },
+          { en: 'flu', pt: 'gripe', ph: 'flú', tag: 'substantivo', examples: [{ en: 'I think I have the flu.', pt: 'Eu acho que estou com gripe.' }] },
+          { en: 'cough / sneezing', pt: 'tosse / espirro', ph: 'cóf / sní-zin', tag: 'substantivo', examples: [{ en: 'He has a bad cough.', pt: 'Ele está com uma tosse forte.' }] },
+          { en: 'headache / stomachache', pt: 'dor de cabeça / dor de estômago', ph: 'ré-déik / stâ-mã-kéik', tag: 'substantivo', examples: [{ en: 'I have a terrible headache.', pt: 'Eu estou com uma dor de cabeça terrível.' }] },
+          { en: 'allergy / allergic', pt: 'alergia / alérgico', ph: 'é-ler-dji / ã-lér-djic', tag: 'substantivo', examples: [{ en: "I'm allergic to peanuts.", pt: 'Eu sou alérgico a amendoim.' }] },
+          { en: 'dizzy', pt: 'tonto', ph: 'dí-zi', tag: 'adjetivo', examples: [{ en: 'I feel dizzy.', pt: 'Eu estou tonto.' }] },
+          { en: 'medicine', pt: 'remédio', ph: 'mé-di-sin', tag: 'substantivo', examples: [{ en: 'Take this medicine twice a day.', pt: 'Toma esse remédio duas vezes ao dia.' }] },
+          { en: 'pill', pt: 'pílula / comprimido', ph: 'píl', tag: 'substantivo', examples: [{ en: 'Swallow the pill with water.', pt: 'Engole o comprimido com água.' }] },
+          { en: 'bandage', pt: 'curativo', ph: 'bén-didj', tag: 'substantivo', examples: [{ en: 'Put a bandage on that cut.', pt: 'Coloca um curativo nesse corte.' }] },
+          { en: 'ointment', pt: 'pomada', ph: 'óint-mãnt', tag: 'substantivo', examples: [{ en: 'Apply the ointment twice a day.', pt: 'Aplica a pomada duas vezes ao dia.' }] },
+          { en: 'doctor / nurse', pt: 'médico / enfermeiro', ph: 'dác-ter / nẽrs', tag: 'substantivo', examples: [{ en: 'The nurse checked my blood pressure.', pt: 'A enfermeira mediu minha pressão.' }] },
+          { en: 'hospital / clinic / pharmacy', pt: 'hospital / clínica / farmácia', ph: 'rós-pi-tol / klí-nic / fár-mã-si', tag: 'substantivo', examples: [{ en: 'I need to go to the pharmacy.', pt: 'Eu preciso ir à farmácia.' }] }
+        ]
+      },
+      restaurante_hotel: {
+        label: '🍽️ Restaurante & Hotelaria', words: [
+          { en: 'plate / bowl', pt: 'prato / tigela', ph: 'pléit / bôul', tag: 'substantivo', examples: [{ en: 'Can I get a clean plate?', pt: 'Posso pegar um prato limpo?' }] },
+          { en: 'fork / spoon / knife', pt: 'garfo / colher / faca', ph: 'fórk / spún / náif', tag: 'substantivo', examples: [{ en: 'I need a fork and a knife.', pt: 'Eu preciso de um garfo e uma faca.' }] },
+          { en: 'cutlery / silverware', pt: 'talheres', ph: 'kât-lã-ri', tag: 'substantivo', examples: [{ en: 'The cutlery is on the table.', pt: 'Os talheres estão na mesa.' }] },
+          { en: 'glass / cup / mug', pt: 'copo / xícara / caneca', ph: 'glés / kâp / mâg', tag: 'substantivo', examples: [{ en: 'Can I get a glass of water?', pt: 'Posso pegar um copo de água?' }] },
+          { en: 'napkin', pt: 'guardanapo', ph: 'náp-kin', tag: 'substantivo', examples: [{ en: 'Can I have a napkin, please?', pt: 'Posso ter um guardanapo, por favor?' }] },
+          { en: 'tray', pt: 'bandeja', ph: 'tréi', tag: 'substantivo', examples: [{ en: 'Put the dishes on the tray.', pt: 'Coloca os pratos na bandeja.' }] },
+          { en: 'pitcher', pt: 'jarra', ph: 'pí-tcher', tag: 'substantivo', examples: [{ en: 'Fill the pitcher with water.', pt: 'Enche a jarra com água.' }] },
+          { en: 'menu', pt: 'cardápio', ph: 'mé-niu', tag: 'substantivo', examples: [{ en: 'Can I see the menu, please?', pt: 'Posso ver o cardápio, por favor?' }] },
+          { en: 'bill / check', pt: 'conta', ph: 'bíl / tchéc', tag: 'substantivo', examples: [{ en: 'Can I get the check, please?', pt: 'Posso pegar a conta, por favor?' }] },
+          { en: 'receipt', pt: 'comprovante / recibo', ph: 'ri-sít', tag: 'substantivo', examples: [{ en: 'Do you need a receipt?', pt: 'Você precisa de um recibo?' }] },
+          { en: 'tip', pt: 'gorjeta', ph: 'típ', tag: 'substantivo', examples: [{ en: 'We left a good tip.', pt: 'A gente deixou uma boa gorjeta.' }] },
+          { en: 'reservation', pt: 'reserva', ph: 'ré-zer-véi-chãn', tag: 'substantivo', examples: [{ en: 'I have a reservation for two.', pt: 'Eu tenho uma reserva pra dois.' }] },
+          { en: 'appetizer / starter', pt: 'entrada', ph: 'é-pe-táiz-er', tag: 'substantivo', examples: [{ en: "We'll start with an appetizer.", pt: 'A gente vai começar com uma entrada.' }] },
+          { en: 'main course', pt: 'prato principal', ph: 'méin córs', tag: 'substantivo', examples: [{ en: 'What is the main course today?', pt: 'Qual é o prato principal hoje?' }] },
+          { en: 'side dish', pt: 'acompanhamento', ph: 'sáid dísh', tag: 'substantivo', examples: [{ en: 'What side dish would you like?', pt: 'Qual acompanhamento você gostaria?' }] },
+          { en: 'dessert', pt: 'sobremesa', ph: 'di-zẽrt', tag: 'substantivo', examples: [{ en: 'Do you have room for dessert?', pt: 'Você tem espaço pra sobremesa?' }] },
+          { en: 'beverage', pt: 'bebida', ph: 'bé-ve-ridj', tag: 'substantivo', examples: [{ en: 'What beverages do you have?', pt: 'Quais bebidas vocês têm?' }] },
+          { en: 'still / sparkling water', pt: 'água sem gás / com gás', ph: 'stíl / spár-klin uó-ter', tag: 'substantivo', examples: [{ en: 'Still or sparkling water?', pt: 'Água com ou sem gás?' }] },
+          { en: 'ice / straw', pt: 'gelo / canudo', ph: 'áis / stró', tag: 'substantivo', examples: [{ en: 'Can I get some ice, please?', pt: 'Posso pegar gelo, por favor?' }] },
+          { en: 'chef / cook', pt: 'chefe de cozinha / cozinheiro', ph: 'chéf / kúk', tag: 'substantivo', examples: [{ en: 'The chef recommends the fish.', pt: 'O chefe recomenda o peixe.' }] },
+          { en: 'waiter / waitress', pt: 'garçom / garçonete', ph: 'uéi-ter / uéi-tres', tag: 'substantivo', examples: [{ en: 'The waiter took our order.', pt: 'O garçom anotou nosso pedido.' }] },
+          { en: 'bartender', pt: 'barman', ph: 'bár-tén-der', tag: 'substantivo', examples: [{ en: 'Ask the bartender for a menu.', pt: 'Pede o cardápio pro barman.' }] },
+          { en: 'guest / customer', pt: 'hóspede / cliente', ph: 'guést / kâs-tã-mer', tag: 'substantivo', examples: [{ en: 'The customer is waiting.', pt: 'O cliente está esperando.' }] },
+          { en: 'cabin / stateroom', pt: 'cabine de navio', ph: 'ké-bin', tag: 'substantivo', examples: [{ en: 'Our cabin is on the fifth deck.', pt: 'Nossa cabine é no quinto convés.' }] },
+          { en: 'deck', pt: 'convés', ph: 'déc', tag: 'substantivo', examples: [{ en: "Let's go up to the deck.", pt: 'Vamos subir pro convés.' }] },
+          { en: 'buffet', pt: 'bufê', ph: 'bã-féi', tag: 'substantivo', examples: [{ en: 'The buffet opens at seven.', pt: 'O bufê abre às sete.' }] },
+          { en: 'shift', pt: 'turno de trabalho', ph: 'shíft', tag: 'substantivo', examples: [{ en: 'My shift starts at noon.', pt: 'Meu turno começa ao meio-dia.' }] }
+        ]
+      },
+      lugares_transporte: {
+        label: '🚕 Lugares & Transporte', words: [
+          { en: 'house / apartment / building', pt: 'casa / apartamento / prédio', ph: 'ráus / ã-párt-mãnt / bíl-din', tag: 'substantivo', examples: [{ en: 'I live in an apartment.', pt: 'Eu moro num apartamento.' }] },
+          { en: 'street / road / avenue', pt: 'rua / estrada / avenida', ph: 'strít / rôud / é-ve-niu', tag: 'substantivo', examples: [{ en: 'Turn left on this avenue.', pt: 'Vira à esquerda nessa avenida.' }] },
+          { en: 'city / town / village', pt: 'cidade / cidade pequena / vila', ph: 'sí-ti / táun / ví-lidj', tag: 'substantivo', examples: [{ en: 'I grew up in a small town.', pt: 'Eu cresci numa cidade pequena.' }] },
+          { en: 'supermarket', pt: 'supermercado', ph: 'sú-per-már-két', tag: 'substantivo', examples: [{ en: "I'm going to the supermarket.", pt: 'Eu vou ao supermercado.' }] },
+          { en: 'store / shop / mall', pt: 'loja / shopping', ph: 'stór / shóp / mól', tag: 'substantivo', examples: [{ en: "Let's meet at the mall.", pt: 'Vamos nos encontrar no shopping.' }] },
+          { en: 'school / college / university', pt: 'escola / faculdade / universidade', ph: 'skúl / cá-lidj / iu-ni-vẽr-si-ti', tag: 'substantivo', examples: [{ en: 'She studies at the university.', pt: 'Ela estuda na universidade.' }] },
+          { en: 'bank', pt: 'banco', ph: 'bénk', tag: 'substantivo', examples: [{ en: 'I need to go to the bank.', pt: 'Eu preciso ir ao banco.' }] },
+          { en: 'hotel / hostel', pt: 'hotel / albergue', ph: 'rôu-tél / rás-tel', tag: 'substantivo', examples: [{ en: 'We booked a hotel downtown.', pt: 'A gente reservou um hotel no centro.' }] },
+          { en: 'cafe / bar', pt: 'café / bar', ph: 'ké-féi / bár', tag: 'substantivo', examples: [{ en: "Let's grab coffee at that cafe.", pt: 'Vamos tomar um café naquele café.' }] },
+          { en: 'cinema / movie theater', pt: 'cinema', ph: 'sí-ne-mã', tag: 'substantivo', examples: [{ en: 'We watched a movie at the cinema.', pt: 'A gente assistiu um filme no cinema.' }] },
+          { en: 'garden', pt: 'jardim', ph: 'gár-den', tag: 'substantivo', examples: [{ en: 'They have a beautiful garden.', pt: 'Eles têm um jardim lindo.' }] },
+          { en: 'airport / flight / gate', pt: 'aeroporto / voo / portão', ph: 'ér-pórt / fláit / guéit', tag: 'substantivo', examples: [{ en: 'What gate is our flight?', pt: 'Qual é o portão do nosso voo?' }] },
+          { en: 'bus / train / subway', pt: 'ônibus / trem / metrô', ph: 'bâs / tréin / sâb-uéi', tag: 'substantivo', examples: [{ en: 'I take the subway to work.', pt: 'Eu pego o metrô pro trabalho.' }] },
+          { en: 'taxi', pt: 'táxi', ph: 'ték-si', tag: 'substantivo', examples: [{ en: "Let's call a taxi.", pt: 'Vamos chamar um táxi.' }] },
+          { en: 'truck / van / bike', pt: 'caminhão / van / bicicleta', ph: 'trâk / vén / báic', tag: 'substantivo', examples: [{ en: 'He rides his bike to school.', pt: 'Ele vai de bicicleta pra escola.' }] }
+        ]
+      },
+      verbos_fundamentais: {
+        label: '⚡ Verbos de Ação', words: [
+          { en: 'to accept / to refuse', pt: 'aceitar / recusar', ph: 'tú ãk-sépt / tú ri-fiúz', tag: 'verbo', examples: [{ en: 'She refused the offer.', pt: 'Ela recusou a oferta.' }] },
+          { en: 'to agree / to disagree', pt: 'concordar / discordar', ph: 'tú ã-grí / tú dis-ã-grí', tag: 'verbo', examples: [{ en: 'I agree with you.', pt: 'Eu concordo com você.' }] },
+          { en: 'to ask / to answer', pt: 'perguntar / responder', ph: 'tú ésk / tú én-ser', tag: 'verbo', examples: [{ en: 'Can I ask you something?', pt: 'Posso te perguntar uma coisa?' }] },
+          { en: 'to break / to fix', pt: 'quebrar / consertar', ph: 'tú bréik / tú fics', tag: 'verbo', examples: [{ en: 'He broke the glass.', pt: 'Ele quebrou o copo.' }] },
+          { en: 'to bring / to carry', pt: 'trazer / carregar', ph: 'tú brín / tú ké-ri', tag: 'verbo', examples: [{ en: 'Can you bring the box?', pt: 'Você pode trazer a caixa?' }] },
+          { en: 'to buy / to sell', pt: 'comprar / vender', ph: 'tú bái / tú sél', tag: 'verbo', examples: [{ en: 'I want to buy a new phone.', pt: 'Eu quero comprar um celular novo.' }] },
+          { en: 'to wash', pt: 'lavar', ph: 'tú uósh', tag: 'verbo', examples: [{ en: 'I need to wash the dishes.', pt: 'Eu preciso lavar a louça.' }] },
+          { en: 'to come', pt: 'vir', ph: 'tú kâm', tag: 'verbo', examples: [{ en: 'Can you come here for a second?', pt: 'Você pode vir aqui um segundo?' }] },
+          { en: 'to cut / to slice', pt: 'cortar / fatiar', ph: 'tú kât / tú sláis', tag: 'verbo', examples: [{ en: 'Can you slice the bread?', pt: 'Você pode fatiar o pão?' }] },
+          { en: 'to drink / to eat', pt: 'beber / comer', ph: 'tú drink / tú ít', tag: 'verbo', examples: [{ en: 'Do you want something to drink?', pt: 'Você quer algo pra beber?' }] },
+          { en: 'to ride', pt: 'andar de (veículo/bike)', ph: 'tú ráid', tag: 'verbo', examples: [{ en: 'I like to ride my bike on weekends.', pt: 'Eu gosto de andar de bicicleta nos fins de semana.' }] },
+          { en: 'to explain / to clarify', pt: 'explicar / esclarecer', ph: 'tú iks-pléin / tú klé-ri-fái', tag: 'verbo', examples: [{ en: 'Can you explain that again?', pt: 'Você pode explicar isso de novo?' }] },
+          { en: 'to find / to lose', pt: 'achar / perder', ph: 'tú fáind / tú lúz', tag: 'verbo', examples: [{ en: 'I cannot find my keys.', pt: 'Eu não consigo achar minhas chaves.' }] },
+          { en: 'to finish', pt: 'terminar', ph: 'tú fí-nish', tag: 'verbo', examples: [{ en: 'I need to finish this report.', pt: 'Eu preciso terminar esse relatório.' }] },
+          { en: 'to receive', pt: 'receber', ph: 'tú ri-sív', tag: 'verbo', examples: [{ en: 'Did you receive my message?', pt: 'Você recebeu minha mensagem?' }] },
+          { en: 'to give', pt: 'dar', ph: 'tú guív', tag: 'verbo', examples: [{ en: 'Can you give me a second?', pt: 'Você pode me dar um segundo?' }] },
+          { en: 'to assist', pt: 'prestar assistência', ph: 'tú ã-sist', tag: 'verbo', examples: [{ en: 'He assisted the elderly customer.', pt: 'Ele prestou assistência ao cliente idoso.' }] },
+          { en: 'to teach', pt: 'ensinar', ph: 'tú títch', tag: 'verbo', examples: [{ en: 'She teaches English.', pt: 'Ela ensina inglês.' }] },
+          { en: 'to listen / to hear', pt: 'escutar / ouvir', ph: 'tú lí-sen / tú ríar', tag: 'verbo', examples: [{ en: 'Did you hear that noise?', pt: 'Você ouviu aquele barulho?' }] },
+          { en: 'to see', pt: 'ver', ph: 'tú sí', tag: 'verbo', examples: [{ en: 'I cannot see anything from here.', pt: 'Eu não consigo ver nada daqui.' }] },
+          { en: 'to close', pt: 'fechar', ph: 'tú clôuz', tag: 'verbo', examples: [{ en: 'Can you close the door?', pt: 'Você pode fechar a porta?' }] },
+          { en: 'to read / to write', pt: 'ler / escrever', ph: 'tú ríd / tú ráit', tag: 'verbo', examples: [{ en: 'I love to read before bed.', pt: 'Eu amo ler antes de dormir.' }] },
+          { en: 'to remember / to forget', pt: 'lembrar / esquecer', ph: 'tú ri-mém-ber / tú fór-guét', tag: 'verbo', examples: [{ en: "Don't forget your keys.", pt: 'Não esquece suas chaves.' }] },
+          { en: 'to run / to walk', pt: 'correr / andar', ph: 'tú rân / tú uók', tag: 'verbo', examples: [{ en: 'I run every morning.', pt: 'Eu corro toda manhã.' }] },
+          { en: 'to tell / to speak', pt: 'contar / falar', ph: 'tú tél / tú spík', tag: 'verbo', examples: [{ en: 'Can you tell me what happened?', pt: 'Você pode me contar o que aconteceu?' }] },
+          { en: 'to sit / to stand', pt: 'sentar / ficar em pé', ph: 'tú sít / tú sténd', tag: 'verbo', examples: [{ en: 'Please, sit down.', pt: 'Por favor, senta.' }] },
+          { en: 'to stop / to continue', pt: 'parar / continuar', ph: 'tú stóp / tú kãn-tí-niu', tag: 'verbo', examples: [{ en: 'Stop right there.', pt: 'Para bem aí.' }] },
+          { en: 'to think / to believe', pt: 'pensar / acreditar', ph: 'tú think / tú bi-lív', tag: 'verbo', examples: [{ en: 'I believe you.', pt: 'Eu acredito em você.' }] },
+          { en: 'to understand', pt: 'entender', ph: 'tú ân-der-sténd', tag: 'verbo', examples: [{ en: "I do not understand this part.", pt: 'Eu não entendo essa parte.' }] },
+          { en: 'to operate', pt: 'operar', ph: 'tú ó-pe-réit', tag: 'verbo', examples: [{ en: 'He knows how to operate this machine.', pt: 'Ele sabe operar essa máquina.' }] },
+          { en: 'to wait / to expect', pt: 'esperar por algo / ter expectativa', ph: 'tú uéit / tú iks-pékt', tag: 'verbo', examples: [{ en: "I'm waiting for the bus.", pt: 'Eu estou esperando o ônibus.' }] }
+        ]
+      },
+      adjetivos_b2: {
+        label: '🎨 Adjetivos (B2)', words: [
+          { en: 'excellent', pt: 'excelente', ph: 'ék-se-lent', tag: 'adjetivo', examples: [{ en: 'The service was excellent.', pt: 'O atendimento foi excelente.' }] },
+          { en: 'bad / awful / terrible', pt: 'ruim / horroroso / terrível', ph: 'béd / ó-fol / té-ri-bol', tag: 'adjetivo', examples: [{ en: 'The weather was terrible today.', pt: 'O tempo estava terrível hoje.' }] },
+          { en: 'big / huge / large', pt: 'grande / enorme / largo', ph: 'bíg / riúdj / lárdj', tag: 'adjetivo', examples: [{ en: 'They live in a huge house.', pt: 'Eles moram numa casa enorme.' }] },
+          { en: 'small / tiny', pt: 'pequeno / minúsculo', ph: 'smól / táini', tag: 'adjetivo', examples: [{ en: 'The apartment is really tiny.', pt: 'O apartamento é bem pequeno.' }] },
+          { en: 'hot / warm / freezing', pt: 'quente / morno / congelando', ph: 'rót / uórm / frí-zin', tag: 'adjetivo', examples: [{ en: "It's freezing outside.", pt: 'Está congelando lá fora.' }] },
+          { en: 'fast / quick / slow', pt: 'rápido / veloz / devagar', ph: 'fést / kuík / slôu', tag: 'adjetivo', examples: [{ en: 'The internet is really slow today.', pt: 'A internet está bem devagar hoje.' }] },
+          { en: 'cheap / affordable', pt: 'barato / acessível', ph: 'tchíp / ã-fór-dã-bol', tag: 'adjetivo', examples: [{ en: 'This restaurant is very affordable.', pt: 'Esse restaurante é bem acessível.' }] },
+          { en: 'simple / difficult', pt: 'simples / difícil', ph: 'sím-pol / dí-fi-colt', tag: 'adjetivo', examples: [{ en: 'This exercise is too difficult.', pt: 'Esse exercício está muito difícil.' }] },
+          { en: 'dirty', pt: 'sujo', ph: 'dẽr-ti', tag: 'adjetivo', examples: [{ en: 'These clothes are dirty.', pt: 'Essa roupa está suja.' }] },
+          { en: 'safe / dangerous', pt: 'seguro / perigoso', ph: 'séif / déin-djã-res', tag: 'adjetivo', examples: [{ en: 'This area is not safe at night.', pt: 'Essa área não é segura à noite.' }] },
+          { en: 'full / empty', pt: 'cheio / vazio', ph: 'fúl / ém-ti', tag: 'adjetivo', examples: [{ en: 'The bottle is empty.', pt: 'A garrafa está vazia.' }] },
+          { en: 'heavy / light', pt: 'pesado / leve', ph: 'ré-vi / láit', tag: 'adjetivo', examples: [{ en: 'This bag is really heavy.', pt: 'Essa bolsa está bem pesada.' }] },
+          { en: 'early / late', pt: 'cedo / atrasado', ph: 'ẽr-li / léit', tag: 'adjetivo', examples: [{ en: "I'm running late.", pt: 'Eu estou atrasado.' }] },
+          { en: 'modern', pt: 'moderno', ph: 'má-dern', tag: 'adjetivo', examples: [{ en: 'They have a very modern kitchen.', pt: 'Eles têm uma cozinha bem moderna.' }] },
+          { en: 'correct / wrong', pt: 'correto / errado', ph: 'kã-rékt / róng', tag: 'adjetivo', examples: [{ en: 'That answer is wrong.', pt: 'Essa resposta está errada.' }] },
+          { en: 'busy / available', pt: 'ocupado / disponível', ph: 'bí-zi / ã-véi-lã-bol', tag: 'adjetivo', examples: [{ en: "I'm busy right now.", pt: 'Eu estou ocupado agora.' }] },
+          { en: 'prepared', pt: 'preparado', ph: 'pri-pérd', tag: 'adjetivo', examples: [{ en: 'Are you prepared for the interview?', pt: 'Você está preparado pra entrevista?' }] },
+          { en: 'exhausted', pt: 'exausto', ph: 'ig-zós-tid', tag: 'adjetivo', examples: [{ en: "I'm exhausted after this shift.", pt: 'Eu estou exausto depois desse turno.' }] },
+          { en: 'sick / healthy', pt: 'doente / saudável', ph: 'síc / rél-thi', tag: 'adjetivo', examples: [{ en: 'She has been sick all week.', pt: 'Ela está doente a semana toda.' }] },
+          { en: 'sad / angry', pt: 'triste / com raiva', ph: 'séd / éng-gri', tag: 'adjetivo', examples: [{ en: 'He was really angry about it.', pt: 'Ele ficou bem com raiva disso.' }] },
+          { en: 'quiet / loud / noisy', pt: 'silencioso / alto / barulhento', ph: 'kuái-et / láud / nói-zi', tag: 'adjetivo', examples: [{ en: 'This neighborhood is very noisy.', pt: 'Essa vizinhança é bem barulhenta.' }] },
+          { en: 'tight / loose', pt: 'apertado / frouxo', ph: 'táit / lús', tag: 'adjetivo', examples: [{ en: 'These shoes are too tight.', pt: 'Esses sapatos estão muito apertados.' }] },
+          { en: 'wet / dry', pt: 'molhado / seco', ph: 'uét / drái', tag: 'adjetivo', examples: [{ en: 'The floor is wet.', pt: 'O chão está molhado.' }] },
+          { en: 'important / necessary', pt: 'importante / necessário', ph: 'im-pór-tãnt / né-se-sé-ri', tag: 'adjetivo', examples: [{ en: 'This meeting is really important.', pt: 'Essa reunião é bem importante.' }] }
+        ]
+      },
+      tempo_rotina: {
+        label: '⏰ Tempo & Rotina', words: [
+          { en: 'today / yesterday / tomorrow', pt: 'hoje / ontem / amanhã', ph: 'tu-déi / iés-ter-déi / tu-mó-rôu', tag: 'substantivo', examples: [{ en: 'I have a meeting tomorrow.', pt: 'Eu tenho uma reunião amanhã.' }] },
+          { en: 'later / soon', pt: 'mais tarde / em breve', ph: 'léi-ter / sún', tag: 'advérbio', examples: [{ en: "I'll call you later.", pt: 'Eu te ligo mais tarde.' }] },
+          { en: 'always / usually / often', pt: 'sempre / geralmente / frequentemente', ph: 'ól-uéis / iú-juá-li / ó-fen', tag: 'advérbio', examples: [{ en: 'I usually wake up early.', pt: 'Eu geralmente acordo cedo.' }] },
+          { en: 'sometimes / seldom / never', pt: 'às vezes / raramente / nunca', ph: 'sâm-táims / sél-dãm / né-ver', tag: 'advérbio', examples: [{ en: 'I never eat breakfast.', pt: 'Eu nunca como café da manhã.' }] },
+          { en: 'morning / afternoon / evening / night', pt: 'manhã / tarde / noitinha / noite', ph: 'mór-nin / éf-ter-nún / ív-nin / náit', tag: 'substantivo', examples: [{ en: 'See you this evening.', pt: 'Te vejo hoje à noitinha.' }] },
+          { en: 'daily / weekly / monthly / yearly', pt: 'diariamente / semanalmente / mensalmente / anualmente', ph: 'déi-li / uík-li / mânth-li / iar-li', tag: 'advérbio', examples: [{ en: 'We meet weekly on Mondays.', pt: 'A gente se encontra semanalmente às segundas.' }] },
+          { en: 'minute / hour', pt: 'minuto / hora', ph: 'mí-nit / áuar', tag: 'substantivo', examples: [{ en: 'Give me a minute.', pt: 'Me dá um minuto.' }] },
+          { en: 'week / month / year', pt: 'semana / mês / ano', ph: 'uík / mânth / iíar', tag: 'substantivo', examples: [{ en: 'See you next week.', pt: 'Te vejo semana que vem.' }] }
         ]
       },
       numeros_enderecos: {
