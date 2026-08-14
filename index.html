@@ -574,6 +574,13 @@
       <div id="vocabWordModalContent"></div>
     </div>
 
+    <!-- MODAL DE DETALHE DA REGRA (DICAS DO INGLÊS) -->
+    <div id="tipDetailModal" style="display:none; position:fixed; inset:0; background:var(--bg-dark); z-index:250; padding:1.25rem; overflow-y:auto;">
+      <button class="btn btn-sm btn-secondary" onclick="document.getElementById('tipDetailModal').style.display='none'">← Voltar</button>
+      <div id="tipDetailModalContent"></div>
+    </div>
+
+
     <div id="shadowModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:200; padding:1.25rem; overflow-y:auto;">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
         <div style="font-weight:800; color:var(--accent-cyan);">🐢 Modo Shadowing</div>
@@ -623,7 +630,6 @@
         <p style="font-size:0.82rem; color:var(--text-muted);">Padrões reais de como o inglês soa de verdade, sem gramática chata:</p>
       </div>
       <div id="tipsListContainer"></div>
-      <div id="tipDetailContainer"></div>
     </section>
 
     <!-- 4.6 VOCABULÁRIO POR TEMA -->
@@ -1689,37 +1695,94 @@
       },
       verbos_fundamentais: {
         label: '⚡ Verbos de Ação', words: [
-          { en: 'to accept / to refuse', pt: 'aceitar / recusar', ph: 'tú ãk-sépt / tú ri-fiúz', tag: 'verbo', examples: [{ en: 'She refused the offer.', pt: 'Ela recusou a oferta.' }] },
-          { en: 'to agree / to disagree', pt: 'concordar / discordar', ph: 'tú ã-grí / tú dis-ã-grí', tag: 'verbo', examples: [{ en: 'I agree with you.', pt: 'Eu concordo com você.' }] },
-          { en: 'to ask / to answer', pt: 'perguntar / responder', ph: 'tú ésk / tú én-ser', tag: 'verbo', examples: [{ en: 'Can I ask you something?', pt: 'Posso te perguntar uma coisa?' }] },
-          { en: 'to break / to fix', pt: 'quebrar / consertar', ph: 'tú bréik / tú fics', tag: 'verbo', examples: [{ en: 'He broke the glass.', pt: 'Ele quebrou o copo.' }] },
-          { en: 'to bring / to carry', pt: 'trazer / carregar', ph: 'tú brín / tú ké-ri', tag: 'verbo', examples: [{ en: 'Can you bring the box?', pt: 'Você pode trazer a caixa?' }] },
-          { en: 'to buy / to sell', pt: 'comprar / vender', ph: 'tú bái / tú sél', tag: 'verbo', examples: [{ en: 'I want to buy a new phone.', pt: 'Eu quero comprar um celular novo.' }] },
+          { en: 'to accept / to refuse', pt: 'aceitar / recusar', ph: 'tú ãk-sépt / tú ri-fiúz', tag: 'verbo', examples: [
+            { en: 'I accept your apology.', pt: 'Eu aceito suas desculpas.' },
+            { en: 'She refused the offer.', pt: 'Ela recusou a oferta.' }
+          ]},
+          { en: 'to agree / to disagree', pt: 'concordar / discordar', ph: 'tú ã-grí / tú dis-ã-grí', tag: 'verbo', examples: [
+            { en: 'I agree with you.', pt: 'Eu concordo com você.' },
+            { en: 'I disagree with that decision.', pt: 'Eu discordo dessa decisão.' }
+          ]},
+          { en: 'to ask / to answer', pt: 'perguntar / responder', ph: 'tú ésk / tú én-ser', tag: 'verbo', examples: [
+            { en: 'Can I ask you something?', pt: 'Posso te perguntar uma coisa?' },
+            { en: 'Can you answer my question?', pt: 'Você pode responder minha pergunta?' }
+          ]},
+          { en: 'to break / to fix', pt: 'quebrar / consertar', ph: 'tú bréik / tú fics', tag: 'verbo', examples: [
+            { en: 'He broke the glass.', pt: 'Ele quebrou o copo.' },
+            { en: 'Can you fix this for me?', pt: 'Você pode consertar isso pra mim?' }
+          ]},
+          { en: 'to bring / to carry', pt: 'trazer / carregar', ph: 'tú brín / tú ké-ri', tag: 'verbo', examples: [
+            { en: 'Can you bring the box?', pt: 'Você pode trazer a caixa?' },
+            { en: 'I can carry that for you.', pt: 'Eu posso carregar isso pra você.' }
+          ]},
+          { en: 'to buy / to sell', pt: 'comprar / vender', ph: 'tú bái / tú sél', tag: 'verbo', examples: [
+            { en: 'I want to buy a new phone.', pt: 'Eu quero comprar um celular novo.' },
+            { en: 'We sell fresh vegetables here.', pt: 'A gente vende legumes frescos aqui.' }
+          ]},
           { en: 'to wash', pt: 'lavar', ph: 'tú uósh', tag: 'verbo', examples: [{ en: 'I need to wash the dishes.', pt: 'Eu preciso lavar a louça.' }] },
           { en: 'to come', pt: 'vir', ph: 'tú kâm', tag: 'verbo', examples: [{ en: 'Can you come here for a second?', pt: 'Você pode vir aqui um segundo?' }] },
-          { en: 'to cut / to slice', pt: 'cortar / fatiar', ph: 'tú kât / tú sláis', tag: 'verbo', examples: [{ en: 'Can you slice the bread?', pt: 'Você pode fatiar o pão?' }] },
-          { en: 'to drink / to eat', pt: 'beber / comer', ph: 'tú drink / tú ít', tag: 'verbo', examples: [{ en: 'Do you want something to drink?', pt: 'Você quer algo pra beber?' }] },
+          { en: 'to cut / to slice', pt: 'cortar / fatiar', ph: 'tú kât / tú sláis', tag: 'verbo', examples: [
+            { en: 'Be careful, do not cut yourself.', pt: 'Cuidado, não se corta.' },
+            { en: 'Can you slice the bread?', pt: 'Você pode fatiar o pão?' }
+          ]},
+          { en: 'to drink / to eat', pt: 'beber / comer', ph: 'tú drink / tú ít', tag: 'verbo', examples: [
+            { en: 'Do you want something to drink?', pt: 'Você quer algo pra beber?' },
+            { en: 'I already ate lunch.', pt: 'Eu já comi o almoço.' }
+          ]},
           { en: 'to ride', pt: 'andar de (veículo/bike)', ph: 'tú ráid', tag: 'verbo', examples: [{ en: 'I like to ride my bike on weekends.', pt: 'Eu gosto de andar de bicicleta nos fins de semana.' }] },
-          { en: 'to explain / to clarify', pt: 'explicar / esclarecer', ph: 'tú iks-pléin / tú klé-ri-fái', tag: 'verbo', examples: [{ en: 'Can you explain that again?', pt: 'Você pode explicar isso de novo?' }] },
-          { en: 'to find / to lose', pt: 'achar / perder', ph: 'tú fáind / tú lúz', tag: 'verbo', examples: [{ en: 'I cannot find my keys.', pt: 'Eu não consigo achar minhas chaves.' }] },
+          { en: 'to explain / to clarify', pt: 'explicar / esclarecer', ph: 'tú iks-pléin / tú klé-ri-fái', tag: 'verbo', examples: [
+            { en: 'Can you explain that again?', pt: 'Você pode explicar isso de novo?' },
+            { en: 'Let me clarify what I meant.', pt: 'Deixa eu esclarecer o que eu quis dizer.' }
+          ]},
+          { en: 'to find / to lose', pt: 'achar / perder', ph: 'tú fáind / tú lúz', tag: 'verbo', examples: [
+            { en: 'I cannot find my keys.', pt: 'Eu não consigo achar minhas chaves.' },
+            { en: 'Do not lose this receipt.', pt: 'Não perde esse recibo.' }
+          ]},
           { en: 'to finish', pt: 'terminar', ph: 'tú fí-nish', tag: 'verbo', examples: [{ en: 'I need to finish this report.', pt: 'Eu preciso terminar esse relatório.' }] },
           { en: 'to receive', pt: 'receber', ph: 'tú ri-sív', tag: 'verbo', examples: [{ en: 'Did you receive my message?', pt: 'Você recebeu minha mensagem?' }] },
           { en: 'to give', pt: 'dar', ph: 'tú guív', tag: 'verbo', examples: [{ en: 'Can you give me a second?', pt: 'Você pode me dar um segundo?' }] },
           { en: 'to assist', pt: 'prestar assistência', ph: 'tú ã-sist', tag: 'verbo', examples: [{ en: 'He assisted the elderly customer.', pt: 'Ele prestou assistência ao cliente idoso.' }] },
           { en: 'to teach', pt: 'ensinar', ph: 'tú títch', tag: 'verbo', examples: [{ en: 'She teaches English.', pt: 'Ela ensina inglês.' }] },
-          { en: 'to listen / to hear', pt: 'escutar / ouvir', ph: 'tú lí-sen / tú ríar', tag: 'verbo', examples: [{ en: 'Did you hear that noise?', pt: 'Você ouviu aquele barulho?' }] },
+          { en: 'to listen / to hear', pt: 'escutar / ouvir', ph: 'tú lí-sen / tú ríar', tag: 'verbo', examples: [
+            { en: 'Please, listen carefully.', pt: 'Por favor, escuta com atenção.' },
+            { en: 'Did you hear that noise?', pt: 'Você ouviu aquele barulho?' }
+          ]},
           { en: 'to see', pt: 'ver', ph: 'tú sí', tag: 'verbo', examples: [{ en: 'I cannot see anything from here.', pt: 'Eu não consigo ver nada daqui.' }] },
           { en: 'to close', pt: 'fechar', ph: 'tú clôuz', tag: 'verbo', examples: [{ en: 'Can you close the door?', pt: 'Você pode fechar a porta?' }] },
-          { en: 'to read / to write', pt: 'ler / escrever', ph: 'tú ríd / tú ráit', tag: 'verbo', examples: [{ en: 'I love to read before bed.', pt: 'Eu amo ler antes de dormir.' }] },
-          { en: 'to remember / to forget', pt: 'lembrar / esquecer', ph: 'tú ri-mém-ber / tú fór-guét', tag: 'verbo', examples: [{ en: "Don't forget your keys.", pt: 'Não esquece suas chaves.' }] },
-          { en: 'to run / to walk', pt: 'correr / andar', ph: 'tú rân / tú uók', tag: 'verbo', examples: [{ en: 'I run every morning.', pt: 'Eu corro toda manhã.' }] },
-          { en: 'to tell / to speak', pt: 'contar / falar', ph: 'tú tél / tú spík', tag: 'verbo', examples: [{ en: 'Can you tell me what happened?', pt: 'Você pode me contar o que aconteceu?' }] },
-          { en: 'to sit / to stand', pt: 'sentar / ficar em pé', ph: 'tú sít / tú sténd', tag: 'verbo', examples: [{ en: 'Please, sit down.', pt: 'Por favor, senta.' }] },
-          { en: 'to stop / to continue', pt: 'parar / continuar', ph: 'tú stóp / tú kãn-tí-niu', tag: 'verbo', examples: [{ en: 'Stop right there.', pt: 'Para bem aí.' }] },
-          { en: 'to think / to believe', pt: 'pensar / acreditar', ph: 'tú think / tú bi-lív', tag: 'verbo', examples: [{ en: 'I believe you.', pt: 'Eu acredito em você.' }] },
+          { en: 'to read / to write', pt: 'ler / escrever', ph: 'tú ríd / tú ráit', tag: 'verbo', examples: [
+            { en: 'I love to read before bed.', pt: 'Eu amo ler antes de dormir.' },
+            { en: 'Can you write your name here?', pt: 'Você pode escrever seu nome aqui?' }
+          ]},
+          { en: 'to remember / to forget', pt: 'lembrar / esquecer', ph: 'tú ri-mém-ber / tú fór-guét', tag: 'verbo', examples: [
+            { en: 'I remember his name now.', pt: 'Eu lembro do nome dele agora.' },
+            { en: "Don't forget your keys.", pt: 'Não esquece suas chaves.' }
+          ]},
+          { en: 'to run / to walk', pt: 'correr / andar', ph: 'tú rân / tú uók', tag: 'verbo', examples: [
+            { en: 'I run every morning.', pt: 'Eu corro toda manhã.' },
+            { en: 'We walked to the store.', pt: 'A gente foi andando até a loja.' }
+          ]},
+          { en: 'to tell / to speak', pt: 'contar / falar', ph: 'tú tél / tú spík', tag: 'verbo', examples: [
+            { en: 'Can you tell me what happened?', pt: 'Você pode me contar o que aconteceu?' },
+            { en: 'Do you speak English?', pt: 'Você fala inglês?' }
+          ]},
+          { en: 'to sit / to stand', pt: 'sentar / ficar em pé', ph: 'tú sít / tú sténd', tag: 'verbo', examples: [
+            { en: 'Please, sit down.', pt: 'Por favor, senta.' },
+            { en: 'You can stand right here.', pt: 'Você pode ficar em pé bem aqui.' }
+          ]},
+          { en: 'to stop / to continue', pt: 'parar / continuar', ph: 'tú stóp / tú kãn-tí-niu', tag: 'verbo', examples: [
+            { en: 'Stop right there.', pt: 'Para bem aí.' },
+            { en: 'Please, continue your story.', pt: 'Por favor, continua sua história.' }
+          ]},
+          { en: 'to think / to believe', pt: 'pensar / acreditar', ph: 'tú think / tú bi-lív', tag: 'verbo', examples: [
+            { en: 'I think it is a good idea.', pt: 'Eu acho que é uma boa ideia.' },
+            { en: 'I believe you.', pt: 'Eu acredito em você.' }
+          ]},
           { en: 'to understand', pt: 'entender', ph: 'tú ân-der-sténd', tag: 'verbo', examples: [{ en: "I do not understand this part.", pt: 'Eu não entendo essa parte.' }] },
           { en: 'to operate', pt: 'operar', ph: 'tú ó-pe-réit', tag: 'verbo', examples: [{ en: 'He knows how to operate this machine.', pt: 'Ele sabe operar essa máquina.' }] },
-          { en: 'to wait / to expect', pt: 'esperar por algo / ter expectativa', ph: 'tú uéit / tú iks-pékt', tag: 'verbo', examples: [{ en: "I'm waiting for the bus.", pt: 'Eu estou esperando o ônibus.' }] }
+          { en: 'to wait / to expect', pt: 'esperar por algo / ter expectativa', ph: 'tú uéit / tú iks-pékt', tag: 'verbo', examples: [
+            { en: "I am waiting for the bus.", pt: 'Eu estou esperando o ônibus.' },
+            { en: 'I expect good results this month.', pt: 'Eu espero bons resultados esse mês.' }
+          ]}
         ]
       },
       adjetivos_b2: {
@@ -1878,7 +1941,6 @@
 
     function renderTipsList() {
       const container = document.getElementById('tipsListContainer');
-      document.getElementById('tipDetailContainer').innerHTML = '';
       const byCategory = {};
       PRONUNCIATION_RULES.forEach(r => {
         byCategory[r.category] = byCategory[r.category] || [];
@@ -1899,27 +1961,25 @@
     function openTipDetail(id) {
       const rule = PRONUNCIATION_RULES.find(r => r.id === id);
       if (!rule) return;
-      const container = document.getElementById('tipDetailContainer');
+      const container = document.getElementById('tipDetailModalContent');
       container.innerHTML = `
-        <div class="card" style="border-color:var(--accent-cyan);">
-          <button class="btn btn-sm btn-secondary" onclick="document.getElementById('tipDetailContainer').innerHTML=''">✕ Fechar</button>
-          <div class="card-title" style="margin-top:0.5rem;">${rule.title}</div>
-          <p style="font-size:0.85rem; margin:0.5rem 0;">${rule.rule}</p>
-          ${rule.exception ? `<p style="font-size:0.8rem; color:var(--accent-yellow); background:rgba(250,204,21,0.08); padding:0.5rem; border-radius:8px; margin-bottom:0.75rem;">⚠️ <b>Exceção:</b> ${rule.exception}</p>` : ''}
-          <div style="background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:0.75rem; border-radius:10px;">
-            ${rule.examples.map(ex => `
-              <div style="margin-bottom:0.6rem; display:flex; justify-content:space-between; align-items:center;">
-                <div>
-                  <div style="font-weight:700; color:var(--accent-cyan);">${ex.word}</div>
-                  <div style="font-size:0.82rem; color:#fef08a; font-style:italic;">🗣️ ${ex.ph}</div>
-                  <div style="font-size:0.78rem; color:var(--text-muted);">🇧🇷 ${ex.meaning}</div>
-                </div>
-                <button class="btn btn-sm btn-secondary" onclick="speakText('${ex.word.replace(/'/g, "\\'")}')">🔊</button>
+        <div class="card-title" style="margin-top:1rem; font-size:1.3rem;">${rule.title}</div>
+        <p style="font-size:0.85rem; margin:0.5rem 0;">${rule.rule}</p>
+        ${rule.exception ? `<p style="font-size:0.8rem; color:var(--accent-yellow); background:rgba(250,204,21,0.08); padding:0.5rem; border-radius:8px; margin-bottom:0.75rem;">⚠️ <b>Exceção:</b> ${rule.exception}</p>` : ''}
+        <div style="background:rgba(255,255,255,0.03); border:1px solid var(--card-border); padding:0.75rem; border-radius:10px;">
+          ${rule.examples.map(ex => `
+            <div style="margin-bottom:0.6rem; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <div style="font-weight:700; color:var(--accent-cyan);">${ex.word}</div>
+                <div style="font-size:0.82rem; color:#fef08a; font-style:italic;">🗣️ ${ex.ph}</div>
+                <div style="font-size:0.78rem; color:var(--text-muted);">🇧🇷 ${ex.meaning}</div>
               </div>
-            `).join('')}
-          </div>
+              <button class="btn btn-sm btn-secondary" onclick="speakText('${ex.word.replace(/'/g, "\\'")}')">🔊</button>
+            </div>
+          `).join('')}
         </div>
       `;
+      document.getElementById('tipDetailModal').style.display = 'block';
     }
 
     function switchSubTab(tabName) {
